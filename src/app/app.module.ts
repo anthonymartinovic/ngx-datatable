@@ -3,14 +3,14 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
+import { FlexiTableModule } from './modules/flexi-table/flexi-table.module';
 
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FlexiTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
