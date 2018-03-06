@@ -1,3 +1,38 @@
-h1 {
-    color: red;
+:host(.ngx-flexi-table) {
+
+	div {
+		overflow-x: auto;
+
+		h4 {
+		}
+
+		table {
+			border: 1px solid #999;
+			border-collapse: collapse;
+			width: 100%;
+
+			thead {
+				border: 1px solid #999;
+				tr {
+					th {
+						text-align: left;
+						padding: 8px;
+					}
+				}
+			}
+
+			tbody {
+				tr {
+					td {
+						text-align: left;
+						padding: 8px;
+					}
+				}
+
+				tr:nth-child(even){ 
+					background-color: #f2f2f2
+				}
+			}
+		}
+	}
 }

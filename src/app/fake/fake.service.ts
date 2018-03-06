@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Project, Person } from './model';
-import { PROJECTS, PERSONNEL } from './data';
 
+import { PERSONNEL, PROJECTS } from './data';
+import { Person, Project } from './model';
 @Injectable()
-export class ProjectService {
-
+export class FakeService {
 	getProjects(): Project[] {
 		return PROJECTS;
 	}
+
 	getPersonnel(): Person[] {
 		return PERSONNEL;
 	}
-
 }

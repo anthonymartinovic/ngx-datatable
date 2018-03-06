@@ -5,6 +5,7 @@ import { FlexiTableComponent } from './flexi-table.component';
 @NgModule({
   imports: [CommonModule],
   declarations: [FlexiTableComponent],
+  providers: [],
   exports: [FlexiTableComponent]
 })
 export class FlexiTableModule { }
