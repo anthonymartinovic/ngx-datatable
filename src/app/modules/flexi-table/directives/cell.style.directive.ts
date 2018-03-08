@@ -5,6 +5,7 @@ import { Directive, ElementRef, Renderer, Input } from '@angular/core';
 })
 
 export class CellStyleDirective {
+
 	@Input() flexiCellStyle: string;
 
 	constructor(
@@ -13,13 +14,18 @@ export class CellStyleDirective {
 	) {}
 
 	ngOnInit() {
-		if (this.flexiCellStyle === undefined) {
+
+		if (this.flexiCellStyle === undefined)
+		{
 			this.renderer.setElementStyle(this.el.nativeElement, 'color', '#dcdcdc');
 			this.renderer.setElementStyle(this.el.nativeElement, 'text-align', 'center');
 		}
 
-		if (typeof this.flexiCellStyle === 'number') {
+		if (typeof this.flexiCellStyle === 'number') 
+		{
 			this.renderer.setElementStyle(this.el.nativeElement, 'text-align', 'right');
 		}
+
 	}
+	
 }

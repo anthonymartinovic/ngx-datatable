@@ -27,19 +27,19 @@ import { ColumnConfig, ColumnMap } from './models/column.config.model';
 	},
 })
 
-export class FlexiTableComponent implements OnInit, OnChanges 
-{
-	@Input() config: ColumnConfig[];
+export class FlexiTableComponent implements OnInit, OnChanges {
 	@Input() caption: string;
 	@Input() records: any[];
+	@Input() config: ColumnConfig[];
+
 	columnMaps: ColumnMap[];
 
 	constructor() {}
 
 	ngOnInit() {}
 
-	ngOnChanges() 
-	{
+	ngOnChanges() {
+
 		if (this.config) 
 		{
 			this.columnMaps = this.config.map( col => new ColumnMap(col) );
@@ -47,11 +47,12 @@ export class FlexiTableComponent implements OnInit, OnChanges
 		else 
 		{
 			this.columnMaps = Object.keys(this.records[0]).map(
-				key => 
-				{
+				key => {
 					return new ColumnMap({ primaryKey: key });
 				}
 			);
 		}
+
 	}
+
 }

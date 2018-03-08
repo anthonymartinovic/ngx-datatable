@@ -1,20 +1,23 @@
 export class ColumnConfig {
-	primaryKey: string;
+
 	header?: string;
 	format?: string;
+	primaryKey: string;
 	alternativeKeys?: string[];
+
 }
 
 export class ColumnMap {
-	primaryKey: string;
+
 	private _header: string;
 	private _format: string;
+	primaryKey: string;
 	alternativeKeys?: string[];
 
 	constructor(config) {
-		this.primaryKey = config.primaryKey;
 		this.header = config.header;
 		this.format = config.format;
+		this.primaryKey = config.primaryKey;
 		this.alternativeKeys = config.alternativeKeys;
 	}
 
@@ -23,11 +26,10 @@ export class ColumnMap {
 	}
 
 	set header(config: string) {
-		this._header = 
-			(config)
-				? config
-				: this.primaryKey.slice(0, 1).toUpperCase() + 
-				  this.primaryKey.replace(/_/g, ' ').slice(1);
+		this._header = (config)
+			? config
+			: this.primaryKey.slice(0, 1).toUpperCase() + 
+			  this.primaryKey.replace(/_/g, ' ').slice(1);
 	}
 
 	get format() {
@@ -39,6 +41,7 @@ export class ColumnMap {
 	}
 
 	access = (object: any) => {
+
 		if (object[this.primaryKey] || !this.alternativeKeys) 
 		{ 
 			return this.primaryKey; 
@@ -50,5 +53,7 @@ export class ColumnMap {
 		}
 
 		return this.primaryKey;
+
 	};
+	
 }

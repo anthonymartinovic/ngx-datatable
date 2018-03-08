@@ -5,14 +5,14 @@ import { CellFormatPipe } from './pipes/cell.format.pipe';
 import { CellStyleDirective } from './directives/cell.style.directive';
 
 @NgModule({
-  imports: [CommonModule],
-  declarations: [
-	  FlexiTableComponent,
-	  CellFormatPipe,
-	  CellStyleDirective
+	imports: [CommonModule],
+	declarations: [
+		FlexiTableComponent, 
+		CellFormatPipe, 
+		CellStyleDirective
 	],
-  providers: [CurrencyPipe],
-  exports: [FlexiTableComponent]
+	providers: [CurrencyPipe],
+	exports: [FlexiTableComponent],
 })
 
-export class FlexiTableModule { }
+export class FlexiTableModule {}
