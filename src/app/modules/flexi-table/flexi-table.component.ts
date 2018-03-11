@@ -1,25 +1,72 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ColumnConfig, ColumnMap } from './models/column.config.model';
+import { SVG } from './assets/images';
+import { ImgService } from './services/img.service';
+import { PagerService } from './services/pager.service';
 
 @Component({
 	selector: 'app-flexi-table',
 	template: `<div>
-					<h4 *ngIf="caption">{{caption}}</h4>
+					<h4 *ngIf="caption">{{ caption }}</h4>
 					<table>
 						<thead>
-						<tr>
-							<th *ngFor="let map of columnMaps">{{ map.header }}</th>
-						</tr>
+							<tr>
+								<th *ngFor="let col of columns">{{ col.header }}</th>
+								<th>{{ routerCaption }}</th>
+								<th [flexiCellStyle]="'checkbox'">
+									<input 
+										type="checkbox" 
+										[checked]="isAllChecked()" 
+										(change)="updateAll()"
+									>
+								</th>
+							</tr>
 						</thead>
 						<tbody>
-						<tr *ngFor="let record of records">
-							<td *ngFor="let map of columnMaps"
-								[flexiCellStyle]="record[map.access(record)]">
-								{{ record[map.access(record)] | formatCell: map.format }}
-							</td>
-						</tr>
+							<tr *ngFor="let record of pagedRecords">
+								<td 
+									*ngFor="let col of columns"
+									[flexiCellStyle]="record[col.access(record)]"
+								>
+									{{ record[col.access(record)] | formatCell: col.format }}
+								</td>
+								<td 
+									class="flexi-new-tab-container"
+									[flexiCellStyle]="'newTab'"
+									[innerHTML]="imgService.getSVG('newTab')"
+								>
+								</td>
+								<td [flexiCellStyle]="'checkbox'">
+									<input 
+										type="checkbox" 
+										[checked]="isChecked(record)" 
+										(change)="update(record)"
+									>
+								</td>
+							</tr>
 						</tbody>
 					</table>
+					<ul *ngIf="pager.selectablePages && pager.selectablePages.length > 1" class="pagination">
+						<li [flexiPagerStyle]="{ button: 'first', currentPage: pager.currentPage }">
+							<a (click)="setPage(1)">|<</a>
+						</li>
+						<li [flexiPagerStyle]="{ button: 'previous', currentPage: pager.currentPage }">
+							<a (click)="setPage(pager.currentPage - 1)"><</a>
+						</li>
+						<li 
+							*ngFor="let page of pager.selectablePages"
+							[flexiPagerStyle]="{ button: 'number', page: page, currentPage: pager.currentPage }"
+						>
+							<a (click)="setPage(page)">{{ page }}</a>
+						</li>
+						<li [flexiPagerStyle]="{ button: 'next', currentPage: pager.currentPage, totalPages: pager.totalPages }">
+							<a (click)="setPage(pager.currentPage + 1)">></a>
+						</li>
+						<li [flexiPagerStyle]="{ button: 'last', currentPage: pager.currentPage, totalPages: pager.totalPages }">
+							<a (click)="setPage(pager.totalPages)">>|</a>
+						</li>
+					</ul>
 				</div>`,
 	styleUrls: ['./flexi-table.component.scss'],
 	host: {
@@ -28,31 +75,79 @@ import { ColumnConfig, ColumnMap } from './models/column.config.model';
 })
 
 export class FlexiTableComponent implements OnInit, OnChanges {
+	console = console;
+
 	@Input() caption: string;
+	@Input() routerCaption: string;
 	@Input() records: any[];
+	@Input() recordsPerPage: number;
 	@Input() config: ColumnConfig[];
+	columns: ColumnMap[];
 
-	columnMaps: ColumnMap[];
+	checked: any[] = [];
+	pager: any = {};
+	pagedRecords: any[];
 
-	constructor() {}
+	constructor(
+		private _sanitizer: DomSanitizer,
+		private _pagerService: PagerService,
+		public imgService: ImgService
+	) {}
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.setPage(1);
+	}
 
 	ngOnChanges() {
-
 		if (this.config) 
 		{
-			this.columnMaps = this.config.map( col => new ColumnMap(col) );
+			this.columns = this.config.map( 
+				col => {
+					return new ColumnMap(col) 
+				}
+			);
 		} 
 		else 
 		{
-			this.columnMaps = Object.keys(this.records[0]).map(
+			this.columns = Object.keys(this.records[0]).map(
 				key => {
-					return new ColumnMap({ primaryKey: key });
+					return new ColumnMap({ primeKey: key });
 				}
 			);
 		}
-
 	}
 
+	isChecked(record): boolean {
+		return (this.checked.indexOf(record) > -1)
+			? true
+			: false;
+	}
+
+	isAllChecked(): boolean {
+		return (this.checked.length === this.records.length)
+			? true
+			: false;
+	}
+
+	update(record): void {
+		let index = this.checked.indexOf(record);
+		
+		(index > -1)
+			? this.checked.splice(index, 1)
+			: this.checked.push(record);
+	}
+
+	updateAll(): void {
+		(this.checked.length != this.records.length)
+			? this.checked = this.records.slice()
+			: this.checked = [];
+	}
+
+	setPage(page: number): void {
+		if (page < 1 || page > this.pager.totalPages || page === this.pager.currentPage) return;
+
+		this.pager = this._pagerService.getPager(this.records.length, page, this.recordsPerPage || 10);
+ 
+		this.pagedRecords = this.records.slice(this.pager.startIndex, this.pager.endIndex + 1);
+	}
 }

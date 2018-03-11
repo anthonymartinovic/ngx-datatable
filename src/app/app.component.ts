@@ -12,48 +12,44 @@ import { ColumnConfig } from './modules/flexi-table/models/column.config.model';
 				</app-flexi-table>
 				<app-flexi-table
 					[records]="people"
-					[caption]="'NASA Astronauts'"
-					[config]="personnelConfig">
+					[caption]="'NASA Astronauts'">
 				</app-flexi-table>`,
 })
 
 export class AppComponent implements OnInit {
-	title: string = 'Project Center';
 	projects: Project[];
 	people: Person[];
+
 	projectConfig: ColumnConfig[] = [
 		{
-			primaryKey: 'name',
+			primeKey: 'name',
 			header: 'Name',
 		},
 		{
-			primaryKey: 'first_launch',
+			primeKey: 'first_launch',
+			altKeys: ['launch', 'first_flight'],
 			header: 'First launch',
-			alternativeKeys: ['launch', 'first_flight']
 		},
 		{
-			primaryKey: 'cost',
+			primeKey: 'cost',
+			altKeys: ['total_cost'],
 			header: 'Cost',
 			format: 'currency',
-			alternativeKeys: ['total_cost']
 		},
 	];
 
-	personnelConfig: ColumnConfig[] = 
-       [
-            {  primaryKey: 'name' },
-            {  primaryKey: 'year_joined', header: 'Joined' },
-            {  primaryKey: 'missions' },
-            {  primaryKey: 'manager'  },
-            {  primaryKey: 'crewWith', header: 'Crew mates'}
-        ];
+	personnelConfig: ColumnConfig[] = [
+		{  primeKey: 'name' },
+		{  primeKey: 'year_joined', header: 'Joined' },
+		{  primeKey: 'missions' },
+		{  primeKey: 'manager'  },
+		{  primeKey: 'crewWith', header: 'Crew mates'},
+	];
 
-	constructor(private fakeService: FakeService) {}
+	constructor(private _fakeService: FakeService) {}
 
 	ngOnInit() {
-		this.projects = this.fakeService.getProjects();
-		this.people = this.fakeService.getPersonnel();
-		console.log(this.projects);
-		console.log(this.people);
+		this.projects = this._fakeService.getProjects();
+		this.people = this._fakeService.getPersonnel();
 	}
 }

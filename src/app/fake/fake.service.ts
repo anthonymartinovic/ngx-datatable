@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { PERSONNEL, PROJECTS } from './data';
+import { PERSONNEL, PROJECTS } from './records';
 import { Person, Project } from './model';
 @Injectable()
 export class FakeService {

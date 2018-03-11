@@ -6,34 +6,29 @@ import { CurrencyPipe } from '@angular/common';
 })
 
 export class CellFormatPipe implements PipeTransform {
-
 	constructor(
-		private currencyPipe: CurrencyPipe
+		private _currencyPipe: CurrencyPipe
 	) {}
 
-	transform(
-		value: any, 
-		format: string
-	): any {
+	transform(input: any, format: string): string {
+		if (input === undefined) return 'N/A';
 
-		if (value === undefined) return 'N/A';
-
-		if (format === 'currency') return this.currencyPipe.transform(value, 'AUD');
+		if (format === 'currency') return this._currencyPipe.transform(input, 'AUD');
 
 		if (format === 'default') 
 		{
-			if (Array.isArray(value)) 
+			if (Array.isArray(input)) 
 			{
-				return (typeof value[0] !== 'object') 
-					? value.join(', ') 
-					: value.map(obj => { return obj.name; }).join(', ');
+				return (typeof input[0] !== 'object') 
+					? input.join(', ')
+					: input.map(object => { 
+							return object.name; 
+						}).join(', ');
 			}
 
-			if (typeof value === 'object') return value.name;
+			if (typeof input === 'object') return input.name;
 		}
 
-		return value;
-
-	}
-	
+		return input;
+	}	
 }

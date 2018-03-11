@@ -1,24 +1,22 @@
 export class ColumnConfig {
-
+	primeKey: string;
+	altKeys?: string[];
 	header?: string;
 	format?: string;
-	primaryKey: string;
-	alternativeKeys?: string[];
 
 }
 
 export class ColumnMap {
-
+	primeKey: string;
+	altKeys?: string[];
 	private _header: string;
 	private _format: string;
-	primaryKey: string;
-	alternativeKeys?: string[];
 
 	constructor(config) {
+		this.primeKey = config.primeKey;
+		this.altKeys = config.altKeys;
 		this.header = config.header;
 		this.format = config.format;
-		this.primaryKey = config.primaryKey;
-		this.alternativeKeys = config.alternativeKeys;
 	}
 
 	get header() { 
@@ -28,8 +26,8 @@ export class ColumnMap {
 	set header(config: string) {
 		this._header = (config)
 			? config
-			: this.primaryKey.slice(0, 1).toUpperCase() + 
-			  this.primaryKey.replace(/_/g, ' ').slice(1);
+			: this.primeKey.slice(0, 1).toUpperCase() + 
+			  this.primeKey.replace(/_/g, ' ').slice(1);
 	}
 
 	get format() {
@@ -37,23 +35,22 @@ export class ColumnMap {
 	}
 
 	set format(config: string) {
-		this._format = (config) ? config : 'default';
+		this._format = (config) 
+			? config 
+			: 'default';
 	}
 
-	access = (object: any) => {
-
-		if (object[this.primaryKey] || !this.alternativeKeys) 
-		{ 
-			return this.primaryKey; 
-		}
-
-		for (let key of this.alternativeKeys) 
+	access(object: any): string | number {
+		if (object[this.primeKey] || !this.altKeys) 
 		{
-			if (object[key]) { return key; }
+			return this.primeKey; 
 		}
 
-		return this.primaryKey;
+		for (let key of this.altKeys) 
+		{
+			if (object[key]) return key;
+		}
 
+		return this.primeKey;
 	};
-	
 }

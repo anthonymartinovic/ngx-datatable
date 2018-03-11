@@ -1,31 +1,29 @@
-import { Directive, ElementRef, Renderer, Input } from '@angular/core';
+import { Directive, ElementRef, Renderer2, Input, OnInit } from '@angular/core';
 
 @Directive({
 	selector: '[flexiCellStyle]',
 })
 
-export class CellStyleDirective {
-
+export class CellStyleDirective implements OnInit {
 	@Input() flexiCellStyle: string;
 
 	constructor(
-		private el: ElementRef, 
-		private renderer: Renderer
+		private _elementRef: ElementRef, 
+		private _renderer: Renderer2
 	) {}
 
 	ngOnInit() {
-
 		if (this.flexiCellStyle === undefined)
 		{
-			this.renderer.setElementStyle(this.el.nativeElement, 'color', '#dcdcdc');
-			this.renderer.setElementStyle(this.el.nativeElement, 'text-align', 'center');
+			this._renderer.setStyle(this._elementRef.nativeElement, 'color', '#dcdcdc');
+			this._renderer.setStyle(this._elementRef.nativeElement, 'text-align', 'center');
 		}
 
-		if (typeof this.flexiCellStyle === 'number') 
+		if (this.flexiCellStyle === 'checkbox' || 
+			this.flexiCellStyle === 'newTab' || 
+			typeof this.flexiCellStyle === 'number')
 		{
-			this.renderer.setElementStyle(this.el.nativeElement, 'text-align', 'right');
+			this._renderer.setStyle(this._elementRef.nativeElement, 'text-align', 'right');
 		}
-
 	}
-	
 }
