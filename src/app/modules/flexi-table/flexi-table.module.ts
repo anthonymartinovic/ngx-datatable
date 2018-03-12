@@ -10,7 +10,7 @@ import { CellFormatPipe } from './pipes/cell.format.pipe';
 
 import { ImgService } from './services/img.service';
 import { PagerService } from './services/pager.service';
-import { SortPipe } from './pipes/sort.pipe';
+import { SortService } from './services/sort.service';
 
 @NgModule({
 	imports: [CommonModule],
@@ -18,13 +18,13 @@ import { SortPipe } from './pipes/sort.pipe';
 		FlexiTableComponent, 
 		CellFormatPipe, 
 		CellStyleDirective, 
-		PagerStyleDirective, 
-		SortPipe
+		PagerStyleDirective
 	],
 	providers: [
 		CurrencyPipe,
 		ImgService,
-		PagerService
+		PagerService,
+		SortService
 	],
 	exports: [FlexiTableComponent],
 })

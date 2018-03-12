@@ -13,7 +13,7 @@ import { ColumnConfig } from './modules/flexi-table/models/column.config.model';
 				<app-flexi-table
 					[records]="people"
 					[caption]="'NASA Astronauts'">
-				</app-flexi-table>`,
+				</app-flexi-table>`
 })
 
 export class AppComponent implements OnInit {

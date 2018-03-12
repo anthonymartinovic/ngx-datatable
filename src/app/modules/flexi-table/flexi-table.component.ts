@@ -4,6 +4,7 @@ import { ColumnConfig, ColumnMap } from './models/column.config.model';
 import { SVG } from './assets/images';
 import { ImgService } from './services/img.service';
 import { PagerService } from './services/pager.service';
+import { SortService } from './services/sort.service';
 
 @Component({
 	selector: 'app-flexi-table',
@@ -12,7 +13,11 @@ import { PagerService } from './services/pager.service';
 					<table>
 						<thead>
 							<tr>
-								<th *ngFor="let col of columns">{{ col.header }}</th>
+								<th *ngFor="let col of columns"
+									(click)="setSort(col)"
+								>
+									{{ col.header }}
+								</th>
 								<th>{{ routerCaption }}</th>
 								<th [flexiCellStyle]="'checkbox'">
 									<input 
@@ -82,15 +87,21 @@ export class FlexiTableComponent implements OnInit, OnChanges {
 	@Input() records: any[];
 	@Input() recordsPerPage: number;
 	@Input() config: ColumnConfig[];
+
 	columns: ColumnMap[];
 
 	checked: any[] = [];
 	pager: any = {};
 	pagedRecords: any[];
+	sortedColumn: {
+		name: any,
+		order: string
+	}
 
 	constructor(
 		private _sanitizer: DomSanitizer,
 		private _pagerService: PagerService,
+		private _sortService: SortService,
 		public imgService: ImgService
 	) {}
 
@@ -143,11 +154,38 @@ export class FlexiTableComponent implements OnInit, OnChanges {
 			: this.checked = [];
 	}
 
-	setPage(page: number): void {
-		if (page < 1 || page > this.pager.totalPages || page === this.pager.currentPage) return;
+	setPage(page: number, bypassGuard: boolean = false): void {
+		if (!bypassGuard &&
+			(page < 1 || page > this.pager.totalPages || page === this.pager.currentPage))
+			return;
 
 		this.pager = this._pagerService.getPager(this.records.length, page, this.recordsPerPage || 10);
  
 		this.pagedRecords = this.records.slice(this.pager.startIndex, this.pager.endIndex + 1);
+	}
+
+	setSort(column: any) {
+		console.log(this.records[0]);
+		console.log(column.access(this.records[0]));
+		if (this.sortedColumn && this.sortedColumn.name === column.access(this.records[0]))
+		{
+			(this.sortedColumn.order === 'asc')
+				? this.sortedColumn.order = 'desc'
+				: this.sortedColumn.order = 'asc';
+		}
+		else {
+			this.sortedColumn = {
+				name: column.access(this.records[0]),
+				order: 'asc'
+			}
+		}
+
+		this.records = this._sortService.sortRecords(this.records, this.sortedColumn);
+
+		this.setPage(1, true);
+
+		//ISSUE:
+		//The property of the column being displayed in the table may not match the property found in the records
+		//(i.e. primeKey/altKeys conflict)
 	}
 }
