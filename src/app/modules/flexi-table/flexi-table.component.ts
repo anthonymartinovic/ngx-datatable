@@ -9,8 +9,8 @@ import { SortService } from './services/sort.service';
 @Component({
 	selector: 'app-flexi-table',
 	template: `<div>
-					<h4 *ngIf="caption">{{ caption }}</h4>
 					<table>
+					<caption *ngIf="caption">{{ caption }}</caption>
 						<thead>
 							<tr>
 								<th *ngFor="let col of columns"
@@ -165,8 +165,9 @@ export class FlexiTableComponent implements OnInit, OnChanges {
 	}
 
 	setSort(column: any) {
-		console.log(this.records[0]);
+
 		console.log(column.access(this.records[0]));
+
 		if (this.sortedColumn && this.sortedColumn.name === column.access(this.records[0]))
 		{
 			(this.sortedColumn.order === 'asc')
@@ -183,9 +184,5 @@ export class FlexiTableComponent implements OnInit, OnChanges {
 		this.records = this._sortService.sortRecords(this.records, this.sortedColumn);
 
 		this.setPage(1, true);
-
-		//ISSUE:
-		//The property of the column being displayed in the table may not match the property found in the records
-		//(i.e. primeKey/altKeys conflict)
 	}
 }

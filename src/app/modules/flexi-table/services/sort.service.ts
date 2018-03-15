@@ -7,9 +7,9 @@ export class SortService {
 	static _resolveSort(a: any, b: any, order: string) {
 		let result: any;
 
-		if (a === null) return 1;
-		if (b === null) return -1;
-		if (a === null && b === null) return 0;
+		if (a === null || a === undefined) return 1;
+		if (b === null || b === undefined) return -1;
+		if ((a === null || a === undefined) && (b === null || b === undefined)) return 0;
 
 		result = a - b;
 

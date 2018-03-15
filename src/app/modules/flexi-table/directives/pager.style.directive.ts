@@ -5,7 +5,7 @@ import { Directive, Input, ElementRef, Renderer2, OnChanges } from '@angular/cor
 })
 
 export class PagerStyleDirective implements OnChanges {
-	@Input() flexiPagerStyle:  {
+	@Input() flexiPagerStyle: {
 		button: string,
 		page?: number,
 		currentPage: number,
