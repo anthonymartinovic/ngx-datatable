@@ -5,15 +5,15 @@ import { ColumnConfig } from './modules/flexi-table/models/column.config.model';
 
 @Component({
 	selector: 'app-root',
-	template: `<app-flexi-table
+	template: `<ngx-flexi-table
 					[records]="projects"
 					[caption]="'NASA Projects'"
 					[config]="projectConfig">
-				</app-flexi-table>
-				<app-flexi-table
+				</ngx-flexi-table>
+				<ngx-flexi-table
 					[records]="people"
 					[caption]="'NASA Astronauts'">
-				</app-flexi-table>`
+				</ngx-flexi-table>`
 })
 
 export class AppComponent implements OnInit {

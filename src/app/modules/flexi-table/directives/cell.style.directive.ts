@@ -13,6 +13,7 @@ export class CellStyleDirective implements OnInit {
 	) {}
 
 	ngOnInit() {
+		
 		if (this.flexiCellStyle === undefined)
 		{
 			this._renderer.setStyle(this._elementRef.nativeElement, 'color', '#dcdcdc');

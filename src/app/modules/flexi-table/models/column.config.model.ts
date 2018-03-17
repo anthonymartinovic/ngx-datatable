@@ -41,6 +41,7 @@ export class ColumnMap {
 	}
 
 	access(object: any): string | number {
+		
 		if (object[this.primeKey] || !this.altKeys) 
 		{
 			return this.primeKey; 

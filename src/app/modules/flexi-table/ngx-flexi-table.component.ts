@@ -7,81 +7,77 @@ import { PagerService } from './services/pager.service';
 import { SortService } from './services/sort.service';
 
 @Component({
-	selector: 'app-flexi-table',
-	template: `<div>
-					<table>
+	selector: 'ngx-flexi-table',
+	template: `<table>
 					<caption *ngIf="caption">{{ caption }}</caption>
-						<thead>
-							<tr>
-								<th *ngFor="let col of columns"
-									(click)="setSort(col)"
+					<thead>
+						<tr>
+							<th *ngFor="let col of columns"
+								(click)="setSort(col)"
+							>
+								{{ col.header }}
+							</th>
+							<th>{{ routerCaption }}</th>
+							<th [flexiCellStyle]="'checkbox'">
+								<input 
+									type="checkbox" 
+									[checked]="isAllChecked()" 
+									(change)="updateAll()"
 								>
-									{{ col.header }}
-								</th>
-								<th>{{ routerCaption }}</th>
-								<th [flexiCellStyle]="'checkbox'">
-									<input 
-										type="checkbox" 
-										[checked]="isAllChecked()" 
-										(change)="updateAll()"
-									>
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr *ngFor="let record of pagedRecords">
-								<td 
-									*ngFor="let col of columns"
-									[flexiCellStyle]="record[col.access(record)]"
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let record of pagedRecords">
+							<td 
+								*ngFor="let col of columns"
+								[flexiCellStyle]="record[col.access(record)]"
+							>
+								{{ record[col.access(record)] | formatCell: col.format }}
+							</td>
+							<td 
+								class="flexi-new-tab-container"
+								[flexiCellStyle]="'newTab'"
+								[innerHTML]="imgService.getSVG('newTab')"
+							>
+							</td>
+							<td [flexiCellStyle]="'checkbox'">
+								<input 
+									type="checkbox" 
+									[checked]="isChecked(record)" 
+									(change)="update(record)"
 								>
-									{{ record[col.access(record)] | formatCell: col.format }}
-								</td>
-								<td 
-									class="flexi-new-tab-container"
-									[flexiCellStyle]="'newTab'"
-									[innerHTML]="imgService.getSVG('newTab')"
-								>
-								</td>
-								<td [flexiCellStyle]="'checkbox'">
-									<input 
-										type="checkbox" 
-										[checked]="isChecked(record)" 
-										(change)="update(record)"
-									>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<ul *ngIf="pager.selectablePages && pager.selectablePages.length > 1" class="pagination">
-						<li [flexiPagerStyle]="{ button: 'first', currentPage: pager.currentPage }">
-							<a (click)="setPage(1)">|<</a>
-						</li>
-						<li [flexiPagerStyle]="{ button: 'previous', currentPage: pager.currentPage }">
-							<a (click)="setPage(pager.currentPage - 1)"><</a>
-						</li>
-						<li 
-							*ngFor="let page of pager.selectablePages"
-							[flexiPagerStyle]="{ button: 'number', page: page, currentPage: pager.currentPage }"
-						>
-							<a (click)="setPage(page)">{{ page }}</a>
-						</li>
-						<li [flexiPagerStyle]="{ button: 'next', currentPage: pager.currentPage, totalPages: pager.totalPages }">
-							<a (click)="setPage(pager.currentPage + 1)">></a>
-						</li>
-						<li [flexiPagerStyle]="{ button: 'last', currentPage: pager.currentPage, totalPages: pager.totalPages }">
-							<a (click)="setPage(pager.totalPages)">>|</a>
-						</li>
-					</ul>
-				</div>`,
-	styleUrls: ['./flexi-table.component.scss'],
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<ul *ngIf="pager.selectablePages && pager.selectablePages.length > 1" class="pagination">
+					<li [flexiPagerStyle]="{ button: 'first', currentPage: pager.currentPage }">
+						<a (click)="setPage(1)">|<</a>
+					</li>
+					<li [flexiPagerStyle]="{ button: 'previous', currentPage: pager.currentPage }">
+						<a (click)="setPage(pager.currentPage - 1)"><</a>
+					</li>
+					<li 
+						*ngFor="let page of pager.selectablePages"
+						[flexiPagerStyle]="{ button: 'number', page: page, currentPage: pager.currentPage }"
+					>
+						<a (click)="setPage(page)">{{ page }}</a>
+					</li>
+					<li [flexiPagerStyle]="{ button: 'next', currentPage: pager.currentPage, totalPages: pager.totalPages }">
+						<a (click)="setPage(pager.currentPage + 1)">></a>
+					</li>
+					<li [flexiPagerStyle]="{ button: 'last', currentPage: pager.currentPage, totalPages: pager.totalPages }">
+						<a (click)="setPage(pager.totalPages)">>|</a>
+					</li>
+				</ul>`,
+	styleUrls: ['./ngx-flexi-table.component.scss'],
 	host: {
 		class: 'ngx-flexi-table',
 	},
 })
 
 export class FlexiTableComponent implements OnInit, OnChanges {
-	console = console;
-
 	@Input() caption: string;
 	@Input() routerCaption: string;
 	@Input() records: any[];
@@ -155,6 +151,7 @@ export class FlexiTableComponent implements OnInit, OnChanges {
 	}
 
 	setPage(page: number, bypassGuard: boolean = false): void {
+
 		if (!bypassGuard &&
 			(page < 1 || page > this.pager.totalPages || page === this.pager.currentPage))
 			return;
@@ -165,8 +162,6 @@ export class FlexiTableComponent implements OnInit, OnChanges {
 	}
 
 	setSort(column: any) {
-
-		console.log(column.access(this.records[0]));
 
 		if (this.sortedColumn && this.sortedColumn.name === column.access(this.records[0]))
 		{

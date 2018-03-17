@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 
-import { FlexiTableComponent } from './flexi-table.component';
+import { FlexiTableComponent } from './ngx-flexi-table.component';
 
 import { CellStyleDirective } from './directives/cell.style.directive';
 import { PagerStyleDirective } from './directives/pager.style.directive';
@@ -11,6 +11,7 @@ import { CellFormatPipe } from './pipes/cell.format.pipe';
 import { ImgService } from './services/img.service';
 import { PagerService } from './services/pager.service';
 import { SortService } from './services/sort.service';
+import { TableComponent } from './components/table/table.component';
 
 @NgModule({
 	imports: [CommonModule],
@@ -18,7 +19,7 @@ import { SortService } from './services/sort.service';
 		FlexiTableComponent, 
 		CellFormatPipe, 
 		CellStyleDirective, 
-		PagerStyleDirective
+		PagerStyleDirective, TableComponent
 	],
 	providers: [
 		CurrencyPipe,

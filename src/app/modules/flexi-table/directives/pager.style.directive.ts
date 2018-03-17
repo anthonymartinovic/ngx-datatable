@@ -18,6 +18,7 @@ export class PagerStyleDirective implements OnChanges {
 	) {}
 
 	ngOnChanges() {
+		
 		if (this.flexiPagerStyle.button === 'first' || 
 			this.flexiPagerStyle.button === 'previous')
 		{

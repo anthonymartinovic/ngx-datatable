@@ -5,6 +5,7 @@ import { SVG } from '../assets/images';
 @Injectable()
 
 export class ImgService {
+	
 	constructor(private _sanitizer: DomSanitizer) {}
 
 	getSVG(img): object {
