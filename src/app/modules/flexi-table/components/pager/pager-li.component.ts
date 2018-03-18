@@ -1,20 +1,20 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
 	selector: 'app-pager-li',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<li [flexiPagerStyle]="styleParams">
-			<a (click)="setPage(button.value)">
+			<a (click)="initSetPage(button.value)">
 				{{ button.symbol }}
 			</a>
 		</li>
-  `,
-	styles: [],
+	`
 })
-export class PagerLiComponent {
+export class PagerLiComponent implements OnChanges {
 	@Input() button: {
 		name: string,
-		symbol: string,
+		symbol: string | number,
 		value: number
 	};
 	@Input() page: number;
@@ -23,9 +23,11 @@ export class PagerLiComponent {
 
 	@Output() onSetPage = new EventEmitter<any>();
 
-	styleParams: {};
+	styleParams: {} = {};
 
-	constructor() {
+	constructor() {}
+
+	ngOnChanges() {
 		this.styleParams = {
 			button: this.button.name,
 			page: this.page,
@@ -34,7 +36,7 @@ export class PagerLiComponent {
 		}
 	}
 
-	setPage(page: number) {
+	initSetPage(page: number) {
 		this.onSetPage.emit(page);
 	}
 }

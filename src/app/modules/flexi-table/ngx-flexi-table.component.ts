@@ -15,7 +15,7 @@ import { PagerComponent } from './components/pager/pager.component';
 			[config]="config"
 			[records]="records"
 			[pagedRecords]="pagedRecords"
-			(afterSetSort)="setPage()"
+			(afterSetSort)="initSetPage()"
 		></app-table>
 		<app-pager
 			[records]="records"
@@ -40,16 +40,15 @@ export class FlexiTableComponent implements AfterViewInit {
 	) {}
 
 	ngAfterViewInit() {
-		this.setPage();
+		this.initSetPage();
 		this._cdr.detectChanges();
 	}
 
-	setPage() {
+	initSetPage() {
 		this._pagerComponent.setPage(1, true);
 	}
-	
+
 	updatePagedRecords(event: {}[]) {
 		this.pagedRecords = event;
 	}
-
 }

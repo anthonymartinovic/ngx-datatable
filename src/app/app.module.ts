@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppComponent } from './app.component';
 import { FlexiTableModule } from './modules/flexi-table/ngx-flexi-table.module';
+
+import { AppComponent } from './app.component';
 
 import { FakeService } from './fake/fake.service';
 

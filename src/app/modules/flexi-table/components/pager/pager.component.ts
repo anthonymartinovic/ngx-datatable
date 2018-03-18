@@ -6,25 +6,37 @@ import { PagerService } from '../../services/pager.service';
 	selector: 'app-pager',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<ul *ngIf="pager && pager.selectablePages && pager.selectablePages.length > 1" class="pagination">
-			<li [flexiPagerStyle]="{ button: 'first', currentPage: pager.currentPage }">
-				<a (click)="setPage(1)">|<</a>
-			</li>
-			<li [flexiPagerStyle]="{ button: 'previous', currentPage: pager.currentPage }">
-				<a (click)="setPage(pager.currentPage - 1)"><</a>
-			</li>
-			<li 
-				*ngFor="let page of pager.selectablePages"
-				[flexiPagerStyle]="{ button: 'number', page: page, currentPage: pager.currentPage }"
-			>
-				<a (click)="setPage(page)">{{ page }}</a>
-			</li>
-			<li [flexiPagerStyle]="{ button: 'next', currentPage: pager.currentPage, totalPages: pager.totalPages }">
-				<a (click)="setPage(pager.currentPage + 1)">></a>
-			</li>
-			<li [flexiPagerStyle]="{ button: 'last', currentPage: pager.currentPage, totalPages: pager.totalPages }">
-				<a (click)="setPage(pager.totalPages)">>|</a>
-			</li>
+		<ul *ngIf="pager && pager.selectablePages && pager.selectablePages.length > 1">
+			<app-pager-li
+				[button]="{ name: 'first', symbol: '|<', value: 1 }"
+				[currentPage]="pager.currentPage"
+				(onSetPage)="setPage($event)"
+			></app-pager-li>
+			<app-pager-li
+				[button]="{ name: 'previous', symbol: '<', value: pager.currentPage - 1 }"
+				[currentPage]="pager.currentPage"
+				(onSetPage)="setPage($event)"
+			></app-pager-li>
+			<ng-container *ngFor="let page of pager.selectablePages">
+				<app-pager-li
+					[button]="{ name: 'number', symbol: page, value: page }"
+					[page]="page"
+					[currentPage]="pager.currentPage"
+					(onSetPage)="setPage($event)"
+				></app-pager-li>
+			</ng-container>
+			<app-pager-li
+				[button]="{ name: 'next', symbol: '>', value: pager.currentPage + 1 }"
+				[currentPage]="pager.currentPage"
+				[totalPages]="pager.totalPages"
+				(onSetPage)="setPage($event)"
+			></app-pager-li>
+			<app-pager-li
+				[button]="{ name: 'last', symbol: '>|', value: pager.totalPages }"
+				[currentPage]="pager.currentPage"
+				[totalPages]="pager.totalPages"
+				(onSetPage)="setPage($event)"
+			></app-pager-li>
 		</ul>
 	`
 })
