@@ -12,6 +12,7 @@ import { ImgService } from './services/img.service';
 import { PagerService } from './services/pager.service';
 import { SortService } from './services/sort.service';
 import { TableComponent } from './components/table/table.component';
+import { PagerComponent } from './components/pager/pager.component';
 
 @NgModule({
 	imports: [CommonModule],
@@ -19,7 +20,9 @@ import { TableComponent } from './components/table/table.component';
 		FlexiTableComponent, 
 		CellFormatPipe, 
 		CellStyleDirective, 
-		PagerStyleDirective, TableComponent
+		PagerStyleDirective, 
+		TableComponent, 
+		PagerComponent
 	],
 	providers: [
 		CurrencyPipe,

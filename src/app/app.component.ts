@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Project, Person } from './fake/model';
 import { FakeService } from './fake/fake.service';
-import { ColumnConfig } from './modules/flexi-table/models/column.config.model';
+import { ColumnConfig } from './modules/flexi-table/models/column.model';
 
 @Component({
 	selector: 'app-root',
 	template: `<ngx-flexi-table
 					[records]="projects"
 					[caption]="'NASA Projects'"
-					[config]="projectConfig">
+					[config]="projectConfig"
+					[recordsPerPage]="15">
 				</ngx-flexi-table>
 				<ngx-flexi-table
 					[records]="people"

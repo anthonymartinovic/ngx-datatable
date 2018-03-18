@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild, ChangeDetectorRef, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ColumnConfig, ColumnMap } from './models/column.config.model';
+import { ColumnConfig, ColumnMap } from './models/column.model';
 import { SVG } from './assets/images';
 import { ImgService } from './services/img.service';
 import { PagerService } from './services/pager.service';
 import { SortService } from './services/sort.service';
+import { PagerComponent } from './components/pager/pager.component';
 
 @Component({
 	selector: 'ngx-flexi-table',
@@ -51,33 +52,21 @@ import { SortService } from './services/sort.service';
 						</tr>
 					</tbody>
 				</table>
-				<ul *ngIf="pager.selectablePages && pager.selectablePages.length > 1" class="pagination">
-					<li [flexiPagerStyle]="{ button: 'first', currentPage: pager.currentPage }">
-						<a (click)="setPage(1)">|<</a>
-					</li>
-					<li [flexiPagerStyle]="{ button: 'previous', currentPage: pager.currentPage }">
-						<a (click)="setPage(pager.currentPage - 1)"><</a>
-					</li>
-					<li 
-						*ngFor="let page of pager.selectablePages"
-						[flexiPagerStyle]="{ button: 'number', page: page, currentPage: pager.currentPage }"
-					>
-						<a (click)="setPage(page)">{{ page }}</a>
-					</li>
-					<li [flexiPagerStyle]="{ button: 'next', currentPage: pager.currentPage, totalPages: pager.totalPages }">
-						<a (click)="setPage(pager.currentPage + 1)">></a>
-					</li>
-					<li [flexiPagerStyle]="{ button: 'last', currentPage: pager.currentPage, totalPages: pager.totalPages }">
-						<a (click)="setPage(pager.totalPages)">>|</a>
-					</li>
-				</ul>`,
+				<app-pager
+					[records]="records"
+					[recordsPerPage]="recordsPerPage"
+					(pagedRecordsChange)="updatePagedRecords($event)"
+				></app-pager>`,
 	styleUrls: ['./ngx-flexi-table.component.scss'],
 	host: {
 		class: 'ngx-flexi-table',
 	},
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class FlexiTableComponent implements OnInit, OnChanges {
+export class FlexiTableComponent implements OnChanges, AfterViewInit {
+	@ViewChild(PagerComponent) private _pagerComponent;
+
 	@Input() caption: string;
 	@Input() routerCaption: string;
 	@Input() records: any[];
@@ -88,21 +77,26 @@ export class FlexiTableComponent implements OnInit, OnChanges {
 
 	checked: any[] = [];
 	pager: any = {};
-	pagedRecords: any[];
+	pagedRecords: {}[];
 	sortedColumn: {
 		name: any,
 		order: string
 	}
 
 	constructor(
+		private _cdr: ChangeDetectorRef,
 		private _sanitizer: DomSanitizer,
 		private _pagerService: PagerService,
 		private _sortService: SortService,
 		public imgService: ImgService
 	) {}
 
-	ngOnInit() {
-		this.setPage(1);
+	ngAfterViewInit() {
+		this._cdr.detectChanges();
+	}
+
+	updatePagedRecords(event: {}[]) {
+		this.pagedRecords = event;
 	}
 
 	ngOnChanges() {
@@ -150,17 +144,6 @@ export class FlexiTableComponent implements OnInit, OnChanges {
 			: this.checked = [];
 	}
 
-	setPage(page: number, bypassGuard: boolean = false): void {
-
-		if (!bypassGuard &&
-			(page < 1 || page > this.pager.totalPages || page === this.pager.currentPage))
-			return;
-
-		this.pager = this._pagerService.getPager(this.records.length, page, this.recordsPerPage || 10);
- 
-		this.pagedRecords = this.records.slice(this.pager.startIndex, this.pager.endIndex + 1);
-	}
-
 	setSort(column: any) {
 
 		if (this.sortedColumn && this.sortedColumn.name === column.access(this.records[0]))
@@ -178,6 +161,6 @@ export class FlexiTableComponent implements OnInit, OnChanges {
 
 		this.records = this._sortService.sortRecords(this.records, this.sortedColumn);
 
-		this.setPage(1, true);
+		this._pagerComponent.setPage(1, true);
 	}
 }

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { PagerModel } from '../models/pager.model';
 
 @Injectable()
 export class PagerService {
 	
 	constructor() {}
 
-	getPager(totalRecords: number, currentPage: number = 1, pageSize: number = 10): object {
+	getPager(totalRecords: number, currentPage: number = 1, pageSize: number = 10): PagerModel {
 		let startPage,
 			startIndex = (currentPage - 1) * pageSize,
 			endPage,
