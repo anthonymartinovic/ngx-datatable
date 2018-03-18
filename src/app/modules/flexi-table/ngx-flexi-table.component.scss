@@ -1,36 +1,41 @@
-:host(ngx-flexi-table) ::ng-deep {
-	table {
-		border: 1px solid #999;
-		border-collapse: collapse;
-		width: 100%;
-		overflow-x: auto;
+:host-context(ngx-flexi-table) ::ng-deep {
 
-		thead {
+	app-table {
+
+		table {
 			border: 1px solid #999;
-
-			tr {
-				th {
-					text-align: left;
-					padding: 8px;
+			border-collapse: collapse;
+			width: 100%;
+			overflow-x: auto;
+	
+			thead {
+				border: 1px solid #999;
+	
+				tr {
+					th {
+						text-align: left;
+						padding: 8px;
+					}
 				}
 			}
-		}
-
-		tbody {
-			tr {
-				td {
-					text-align: left;
-					padding: 8px;
+	
+			tbody {
+				tr {
+					td {
+						text-align: left;
+						padding: 8px;
+					}
 				}
-			}
-
-			tr:nth-child(even) {
-				background-color: #f2f2f2;
+	
+				tr:nth-child(even) {
+					background-color: #f2f2f2;
+				}
 			}
 		}
 	}
 
 	app-pager {
+
 		ul {
 			li {
 				list-style-type: none;

@@ -1,11 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { PagerModel } from '../../models/pager.model';
 import { PagerService } from '../../services/pager.service';
 
 @Component({
 	selector: 'app-pager',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<ul *ngIf="pager.selectablePages && pager.selectablePages.length > 1" class="pagination">
+		<ul *ngIf="pager && pager.selectablePages && pager.selectablePages.length > 1" class="pagination">
 			<li [flexiPagerStyle]="{ button: 'first', currentPage: pager.currentPage }">
 				<a (click)="setPage(1)">|<</a>
 			</li>
@@ -27,22 +28,18 @@ import { PagerService } from '../../services/pager.service';
 		</ul>
 	`
 })
-export class PagerComponent implements OnInit {
+export class PagerComponent {
 	@Input() records: any[];
 	@Input() recordsPerPage: number;
 
-	@Input() pagedRecords: any[];
-	@Output() pagedRecordsChange = new EventEmitter();
+	@Output() pagedRecordsChange = new EventEmitter<any[]>();
 
 	pager: PagerModel;
+	pagedRecords: any[];
 
 	constructor(
 		private _pagerService: PagerService
 	) {}
-
-	ngOnInit() {
-		this.setPage(1, true);
-	}
 
 	setPage(page: number, bypassGuard: boolean = false): void {
 		if (!bypassGuard &&

@@ -3,7 +3,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { SVG } from '../assets/images';
 
 @Injectable()
-
 export class ImgService {
 	
 	constructor(private _sanitizer: DomSanitizer) {}

@@ -3,7 +3,6 @@ import { Directive, ElementRef, Renderer2, Input, OnInit } from '@angular/core';
 @Directive({
 	selector: '[flexiCellStyle]',
 })
-
 export class CellStyleDirective implements OnInit {
 	@Input() flexiCellStyle: string;
 
@@ -12,8 +11,7 @@ export class CellStyleDirective implements OnInit {
 		private _renderer: Renderer2
 	) {}
 
-	ngOnInit() {
-		
+	ngOnInit() {	
 		if (this.flexiCellStyle === undefined)
 		{
 			this._renderer.setStyle(this._elementRef.nativeElement, 'color', '#dcdcdc');

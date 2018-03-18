@@ -3,7 +3,6 @@ import { Directive, Input, ElementRef, Renderer2, OnChanges } from '@angular/cor
 @Directive({
 	selector: '[flexiPagerStyle]',
 })
-
 export class PagerStyleDirective implements OnChanges {
 	@Input() flexiPagerStyle: {
 		button: string,
@@ -18,7 +17,6 @@ export class PagerStyleDirective implements OnChanges {
 	) {}
 
 	ngOnChanges() {
-		
 		if (this.flexiPagerStyle.button === 'first' || 
 			this.flexiPagerStyle.button === 'previous')
 		{

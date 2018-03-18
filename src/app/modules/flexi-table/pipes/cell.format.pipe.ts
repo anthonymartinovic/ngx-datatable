@@ -4,7 +4,6 @@ import { CurrencyPipe } from '@angular/common';
 @Pipe({
 	name: 'formatCell',
 })
-
 export class CellFormatPipe implements PipeTransform {
 
 	constructor(
@@ -12,7 +11,6 @@ export class CellFormatPipe implements PipeTransform {
 	) {}
 
 	transform(input: any, format: string): string {
-		
 		if (input === undefined) return 'N/A';
 
 		if (format === 'currency') return this._currencyPipe.transform(input, 'AUD');

@@ -13,6 +13,7 @@ import { PagerService } from './services/pager.service';
 import { SortService } from './services/sort.service';
 import { TableComponent } from './components/table/table.component';
 import { PagerComponent } from './components/pager/pager.component';
+import { PagerLiComponent } from './components/pager/pager-li/pager-li.component';
 
 @NgModule({
 	imports: [CommonModule],
@@ -22,7 +23,7 @@ import { PagerComponent } from './components/pager/pager.component';
 		CellStyleDirective, 
 		PagerStyleDirective, 
 		TableComponent, 
-		PagerComponent
+		PagerComponent, PagerLiComponent
 	],
 	providers: [
 		CurrencyPipe,
