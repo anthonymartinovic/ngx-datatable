@@ -1,5 +1,7 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+
 import { PagerModel } from '../../models/pager.model';
+
 import { PagerService } from '../../services/pager.service';
 
 @Component({
@@ -41,13 +43,13 @@ import { PagerService } from '../../services/pager.service';
 	`
 })
 export class PagerComponent {
-	@Input() records: any[];
+	@Input() records: {}[];
 	@Input() recordsPerPage: number;
 
-	@Output() pagedRecordsChange = new EventEmitter<any[]>();
+	@Output() pagedRecordsChange: EventEmitter<{}[]> = new EventEmitter();
 
 	pager: PagerModel;
-	pagedRecords: any[];
+	pagedRecords: {}[];
 
 	constructor(
 		private _pagerService: PagerService

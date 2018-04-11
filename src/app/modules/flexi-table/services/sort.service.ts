@@ -5,7 +5,7 @@ export class SortService {
 	
 	constructor() { }
 
-	static _resolveSort(a: any, b: any, order: string) {
+	static _resolveSort(a: any, b: any, order: string): number {
 		let result: any;
 
 		if (a === null || a === undefined) return 1;
@@ -28,7 +28,7 @@ export class SortService {
 		}
 	}
 
-	sortRecords(records: any, column: { name: any, order: string }): any {
+	sortRecords(records: any, column: { name: any, order: string }): {}[] {
 		return records.sort((a, b) => {
 			return SortService._resolveSort(a[column.name], b[column.name], column.order);
 		});

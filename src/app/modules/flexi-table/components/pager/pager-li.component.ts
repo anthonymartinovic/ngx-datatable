@@ -14,20 +14,22 @@ import { Component, Input, Output, EventEmitter, OnChanges, ChangeDetectionStrat
 export class PagerLiComponent implements OnChanges {
 	@Input() button: {
 		name: string,
-		symbol: string | number,
+		symbol: number | string,
 		value: number
 	};
 	@Input() page: number;
 	@Input() currentPage: number;
 	@Input() totalPages: number;
 
-	@Output() onSetPage = new EventEmitter<any>();
+	@Output() onSetPage: EventEmitter<number> = new EventEmitter();
 
-	styleParams: {} = {};
+	styleParams: {};
 
-	constructor() {}
+	constructor() {
+		this.styleParams = {};
+	}
 
-	ngOnChanges() {
+	ngOnChanges(): void {
 		this.styleParams = {
 			button: this.button.name,
 			page: this.page,
@@ -36,7 +38,7 @@ export class PagerLiComponent implements OnChanges {
 		}
 	}
 
-	initSetPage(page: number) {
+	initSetPage(page: number): void {
 		this.onSetPage.emit(page);
 	}
 }
