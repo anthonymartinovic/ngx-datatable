@@ -1,8 +1,9 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-	selector: 'app-table-head',
+	selector: 'ngx-table-head',
+	host: { 'class': 'table-head' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	template: `<app-table-row></app-table-row>`,
+	template: `<ngx-table-head-row></ngx-table-head-row>`,
 })
 export class TableHeadComponent {}

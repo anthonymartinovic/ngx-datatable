@@ -1,7 +1,8 @@
 import { Component, Input, Output, EventEmitter, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-	selector: 'app-pager-li',
+	selector: 'ngx-pager-li',
+	host: { 'class': 'pager-li' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<li [flexiPagerStyle]="styleParams">

@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-table-body-cell',
+  selector: 'ngx-table-data-cell',
+  host: { 'class': 'table-data-cell' },
   template: `
     <p>
-      table-body-cell works!
+      table-data-cell works!
     </p>
   `,
   styles: []
 })
-export class TableBodyCellComponent implements OnInit {
+export class TableDataCellComponent implements OnInit {
 
   constructor() { }
 

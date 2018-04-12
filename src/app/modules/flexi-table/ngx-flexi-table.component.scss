@@ -1,58 +1,76 @@
 :host-context(ngx-flexi-table) ::ng-deep {
 
-	caption {
+	.table-caption {
 		padding: 9px;
 		text-align: left;
 		font-weight: bold;
 	}
 
-	app-table {
+	.table {
 		display: table;
 		width: 100%;
 		border: 1px solid #999;
 		border-collapse: collapse;
 		overflow-x: auto;
 
-		app-table-head {
+		.table-head {
 			display: table-header-group;
 			border: 1px solid #999;
 
-			app-table-row {
+			.table-head-row {
 				display: table-row;
+				height: 50px;
 
-				app-table-header {
+				.table-header {
 					display: table-cell;
 					text-align: left;
 					padding: 8px;
 					font-weight: bold;
+					vertical-align: middle;
+
+					.table-header-cell {
+						
+						.header-cell-checkbox-container {
+
+							.header-cell-checkbox {
+								cursor: pointer;
+							}
+						}
+					}
 				}
 			}
 		}
 
-		.app-table-body {
+		.ngx-table-body {
 			display: table-row-group;
 
-			.app-table-row {
+			.ngx-table-row {
 				display: table-row;
+				height: 40px;
 
-				.app-table-cell {
+				.ngx-table-cell {
 					display: table-cell;
 					text-align: left;
 					padding: 8px;
+					vertical-align: middle;
+
+					svg {
+						vertical-align: middle;
+					}
 				}
 			}
 
-			.app-table-row:nth-child(even) {
+			.ngx-table-row:nth-child(even) {
 				background-color: #f2f2f2;
 			}
 		}
 	}
 
-	app-pager {
+	.pager {
 
-		ul {
+		.pager-ul {
 
-			app-pager-li {
+			.pager-li {
 				list-style-type: none;
 				display: inline-block;
 				padding-left: 5px;

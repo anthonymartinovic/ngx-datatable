@@ -5,40 +5,41 @@ import { PagerModel } from '../../models/pager.model';
 import { PagerService } from '../../services/pager.service';
 
 @Component({
-	selector: 'app-pager',
+	selector: 'ngx-pager',
+	host: { 'class': 'pager' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<ul *ngIf="pager && pager.selectablePages && pager.selectablePages.length > 1">
-			<app-pager-li
+		<ul *ngIf="pager && pager.selectablePages && pager.selectablePages.length > 1" class="pager-ul">
+			<ngx-pager-li
 				[button]="{ name: 'first', symbol: '|<', value: 1 }"
 				[currentPage]="pager.currentPage"
 				(onSetPage)="setPage($event)"
-			></app-pager-li>
-			<app-pager-li
+			></ngx-pager-li>
+			<ngx-pager-li
 				[button]="{ name: 'previous', symbol: '<', value: pager.currentPage - 1 }"
 				[currentPage]="pager.currentPage"
 				(onSetPage)="setPage($event)"
-			></app-pager-li>
+			></ngx-pager-li>
 			<ng-container *ngFor="let page of pager.selectablePages">
-				<app-pager-li
+				<ngx-pager-li
 					[button]="{ name: 'number', symbol: page, value: page }"
 					[page]="page"
 					[currentPage]="pager.currentPage"
 					(onSetPage)="setPage($event)"
-				></app-pager-li>
+				></ngx-pager-li>
 			</ng-container>
-			<app-pager-li
+			<ngx-pager-li
 				[button]="{ name: 'next', symbol: '>', value: pager.currentPage + 1 }"
 				[currentPage]="pager.currentPage"
 				[totalPages]="pager.totalPages"
 				(onSetPage)="setPage($event)"
-			></app-pager-li>
-			<app-pager-li
+			></ngx-pager-li>
+			<ngx-pager-li
 				[button]="{ name: 'last', symbol: '>|', value: pager.totalPages }"
 				[currentPage]="pager.currentPage"
 				[totalPages]="pager.totalPages"
 				(onSetPage)="setPage($event)"
-			></app-pager-li>
+			></ngx-pager-li>
 		</ul>
 	`
 })

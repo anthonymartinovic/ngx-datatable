@@ -7,7 +7,7 @@ import { FakeService } from './fake/fake.service';
 
 
 @Component({
-	selector: 'app-root',
+	selector: 'ngx-root',
 	template: `
 		<ngx-flexi-table
 			[records]="projects"

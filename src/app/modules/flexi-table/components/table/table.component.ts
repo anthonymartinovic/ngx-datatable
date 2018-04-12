@@ -7,39 +7,41 @@ import { SortService } from '../../services/sort.service';
 import { TableDataService } from './table.data.service';
 import { Subscription } from 'rxjs/Subscription';
 
+// <div class="ngx-table-body">
+// 	<div 
+// 		class="ngx-table-row"
+// 		*ngFor="let record of pagedRecords"
+// 	>
+// 		<div 
+// 			class="ngx-table-cell"
+// 			*ngFor="let col of columns"
+// 			[flexiCellStyle]="record[col.access(record)]"
+// 		>
+// 			{{ record[col.access(record)] | formatCell: col.format }}
+// 		</div>
+// 		<div
+// 			class="ngx-table-cell"
+// 			[flexiCellStyle]="'newTab'"
+// 			[innerHTML]="imgService.getSVG('newTab')"
+// 		></div>
+// 		<div 
+// 			class="ngx-table-cell"
+// 			[flexiCellStyle]="'checkbox'">
+// 			<input 
+// 				type="checkbox" 
+// 				[checked]="isChecked(record)" 
+// 				(change)="update(record)"
+// 		></div>
+// 	</div>
+// </div>
+
 @Component({
-	selector: 'app-table',
-	changeDetection: ChangeDetectionStrategy.OnPush,
+	selector: 'ngx-table',
+	host: { 'class': 'table' },
 	template: `
-		<caption *ngIf="caption">{{ caption }}</caption>
-		<app-table-head></app-table-head>
-		<div class="app-table-body">
-			<div 
-				class="app-table-row"
-				*ngFor="let record of pagedRecords">
-				<div 
-					class="app-table-cell"
-					*ngFor="let col of columns"
-					[flexiCellStyle]="record[col.access(record)]"
-				>
-					{{ record[col.access(record)] | formatCell: col.format }}
-				</div>
-				<div 
-					class="app-table-cell"
-					class="flexi-new-tab-container"
-					[flexiCellStyle]="'newTab'"
-					[innerHTML]="imgService.getSVG('newTab')"
-				></div>
-				<div 
-					class="app-table-cell"
-					[flexiCellStyle]="'checkbox'">
-					<input 
-						type="checkbox" 
-						[checked]="isChecked(record)" 
-						(change)="update(record)"
-				></div>
-			</div>
-		</div>
+		<caption *ngIf="caption" class="table-caption">{{ caption }}</caption>
+		<ngx-table-head></ngx-table-head>
+		<ngx-table-body>/ngx-table-body>
 	`
 })
 export class TableComponent implements OnInit, OnChanges, OnDestroy {
@@ -47,10 +49,9 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
 	checkedRecordsSub: Subscription;
 
 	@Input() caption: string;
-	@Input() routerCaption: string;
+	@Input() newTabCaption: string;
 	@Input() config: ColumnConfig[];
 	@Input() records: {}[];
-	@Input() pagedRecords: {}[];
 
 	@Output() afterSetSort = new EventEmitter();
 
@@ -71,7 +72,6 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
 
 	ngOnInit() {
 		this._tableData.publishRecords(this.records);
-		this._tableData.publishRouterCaption(this.routerCaption);
 		this._tableData.publishCheckedRecords(this.checkedRecords);
 
 		this.recordsSubscription = this._tableData.records$.subscribe(records => this.records = records);
@@ -79,6 +79,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	ngOnChanges() {
+		console.log('yes');
 		if (this.config) 
 		{
 			this.columns = this.config.map( 
@@ -101,6 +102,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
 
 	ngOnDestroy() {
 		this.recordsSubscription.unsubscribe();
+		this.checkedRecordsSub.unsubscribe();
 	}
 
 	isChecked(record): boolean {

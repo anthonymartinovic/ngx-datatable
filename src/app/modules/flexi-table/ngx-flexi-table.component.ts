@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ChangeDetectorRef, AfterViewInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ChangeDetectorRef, AfterViewInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 
 import { ColumnConfig } from './models/column.model';
 
@@ -8,32 +8,30 @@ import { Subscription } from 'rxjs/Subscription';
 
 @Component({
 	selector: 'ngx-flexi-table',
+	host: { 'class': 'ngx-flexi-table' },
 	providers: [TableDataService],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrls: ['./ngx-flexi-table.component.scss'],
 	template: `
-		<app-table
+		<ngx-table
 			[caption]="caption"
-			[routerCaption]="routerCaption"
 			[config]="config"
 			[records]="records"
-			[pagedRecords]="pagedRecords"
-			(afterSetSort)="initSetPage()"
-		></app-table>
-		<app-pager
+		></ngx-table>
+		<ngx-pager
 			[records]="records"
 			[recordsPerPage]="recordsPerPage"
 			(pagedRecordsChange)="updatePagedRecords($event)"
-		></app-pager>
+		></ngx-pager>
 	`
 })
-export class FlexiTableComponent implements AfterViewInit, OnDestroy {
+export class FlexiTableComponent implements OnInit, AfterViewInit, OnDestroy {
 	initSetPageSubscription: Subscription;
 
 	@ViewChild(PagerComponent) private _pagerComponent: PagerComponent;
 
 	@Input() caption: string;
-	@Input() routerCaption: string;
+	@Input() newTabCaption: string;
 	@Input() config: ColumnConfig[];
 	@Input() records: {}[];
 	@Input() recordsPerPage: number;
@@ -42,9 +40,13 @@ export class FlexiTableComponent implements AfterViewInit, OnDestroy {
 
 	constructor(
 		private _cdr: ChangeDetectorRef,
-		private _data: TableDataService
+		private _tableData: TableDataService
 	) {
-		this.initSetPageSubscription = this._data.initSetPageSubject$.subscribe(() => this.initSetPage());
+		this.initSetPageSubscription = this._tableData.initSetPageSubject$.subscribe(() => this.initSetPage());
+	}
+
+	ngOnInit() {
+		this._tableData.publishNewTabCaption(this.newTabCaption);
 	}
 
 	ngAfterViewInit(): void {
@@ -60,7 +62,8 @@ export class FlexiTableComponent implements AfterViewInit, OnDestroy {
 		this._pagerComponent.setPage(1, true);
 	}
 
-	updatePagedRecords(event: {}[]): void {
-		this.pagedRecords = event;
+	updatePagedRecords(newPagedRecords: {}[]): void {
+		this.pagedRecords = newPagedRecords;
+		this._tableData.publishPagedRecords(this.pagedRecords);
 	}
 }
