@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-table-cell',
+  selector: 'app-table-body-cell',
   template: `
     <p>
-      table-data works!
+      table-body-cell works!
     </p>
   `,
   styles: []
 })
-export class TableCellComponent implements OnInit {
+export class TableBodyCellComponent implements OnInit {
 
   constructor() { }
 

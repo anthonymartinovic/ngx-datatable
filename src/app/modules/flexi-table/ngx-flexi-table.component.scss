@@ -7,47 +7,43 @@
 	}
 
 	app-table {
+		display: table;
+		width: 100%;
+		border: 1px solid #999;
+		border-collapse: collapse;
+		overflow-x: auto;
 
-		.table {
-			display: table;
-			width: 100%;
+		app-table-head {
+			display: table-header-group;
 			border: 1px solid #999;
-			border-collapse: collapse;
-			overflow-x: auto;
 
-			app-table-head div {
-				display: table-header-group;
-				border: 1px solid #999;
-	
-				app-table-row div {
-					display: table-row;
+			app-table-row {
+				display: table-row;
 
-					app-table-header div {
-						display: table-cell;
-						text-align: left;
-						padding: 8px;
-						font-weight: bold;
-					}
+				app-table-header {
+					display: table-cell;
+					text-align: left;
+					padding: 8px;
+					font-weight: bold;
 				}
 			}
-	
-	
-			.app-table-body {
-				display: table-row-group;
+		}
 
-				.app-table-row {
-					display: table-row;
+		.app-table-body {
+			display: table-row-group;
 
-					.app-table-cell {
-						display: table-cell;
-						text-align: left;
-						padding: 8px;
-					}
+			.app-table-row {
+				display: table-row;
+
+				.app-table-cell {
+					display: table-cell;
+					text-align: left;
+					padding: 8px;
 				}
-	
-				.app-table-row:nth-child(even) {
-					background-color: #f2f2f2;
-				}
+			}
+
+			.app-table-row:nth-child(even) {
+				background-color: #f2f2f2;
 			}
 		}
 	}

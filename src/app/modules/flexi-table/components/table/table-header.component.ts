@@ -19,7 +19,7 @@ import { ColumnMap } from '../../models/column.model';
 				<input
 					type="checkbox"
 					[checked]="isAllChecked()" 
-					(change)="updateAll()">
+					(change)="updateAll()"
 				>
 			</div>
 		</ng-container>
@@ -29,8 +29,6 @@ import { ColumnMap } from '../../models/column.model';
 	`,
 })
 export class TableHeaderComponent implements OnInit, OnDestroy {
-	@ViewChild(FlexiTableComponent) private _ftc: FlexiTableComponent;
-
 	recordsSub: Subscription;
 	checkedRecordsSub: Subscription;
 	sortedColumnSub: Subscription;
