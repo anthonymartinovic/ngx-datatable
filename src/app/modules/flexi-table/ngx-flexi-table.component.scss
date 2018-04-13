@@ -21,20 +21,17 @@
 				display: table-row;
 				height: 50px;
 
-				.table-header {
+				.table-head-cell {
 					display: table-cell;
 					text-align: left;
 					padding: 8px;
 					font-weight: bold;
 					vertical-align: middle;
-
-					.table-header-cell {
 						
-						.header-cell-checkbox-container {
+					.header-cell-checkbox-container {
 
-							.header-cell-checkbox {
-								cursor: pointer;
-							}
+						.header-cell-checkbox {
+							cursor: pointer;
 						}
 					}
 				}

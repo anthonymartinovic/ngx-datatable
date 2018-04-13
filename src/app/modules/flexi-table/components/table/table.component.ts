@@ -38,6 +38,7 @@ import { Subscription } from 'rxjs/Subscription';
 @Component({
 	selector: 'ngx-table',
 	host: { 'class': 'table' },
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<caption *ngIf="caption" class="table-caption">{{ caption }}</caption>
 		<ngx-table-head></ngx-table-head>

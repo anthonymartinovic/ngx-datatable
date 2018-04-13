@@ -10,19 +10,19 @@ import { Subscription } from 'rxjs/Subscription';
 	template: `
 		<ng-container *ngIf="columns">
 			<ng-container *ngFor="let col of columns">
-				<ngx-table-header
+				<ngx-table-head-cell
 					[headerType]="'standard'"
 					[column]="col"
 					[value]="col.header"
-				></ngx-table-header>
+				></ngx-table-head-cell>
 			</ng-container>
-			<ngx-table-header
+			<ngx-table-head-cell
 				[headerType]="'newTab'"
 				[value]="newTabCaption"
-			></ngx-table-header>
-			<ngx-table-header
+			></ngx-table-head-cell>
+			<ngx-table-head-cell
 				[headerType]="'checkbox'"
-			></ngx-table-header>
+			></ngx-table-head-cell>
 		</ng-container>
 	`
 })

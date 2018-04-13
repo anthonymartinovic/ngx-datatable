@@ -7,7 +7,7 @@ import { PagerLiComponent } from './components/pager/pager-li.component';
 import { TableComponent } from './components/table/table.component';
 import { TableHeadComponent } from './components/table/head/table-head.component';
 import { TableBodyComponent } from './components/table/body/table-body.component';
-import { TableHeaderComponent } from './components/table/head/table-header.component';
+import { TableHeadCellComponent } from './components/table/head/table-head-cell.component';
 import { TableHeadRowComponent } from './components/table/head/table-head-row.component';
 
 import { CellStyleDirective } from './directives/cell.style.directive';
@@ -19,7 +19,6 @@ import { ImgService } from './services/img.service';
 import { PagerService } from './services/pager.service';
 import { SortService } from './services/sort.service';
 import { TableDataService } from './components/table/table.data.service';
-import { TableHeaderCellComponent } from './components/table/head/table-header-cell.component';
 import { TableDataCellComponent } from './components/table/body/table-data-cell.component';
 import { TableBodyRowComponent } from './components/table/body/table-body-row.component';
 import { TableDataComponent } from './components/table/body/table-data.component';
@@ -33,13 +32,13 @@ import { TableDataComponent } from './components/table/body/table-data.component
 		TableComponent, 
 		TableHeadComponent, 
 		TableBodyComponent, 
-		TableHeaderComponent,
+		TableHeadCellComponent,
 		TableHeadRowComponent,
 
 		CellFormatPipe, 
 
 		CellStyleDirective, 
-		PagerStyleDirective, TableHeaderCellComponent, TableDataCellComponent, TableBodyRowComponent, TableDataComponent
+		PagerStyleDirective, TableDataCellComponent, TableBodyRowComponent, TableDataComponent
 	],
 	providers: [
 		CurrencyPipe,

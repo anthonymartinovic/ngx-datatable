@@ -15,7 +15,7 @@ import { ColumnMap } from '../../../models/column.model';
 				></ngx-table-data>
 			</ng-container>
 			<ngx-table-data [dataType]="'newTab'"></ngx-table-data>
-			<ngx-table-data [dataType]="'checkbox'"></ngx-table-data>
+			<ngx-table-data [dataType]="'checkbox'" [value]="record"></ngx-table-data>
 		</ng-container>
 	`
 })
