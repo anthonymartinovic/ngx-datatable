@@ -38,14 +38,14 @@
 			}
 		}
 
-		.ngx-table-body {
+		.table-body {
 			display: table-row-group;
 
-			.ngx-table-row {
+			.table-body-row {
 				display: table-row;
 				height: 40px;
 
-				.ngx-table-cell {
+				.table-body-cell {
 					display: table-cell;
 					text-align: left;
 					padding: 8px;
@@ -57,7 +57,7 @@
 				}
 			}
 
-			.ngx-table-row:nth-child(even) {
+			.table-body-row:nth-child(even) {
 				background-color: #f2f2f2;
 			}
 		}

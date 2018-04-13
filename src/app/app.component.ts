@@ -13,6 +13,7 @@ import { FakeService } from './fake/fake.service';
 			[records]="projects"
 			[caption]="'NASA Projects'"
 			[config]="projectConfig"
+			[newTabCaption]="'test'"
 			[recordsPerPage]="10">
 		</ngx-flexi-table>
 		<ngx-flexi-table

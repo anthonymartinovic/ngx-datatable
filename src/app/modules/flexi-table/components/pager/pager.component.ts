@@ -1,8 +1,10 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 
 import { PagerModel } from '../../models/pager.model';
 
 import { PagerService } from '../../services/pager.service';
+import { TableDataService } from '../table/table.data.service';
 
 @Component({
 	selector: 'ngx-pager',
@@ -43,7 +45,7 @@ import { PagerService } from '../../services/pager.service';
 		</ul>
 	`
 })
-export class PagerComponent {
+export class PagerComponent implements OnInit {
 	@Input() records: {}[];
 	@Input() recordsPerPage: number;
 
@@ -53,8 +55,11 @@ export class PagerComponent {
 	pagedRecords: {}[];
 
 	constructor(
+		public tableData: TableDataService,
 		private _pagerService: PagerService
 	) {}
+
+	ngOnInit(): void {}
 
 	setPage(page: number, bypassGuard: boolean = false): void {
 		if (!bypassGuard &&

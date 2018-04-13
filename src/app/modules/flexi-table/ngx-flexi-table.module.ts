@@ -19,9 +19,8 @@ import { ImgService } from './services/img.service';
 import { PagerService } from './services/pager.service';
 import { SortService } from './services/sort.service';
 import { TableDataService } from './components/table/table.data.service';
-import { TableDataCellComponent } from './components/table/body/table-data-cell.component';
+import { TableBodyCellComponent } from './components/table/body/table-body-cell.component';
 import { TableBodyRowComponent } from './components/table/body/table-body-row.component';
-import { TableDataComponent } from './components/table/body/table-data.component';
 
 @NgModule({
 	imports: [CommonModule],
@@ -38,7 +37,7 @@ import { TableDataComponent } from './components/table/body/table-data.component
 		CellFormatPipe, 
 
 		CellStyleDirective, 
-		PagerStyleDirective, TableDataCellComponent, TableBodyRowComponent, TableDataComponent
+		PagerStyleDirective, TableBodyCellComponent, TableBodyRowComponent
 	],
 	providers: [
 		CurrencyPipe,

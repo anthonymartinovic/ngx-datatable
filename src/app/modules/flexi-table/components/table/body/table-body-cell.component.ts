@@ -1,11 +1,15 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ColumnMap } from '../../../models/column.model';
-import { ImgService } from '../../../services/img.service';
-import { TableDataService } from '../table.data.service';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
+import { ColumnMap } from '../../../models/column.model';
+
+import { ImgService } from '../../../services/img.service';
+import { TableDataService } from '../table.data.service';
+
 @Component({
-	selector: 'ngx-table-data',
+	selector: 'ngx-table-body-cell',
+	host: { 'class': 'table-body-cell' },
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<ng-container *ngIf="dataType === 'standard'">
 			<div class="ngx-table-cell" [flexiCellStyle]="value[column.access(value)]">
@@ -33,25 +37,37 @@ import { Subscription } from 'rxjs/Subscription';
 		</ng-container>
 	`
 })
-export class TableDataComponent implements OnInit {
-	recordsSubscription: Subscription;
+export class TableBodyCellComponent implements OnInit, OnDestroy {
+	recordsSub: Subscription;
 	checkedRecordsSub: Subscription;
+
+	records: {}[];
+	checkedRecords: {}[];
 
 	@Input() dataType: string;
 	@Input() value: {};
 	@Input() column: ColumnMap;
 
-	records: {}[];
-	checkedRecords: {}[];
-
 	constructor(
-		private _tableData: TableDataService,
-		public imgService: ImgService
+		private _cdr: ChangeDetectorRef,
+		public imgService: ImgService,
+		public tableData: TableDataService
 	) {}
 
-	ngOnInit() {
-		this.recordsSubscription = this._tableData.records$.subscribe(records => this.records = records);
-		this.checkedRecordsSub   = this._tableData.checkedRecords$.subscribe(checkedRecords => this.checkedRecords = checkedRecords);
+	ngOnInit(): void {
+		this.recordsSub = this.tableData.records$.subscribe(records => {
+			this.records = records;
+			this._cdr.markForCheck();
+		});
+		this.checkedRecordsSub = this.tableData.checkedRecords$.subscribe(checkedRecords => { 
+			this.checkedRecords = checkedRecords;
+			this._cdr.markForCheck();
+		});
+	}
+
+	ngOnDestroy(): void {
+		this.recordsSub.unsubscribe();
+		this.checkedRecordsSub.unsubscribe();
 	}
 
 	isChecked(record): boolean {
@@ -67,7 +83,7 @@ export class TableDataComponent implements OnInit {
 			? this.checkedRecords.splice(index, 1)
 			: this.checkedRecords.push(record);
 
-		this._tableData.publishCheckedRecords(this.checkedRecords);
-		this._tableData.runIsAllChecked();
+		this.tableData.publishCheckedRecords(this.checkedRecords);
+		this.tableData.runIsAllChecked();
 	}
 }

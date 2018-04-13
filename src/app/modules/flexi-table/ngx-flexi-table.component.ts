@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, ViewChild, ChangeDetectorRef, AfterViewInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnChanges, OnInit, AfterViewInit, OnDestroy, Input, ViewChild, ChangeDetectorRef } from '@angular/core';
 
-import { ColumnConfig } from './models/column.model';
+import { ColumnConfig, ColumnMap } from './models/column.model';
 
 import { PagerComponent } from './components/pager/pager.component';
 import { TableDataService } from './components/table/table.data.service';
@@ -10,14 +10,9 @@ import { Subscription } from 'rxjs/Subscription';
 	selector: 'ngx-flexi-table',
 	host: { 'class': 'ngx-flexi-table' },
 	providers: [TableDataService],
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrls: ['./ngx-flexi-table.component.scss'],
 	template: `
-		<ngx-table
-			[caption]="caption"
-			[config]="config"
-			[records]="records"
-		></ngx-table>
+		<ngx-table [caption]="caption"></ngx-table>
 		<ngx-pager
 			[records]="records"
 			[recordsPerPage]="recordsPerPage"
@@ -25,8 +20,10 @@ import { Subscription } from 'rxjs/Subscription';
 		></ngx-pager>
 	`
 })
-export class FlexiTableComponent implements OnInit, AfterViewInit, OnDestroy {
-	initSetPageSubscription: Subscription;
+export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
+	recordsSub: Subscription;
+	checkedRecordsSub: Subscription;
+	initSetPageSub: Subscription;
 
 	@ViewChild(PagerComponent) private _pagerComponent: PagerComponent;
 
@@ -36,26 +33,43 @@ export class FlexiTableComponent implements OnInit, AfterViewInit, OnDestroy {
 	@Input() records: {}[];
 	@Input() recordsPerPage: number;
 
+	checkedRecords: {}[];
 	pagedRecords: {}[];
+	columns: ColumnMap[];
 
 	constructor(
-		private _cdr: ChangeDetectorRef,
-		private _tableData: TableDataService
+		public tableData: TableDataService,
+		private _cdr: ChangeDetectorRef
 	) {
-		this.initSetPageSubscription = this._tableData.initSetPageSubject$.subscribe(() => this.initSetPage());
+		this.recordsSub          = this.tableData.records$.subscribe(records => this.records = records);
+		this.checkedRecordsSub   = this.tableData.checkedRecords$.subscribe(checkedRecords => this.checkedRecords = checkedRecords);
+		this.initSetPageSub      = this.tableData.initSetPageSubject$.subscribe(() => this.initSetPage());
+	}
+
+	ngOnChanges() {
+		(this.config) 
+			? this.columns = this.config.map(col => new ColumnMap(col))
+			: this.columns = Object.keys(this.records[0]).map(key => new ColumnMap({ primeKey: key }));
+
+		this.tableData.publishColumns(this.columns);
 	}
 
 	ngOnInit() {
-		this._tableData.publishNewTabCaption(this.newTabCaption);
+		this.tableData.publishRecords(this.records);
+		this.tableData.publishCheckedRecords([]);
+		this.tableData.publishNewTabCaption(this.newTabCaption);
 	}
 
 	ngAfterViewInit(): void {
 		this.initSetPage();
+		this.tableData.publishLoading(false);
 		this._cdr.detectChanges();
 	}
 
 	ngOnDestroy() {
-		this.initSetPageSubscription.unsubscribe();
+		this.recordsSub.unsubscribe();
+		this.checkedRecordsSub.unsubscribe();
+		this.initSetPageSub.unsubscribe();
 	}
 
 	initSetPage(): void {
@@ -64,6 +78,6 @@ export class FlexiTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	updatePagedRecords(newPagedRecords: {}[]): void {
 		this.pagedRecords = newPagedRecords;
-		this._tableData.publishPagedRecords(this.pagedRecords);
+		this.tableData.publishPagedRecords(this.pagedRecords);
 	}
 }

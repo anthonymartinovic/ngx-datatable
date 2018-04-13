@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, OnDestroy, ChangeDetectionStrategy, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { TableDataService } from '../table.data.service';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { SortService } from '../../../services/sort.service';
-import { FlexiTableComponent } from '../../../ngx-flexi-table.component';
+
 import { ColumnMap } from '../../../models/column.model';
+
+import { TableDataService } from '../table.data.service';
+import { SortService } from '../../../services/sort.service';
 
 @Component({
 	selector: 'ngx-table-head-cell',
@@ -24,7 +25,7 @@ import { ColumnMap } from '../../../models/column.model';
 			</div>
 		</ng-container>
 		<ng-container *ngIf="headerType === 'newTab'">
-			<div class="head-cell-text">{{value}}</div>
+			<div class="head-cell-text" [flexiCellStyle]="'newTab'">{{value}}</div>
 		</ng-container>
 	`,
 })
@@ -47,16 +48,16 @@ export class TableHeadCellComponent implements OnInit, OnDestroy {
 	wasAllChecked: boolean = false;
 
 	constructor(
+		public tableData: TableDataService,
 		private _cdr: ChangeDetectorRef,
-		private _tableData: TableDataService,
 		private _sortService: SortService
 	) {}
 
 	ngOnInit(): void {
-		this.recordsSub        = this._tableData.records$.subscribe(records => this.records = records);
-		this.checkedRecordsSub = this._tableData.checkedRecords$.subscribe(checkedRecords => this.checkedRecords = checkedRecords);
-		this.sortedColumnSub   = this._tableData.sortedColumn$.subscribe(sortedColumn => this.sortedColumn = sortedColumn);
-		this.isAllCheckedSub   = this._tableData.isAllCheckedSubject$.subscribe(() => this.isAllChecked());
+		this.recordsSub        = this.tableData.records$.subscribe(records => this.records = records);
+		this.checkedRecordsSub = this.tableData.checkedRecords$.subscribe(checkedRecords => this.checkedRecords = checkedRecords);
+		this.sortedColumnSub   = this.tableData.sortedColumn$.subscribe(sortedColumn => this.sortedColumn = sortedColumn);
+		this.isAllCheckedSub   = this.tableData.isAllCheckedSubject$.subscribe(() => this.isAllChecked());
 	}
 
 	ngOnDestroy(): void {
@@ -67,10 +68,13 @@ export class TableHeadCellComponent implements OnInit, OnDestroy {
 	}
 
 	isAllChecked(): boolean {
-		if ((this.records && this.checkedRecords) && (this.checkedRecords.length === this.records.length)) {
+		if ((this.records && this.checkedRecords) && (this.checkedRecords.length === this.records.length))
+		{
 			if (!this.wasAllChecked) (this.wasAllChecked = true, this._cdr.markForCheck());
 			return true;
-		} else {
+		} 
+		else
+		{
 			if (this.wasAllChecked) (this.wasAllChecked = false, this._cdr.markForCheck());
 			return false;
 		}
@@ -81,7 +85,7 @@ export class TableHeadCellComponent implements OnInit, OnDestroy {
 			? this.checkedRecords = this.records.slice()
 			: this.checkedRecords = [];
 		
-		this._tableData.publishCheckedRecords(this.checkedRecords);
+		this.tableData.publishCheckedRecords(this.checkedRecords);
 	}
 
 	setSort(column: any): void {
@@ -100,8 +104,8 @@ export class TableHeadCellComponent implements OnInit, OnDestroy {
 
 		this.records = this._sortService.sortRecords(this.records, this.sortedColumn);
 
-		this._tableData.publishRecords(this.records);
-		this._tableData.publishSortedColumn(this.sortedColumn);
-		this._tableData.runInitSetPage();
+		this.tableData.publishRecords(this.records);
+		this.tableData.publishSortedColumn(this.sortedColumn);
+		this.tableData.runInitSetPage();
 	}
 }
