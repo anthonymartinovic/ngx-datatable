@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { PagerModel } from '../../models/pager.model';
 
 import { PagerService } from '../../services/pager.service';
-import { TableDataService } from '../table/table.data.service';
 
 @Component({
 	selector: 'ngx-pager',
@@ -54,10 +53,7 @@ export class PagerComponent implements OnInit {
 	pager: PagerModel;
 	pagedRecords: {}[];
 
-	constructor(
-		public tableData: TableDataService,
-		private _pagerService: PagerService
-	) {}
+	constructor(private _pagerService: PagerService) {}
 
 	ngOnInit(): void {}
 

@@ -12,12 +12,18 @@ import { Subscription } from 'rxjs/Subscription';
 	providers: [TableDataService],
 	styleUrls: ['./ngx-flexi-table.component.scss'],
 	template: `
-		<ngx-table [caption]="caption"></ngx-table>
-		<ngx-pager
-			[records]="records"
-			[recordsPerPage]="recordsPerPage"
-			(pagedRecordsChange)="updatePagedRecords($event)"
-		></ngx-pager>
+		<div class="flexi-table-header">
+			<caption *ngIf="caption" class="flexi-table-caption">{{ caption }}</caption>
+			<ngx-filter></ngx-filter>
+		</div>
+		<ngx-table></ngx-table>
+		<div class="flexi-table-footer">
+			<ngx-pager
+				[records]="records"
+				[recordsPerPage]="recordsPerPage"
+				(pagedRecordsChange)="updatePagedRecords($event)"
+			></ngx-pager>
+		</div>
 	`
 })
 export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
@@ -74,6 +80,10 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 
 	initSetPage(): void {
 		this._pagerComponent.setPage(1, true);
+	}
+
+	updateRecords(records: {}[]): void {
+		this.tableData.publishCheckedRecords
 	}
 
 	updatePagedRecords(newPagedRecords: {}[]): void {

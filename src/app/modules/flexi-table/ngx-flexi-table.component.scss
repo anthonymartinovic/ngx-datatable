@@ -1,9 +1,28 @@
+@import url('https://fonts.googleapis.com/css?family=Rubik:300,400,500,700');
+
 :host-context(ngx-flexi-table) ::ng-deep {
 
-	.table-caption {
-		padding: 9px;
-		text-align: left;
-		font-weight: bold;
+	* {
+		font-family: 'Rubik', sans-serif;
+	}
+
+	.flexi-table-header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		border: 1px solid #999;
+		border-bottom: unset;
+
+		.flexi-table-caption {
+			padding: 8px;
+			text-align: left;
+			font-weight: bold;
+		}
+
+		.filter {
+			padding: 8px;
+		}
 	}
 
 	.table {
@@ -19,7 +38,7 @@
 
 			.table-head-row {
 				display: table-row;
-				height: 50px;
+				height: 60px;
 
 				.table-head-cell {
 					display: table-cell;
@@ -43,7 +62,7 @@
 
 			.table-body-row {
 				display: table-row;
-				height: 40px;
+				height: 50px;
 
 				.table-body-cell {
 					display: table-cell;
@@ -63,16 +82,22 @@
 		}
 	}
 
-	.pager {
+	.flexi-table-footer {
+		border: 1px solid #999;
+		border-top: unset;
 
-		.pager-ul {
-
-			.pager-li {
-				list-style-type: none;
-				display: inline-block;
-				padding-left: 5px;
-				padding-right: 5px;
+		.pager {
+	
+			.pager-ul {
+	
+				.pager-li {
+					list-style-type: none;
+					display: inline-block;
+					padding-left: 5px;
+					padding-right: 5px;
+				}
 			}
 		}
 	}
+
 }

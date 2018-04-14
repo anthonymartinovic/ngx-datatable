@@ -21,6 +21,7 @@ import { SortService } from './services/sort.service';
 import { TableDataService } from './components/table/table.data.service';
 import { TableBodyCellComponent } from './components/table/body/table-body-cell.component';
 import { TableBodyRowComponent } from './components/table/body/table-body-row.component';
+import { FilterComponent } from './components/filter/filter.component';
 
 @NgModule({
 	imports: [CommonModule],
@@ -37,7 +38,7 @@ import { TableBodyRowComponent } from './components/table/body/table-body-row.co
 		CellFormatPipe, 
 
 		CellStyleDirective, 
-		PagerStyleDirective, TableBodyCellComponent, TableBodyRowComponent
+		PagerStyleDirective, TableBodyCellComponent, TableBodyRowComponent, FilterComponent
 	],
 	providers: [
 		CurrencyPipe,
