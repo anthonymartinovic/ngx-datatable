@@ -22,6 +22,13 @@
 
 		.filter {
 			padding: 8px;
+
+			.search-container {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+				align-items: center;
+			}
 		}
 	}
 
@@ -87,6 +94,7 @@
 		border-top: unset;
 
 		.pager {
+			font-weight: 700;
 	
 			.pager-ul {
 	

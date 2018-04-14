@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnChanges, OnInit, OnDestroy, Input, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { ColumnMap } from '../../../models/column.model';
@@ -21,7 +21,7 @@ import { SortService } from '../../../services/sort.service';
 					class="header-cell-checkbox"
 					[checked]="isAllChecked()" 
 					(change)="updateAll()"
-				>
+				/>
 			</div>
 		</ng-container>
 		<ng-container *ngIf="headerType === 'newTab'">
@@ -29,7 +29,7 @@ import { SortService } from '../../../services/sort.service';
 		</ng-container>
 	`,
 })
-export class TableHeadCellComponent implements OnInit, OnDestroy {
+export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	recordsSub: Subscription;
 	checkedRecordsSub: Subscription;
 	sortedColumnSub: Subscription;
@@ -52,6 +52,10 @@ export class TableHeadCellComponent implements OnInit, OnDestroy {
 		private _cdr: ChangeDetectorRef,
 		private _sortService: SortService
 	) {}
+
+	ngOnChanges(): void {
+		this.tableData.runIsAllChecked();
+	}
 
 	ngOnInit(): void {
 		this.recordsSub        = this.tableData.records$.subscribe(records => this.records = records);

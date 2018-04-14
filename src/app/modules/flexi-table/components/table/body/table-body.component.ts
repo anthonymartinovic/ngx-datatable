@@ -7,7 +7,10 @@ import { TableDataService } from '../table.data.service';
 	host: { 'class': 'table-body' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<ngx-table-body-row *ngFor="let record of tableData.pagedRecords$ | async" [record]="record"></ngx-table-body-row>
+		<ngx-table-body-row 
+			*ngFor="let record of tableData.pagedRecords$ | async" 
+			[record]="record"
+		></ngx-table-body-row>
 	`
 })
 export class TableBodyComponent {

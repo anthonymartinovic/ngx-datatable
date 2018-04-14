@@ -3,6 +3,7 @@ import { CurrencyPipe } from '@angular/common';
 
 @Pipe({
 	name: 'formatCell',
+	pure: false
 })
 export class CellFormatPipe implements PipeTransform {
 

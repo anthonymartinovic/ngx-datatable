@@ -1,24 +1,29 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { ImgService } from '../../services/img.service';
 
 @Component({
 	selector: 'ngx-filter',
 	host: { class: 'filter' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<input
-			type='text'
-			placeholder='Type to filter the name column...'
-			(keyup)='updateFilter($event)'
-  		/>
+		<div class="search-container">
+			<div class="search-icon" [innerHTML]="imgService.getSVG('search')"></div>
+			<input
+				type='text'
+				placeholder='Search...'
+				class="search-input"
+				(keyup)='setFilter($event)'
+			/>
+		</div>
 	`,
 })
 export class FilterComponent implements OnInit {
 
-	constructor() {}
+	constructor(public imgService: ImgService) {}
 
 	ngOnInit() {}
 
-	updateFilter(filter: string): void {
+	setFilter(filter: string): void {
 
 	}
 }

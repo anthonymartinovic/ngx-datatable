@@ -14,7 +14,7 @@ import { FakeService } from './fake/fake.service';
 			[caption]="'NASA Projects'"
 			[config]="projectConfig"
 			[newTabCaption]="'Route'"
-			[recordsPerPage]="10">
+			[recordsPerPage]="recordsPerPage">
 		</ngx-flexi-table>
 		<ngx-flexi-table
 			[records]="people"
@@ -37,19 +37,10 @@ export class AppComponent implements OnInit {
 		{
 			primeKey: 'name',
 			header: 'Name',
-		},
-		{
-			primeKey: 'first_launch',
-			altKeys: ['launch', 'first_flight'],
-			header: 'First launch',
-		},
-		{
-			primeKey: 'cost',
-			altKeys: ['total_cost'],
-			header: 'Cost',
-			format: 'currency',
-		},
+		}
 	];
+
+	recordsPerPage: number = 5;
 
 	constructor(
 		private _fakeService: FakeService
@@ -58,5 +49,126 @@ export class AppComponent implements OnInit {
 	ngOnInit() {
 		this.projects = this._fakeService.getProjects();
 		this.people = this._fakeService.getPersonnel();
+		this.projects = [
+			{
+				id: 1,
+				name: 'Mercury',
+				cost: 277000000,
+				first_flight: 'September 9, 1959',
+				status: 'Complete',
+			},
+			{
+				id: 2,
+				name: 'Gemini',
+				cost: 1300000000,
+				first_flight: 'April 8, 1964',
+				status: 'Complete',
+			},
+			{
+				id: 1,
+				name: 'Mercury',
+				cost: 277000000,
+				first_flight: 'September 9, 1959',
+				status: 'Complete',
+			},
+			{
+				id: 2,
+				name: 'Gemini',
+				cost: 1300000000,
+				first_flight: 'April 8, 1964',
+				status: 'Complete',
+			},
+			{
+				id: 1,
+				name: 'Mercury',
+				cost: 277000000,
+				first_flight: 'September 9, 1959',
+				status: 'Complete',
+			},
+			{
+				id: 2,
+				name: 'Gemini',
+				cost: 1300000000,
+				first_flight: 'April 8, 1964',
+				status: 'Complete',
+			},
+			{
+				id: 1,
+				name: 'Mercury',
+				cost: 277000000,
+				first_flight: 'September 9, 1959',
+				status: 'Complete',
+			},
+			{
+				id: 2,
+				name: 'Gemini',
+				cost: 1300000000,
+				first_flight: 'April 8, 1964',
+				status: 'Complete',
+			},
+			{
+				id: 1,
+				name: 'Mercury',
+				cost: 277000000,
+				first_flight: 'September 9, 1959',
+				status: 'Complete',
+			},
+			{
+				id: 2,
+				name: 'Gemini',
+				cost: 1300000000,
+				first_flight: 'April 8, 1964',
+				status: 'Complete',
+			},
+			{
+				id: 1,
+				name: 'Mercury',
+				cost: 277000000,
+				first_flight: 'September 9, 1959',
+				status: 'Complete',
+			},
+			{
+				id: 2,
+				name: 'Gemini',
+				cost: 1300000000,
+				first_flight: 'April 8, 1964',
+				status: 'Complete',
+			},
+			{
+				id: 1,
+				name: 'Mercury',
+				cost: 277000000,
+				first_flight: 'September 9, 1959',
+				status: 'Complete',
+			},
+			{
+				id: 2,
+				name: 'Gemini',
+				cost: 1300000000,
+				first_flight: 'April 8, 1964',
+				status: 'Complete',
+			},
+		];
+		setTimeout(() => {
+			this.projectConfig = [
+				{
+					primeKey: 'name',
+					header: 'Name',
+				},
+				{
+					primeKey: 'first_launch',
+					altKeys: ['launch', 'first_flight'],
+					header: 'First launch',
+				},
+				{
+					primeKey: 'cost',
+					altKeys: ['total_cost'],
+					header: 'Cost',
+					format: 'currency',
+				},
+			];
+			this.projects = this._fakeService.getProjects();
+			this.recordsPerPage = 10;
+		}, 5000);
 	}
 }

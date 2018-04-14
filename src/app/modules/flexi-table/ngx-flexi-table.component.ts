@@ -1,4 +1,15 @@
-import { Component, ChangeDetectionStrategy, OnChanges, OnInit, AfterViewInit, OnDestroy, Input, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { 
+	Component, 
+	ChangeDetectionStrategy, 
+	OnChanges, 
+	OnInit, 
+	AfterViewInit, 
+	OnDestroy, 
+	Input, 
+	ViewChild, 
+	SimpleChanges, 
+	ChangeDetectorRef
+} from '@angular/core';
 
 import { ColumnConfig, ColumnMap } from './models/column.model';
 
@@ -52,30 +63,44 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.initSetPageSub      = this.tableData.initSetPageSubject$.subscribe(() => this.initSetPage());
 	}
 
-	ngOnChanges() {
-		(this.config) 
+	ngOnChanges(changes: SimpleChanges) {
+		(this.config)
 			? this.columns = this.config.map(col => new ColumnMap(col))
-			: this.columns = Object.keys(this.records[0]).map(key => new ColumnMap({ primeKey: key }));
+			: this.columns = Object.keys(changes['records'].currentValue[0]).map(key => new ColumnMap({ primeKey: key }));
 
 		this.tableData.publishColumns(this.columns);
+
+		if (
+			changes['records'] && changes['records'].previousValue ||
+			changes['recordsPerPage'] && changes['recordsPerPage'].previousValue
+		) 
+			this.redeployTable();
 	}
 
-	ngOnInit() {
+	ngOnInit(): void { this.onInit() };
+	onInit(): void {
 		this.tableData.publishRecords(this.records);
 		this.tableData.publishCheckedRecords([]);
 		this.tableData.publishNewTabCaption(this.newTabCaption);
 	}
 
-	ngAfterViewInit(): void {
+	ngAfterViewInit(): void { this.afterViewInit() };
+	afterViewInit(): void {
 		this.initSetPage();
 		this.tableData.publishLoading(false);
 		this._cdr.detectChanges();
 	}
 
-	ngOnDestroy() {
+	ngOnDestroy(): void {
 		this.recordsSub.unsubscribe();
 		this.checkedRecordsSub.unsubscribe();
 		this.initSetPageSub.unsubscribe();
+	}
+
+	redeployTable(): void {
+		this.onInit();
+		this._cdr.detectChanges();
+		this.afterViewInit();
 	}
 
 	initSetPage(): void {

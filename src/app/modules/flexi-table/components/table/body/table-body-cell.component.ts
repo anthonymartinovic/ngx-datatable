@@ -32,7 +32,7 @@ import { TableDataService } from '../table.data.service';
 				type="checkbox" 
 				[checked]="isChecked(value)" 
 				(change)="update(value)"
-			>
+			/>
 		</div>
 		</ng-container>
 	`
