@@ -1,4 +1,5 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, Input } from '@angular/core';
+
 import { ImgService } from '../../services/img.service';
 
 @Component({
@@ -12,18 +13,24 @@ import { ImgService } from '../../services/img.service';
 				type='text'
 				placeholder='Search...'
 				class="search-input"
-				(keyup)='setFilter($event)'
+				(keyup)='setFilter($event.target)'
 			/>
 		</div>
 	`,
 })
 export class FilterComponent implements OnInit {
+	@Input() records: {}[];
+	@Input() filterColumn: string;
 
 	constructor(public imgService: ImgService) {}
 
 	ngOnInit() {}
 
-	setFilter(filter: string): void {
+	setFilter(target: HTMLInputElement): void {
+		const filter = target.value.toLowerCase();
 
+		// this.records = this.records.filter(function(d) {
+		//   return d.name.toLowerCase().indexOf(val) !== -1 || !val;
+		// });
 	}
 }

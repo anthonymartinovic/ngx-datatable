@@ -25,12 +25,12 @@ import { Subscription } from 'rxjs/Subscription';
 	template: `
 		<div class="flexi-table-header">
 			<caption *ngIf="caption" class="flexi-table-caption">{{ caption }}</caption>
-			<ngx-filter></ngx-filter>
+			<ngx-filter [records]="recordsCopy" [filterColumn]="filterColumn"></ngx-filter>
 		</div>
 		<ngx-table></ngx-table>
 		<div class="flexi-table-footer">
 			<ngx-pager
-				[records]="records"
+				[records]="recordsCopy"
 				[recordsPerPage]="recordsPerPage"
 				(pagedRecordsChange)="updatePagedRecords($event)"
 			></ngx-pager>
@@ -50,6 +50,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@Input() records: {}[];
 	@Input() recordsPerPage: number;
 
+	recordsCopy: {}[];
 	checkedRecords: {}[];
 	pagedRecords: {}[];
 	columns: ColumnMap[];
@@ -58,7 +59,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		public tableData: TableDataService,
 		private _cdr: ChangeDetectorRef
 	) {
-		this.recordsSub          = this.tableData.records$.subscribe(records => this.records = records);
+		this.recordsSub          = this.tableData.records$.subscribe(records => this.recordsCopy = records);
 		this.checkedRecordsSub   = this.tableData.checkedRecords$.subscribe(checkedRecords => this.checkedRecords = checkedRecords);
 		this.initSetPageSub      = this.tableData.initSetPageSubject$.subscribe(() => this.initSetPage());
 	}
@@ -79,7 +80,9 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 
 	ngOnInit(): void { this.onInit() };
 	onInit(): void {
-		this.tableData.publishRecords(this.records);
+		this.recordsCopy = this.records;
+
+		this.tableData.publishRecords(this.recordsCopy);
 		this.tableData.publishCheckedRecords([]);
 		this.tableData.publishNewTabCaption(this.newTabCaption);
 	}
@@ -108,7 +111,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	}
 
 	updateRecords(records: {}[]): void {
-		this.tableData.publishCheckedRecords
+		this.tableData.publishCheckedRecords;
 	}
 
 	updatePagedRecords(newPagedRecords: {}[]): void {
