@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { FlexiTableComponent } from './ngx-flexi-table.component';
 import { TableComponent } from './components/table/table.component';
@@ -18,12 +19,17 @@ import { PagerStyleDirective } from './directives/pager.style.directive';
 
 import { CellFormatPipe } from './pipes/cell.format.pipe';
 
+import { ArrayComparatorService } from './services/array-comparator.service';
+import { FilterService } from './services/filter.service';
 import { ImgService } from './services/img.service';
 import { PagerService } from './services/pager.service';
 import { SortService } from './services/sort.service';
 
 @NgModule({
-	imports: [CommonModule],
+	imports: [
+		CommonModule,
+		FormsModule
+	],
 	declarations: [
 		FlexiTableComponent, 
 		TableComponent, 
@@ -45,6 +51,8 @@ import { SortService } from './services/sort.service';
 	providers: [
 		CurrencyPipe,
 		
+		ArrayComparatorService,
+		FilterService,
 		ImgService,
 		PagerService,
 		SortService

@@ -14,7 +14,10 @@ import { FakeService } from './fake/fake.service';
 			[caption]="'NASA Projects'"
 			[config]="projectConfig"
 			[newTabCaption]="'Route'"
-			[recordsPerPage]="recordsPerPage">
+			[recordsPerPage]="recordsPerPage"
+			[fixedFilterColumn]="filterColumn"
+			[columnFilters]="columnFilters"
+			>
 		</ngx-flexi-table>
 		<ngx-flexi-table
 			[records]="people"
@@ -41,6 +44,9 @@ export class AppComponent implements OnInit {
 	];
 
 	recordsPerPage: number = 5;
+
+	filterColumn: string = 'name';
+	columnFilters: boolean = false;
 
 	constructor(
 		private _fakeService: FakeService
@@ -169,6 +175,8 @@ export class AppComponent implements OnInit {
 			];
 			this.projects = this._fakeService.getProjects();
 			this.recordsPerPage = 10;
+			this.filterColumn = undefined;
+			this.columnFilters = true;
 		}, 5000);
 	}
 }

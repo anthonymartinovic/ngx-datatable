@@ -2,9 +2,6 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class SortService {
-	
-	constructor() { }
-
 	static _resolveSort(a: any, b: any, order: string): number {
 		let result: any;
 

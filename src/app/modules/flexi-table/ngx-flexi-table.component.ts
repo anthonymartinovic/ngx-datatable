@@ -25,7 +25,13 @@ import { Subscription } from 'rxjs/Subscription';
 	template: `
 		<div class="flexi-table-header">
 			<caption *ngIf="caption" class="flexi-table-caption">{{ caption }}</caption>
-			<ngx-filter [records]="recordsCopy" [filterColumn]="filterColumn"></ngx-filter>
+			<ngx-filter
+				*ngIf="!columnFilters"
+				[columns]="columns"
+				[records]="records"
+				[fixedFilterColumn]="fixedFilterColumn"
+				(recordsChange)="filterRecords($event)"
+			></ngx-filter>
 		</div>
 		<ngx-table></ngx-table>
 		<div class="flexi-table-footer">
@@ -40,6 +46,7 @@ import { Subscription } from 'rxjs/Subscription';
 export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
 	recordsSub: Subscription;
 	checkedRecordsSub: Subscription;
+	filterRecordsSub: Subscription;
 	initSetPageSub: Subscription;
 
 	@ViewChild(PagerComponent) private _pagerComponent: PagerComponent;
@@ -47,6 +54,8 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@Input() caption: string;
 	@Input() newTabCaption: string;
 	@Input() config: ColumnConfig[];
+	@Input() fixedFilterColumn: string;
+	@Input() columnFilters: boolean = false;
 	@Input() records: {}[];
 	@Input() recordsPerPage: number;
 
@@ -61,6 +70,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	) {
 		this.recordsSub          = this.tableData.records$.subscribe(records => this.recordsCopy = records);
 		this.checkedRecordsSub   = this.tableData.checkedRecords$.subscribe(checkedRecords => this.checkedRecords = checkedRecords);
+		this.filterRecordsSub    = this.tableData.filterRecordsSubject$.subscribe(filteredRecords => this.filterRecords(filteredRecords));
 		this.initSetPageSub      = this.tableData.initSetPageSubject$.subscribe(() => this.initSetPage());
 	}
 
@@ -85,33 +95,38 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.tableData.publishRecords(this.recordsCopy);
 		this.tableData.publishCheckedRecords([]);
 		this.tableData.publishNewTabCaption(this.newTabCaption);
+		this.tableData.publishColumnFilters(this.columnFilters);
+		this._cdr.detectChanges();
 	}
 
 	ngAfterViewInit(): void { this.afterViewInit() };
 	afterViewInit(): void {
 		this.initSetPage();
-		this.tableData.publishLoading(false);
-		this._cdr.detectChanges();
 	}
 
 	ngOnDestroy(): void {
 		this.recordsSub.unsubscribe();
 		this.checkedRecordsSub.unsubscribe();
+		this.filterRecordsSub.unsubscribe();
 		this.initSetPageSub.unsubscribe();
 	}
 
 	redeployTable(): void {
 		this.onInit();
-		this._cdr.detectChanges();
 		this.afterViewInit();
 	}
 
 	initSetPage(): void {
 		this._pagerComponent.setPage(1, true);
+		this._cdr.detectChanges();
 	}
 
-	updateRecords(records: {}[]): void {
-		this.tableData.publishCheckedRecords;
+	filterRecords(filteredRecords: {}[]): void {
+		this.recordsCopy = filteredRecords;
+		this.tableData.publishRecords(filteredRecords);
+		this.tableData.runIsAllChecked();
+		this._cdr.detectChanges();
+		this.initSetPage();
 	}
 
 	updatePagedRecords(newPagedRecords: {}[]): void {

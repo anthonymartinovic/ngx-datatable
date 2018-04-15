@@ -1,6 +1,9 @@
-import { Component, ChangeDetectionStrategy, OnInit, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+
+import { ColumnMap } from '../../models/column.model';
 
 import { ImgService } from '../../services/img.service';
+import { FilterService } from '../../services/filter.service';
 
 @Component({
 	selector: 'ngx-filter',
@@ -9,28 +12,56 @@ import { ImgService } from '../../services/img.service';
 	template: `
 		<div class="search-container">
 			<div class="search-icon" [innerHTML]="imgService.getSVG('search')"></div>
+			<select
+				*ngIf="!fixedFilterColumn" 
+				[(ngModel)]="selectedFilterColumn" 
+				(change)="setFilter()"
+			>
+				<option *ngFor="let column of columns" [ngValue]="column.primeKey">{{column.header}}</option>
+			</select>
 			<input
-				type='text'
-				placeholder='Search...'
+				type="text"
 				class="search-input"
-				(keyup)='setFilter($event.target)'
+				[placeholder]="placeholderText"
+				(keyup)="setFilter($event.target)"
 			/>
 		</div>
 	`,
 })
-export class FilterComponent implements OnInit {
+export class FilterComponent implements OnChanges {
+	@Input() columns: ColumnMap[];
 	@Input() records: {}[];
-	@Input() filterColumn: string;
+	@Input() fixedFilterColumn: string;
 
-	constructor(public imgService: ImgService) {}
+	@Output() recordsChange: EventEmitter<{}[]> = new EventEmitter();
 
-	ngOnInit() {}
+	cachedTarget: HTMLInputElement;
+	selectedFilterColumn: string;
 
-	setFilter(target: HTMLInputElement): void {
-		const filter = target.value.toLowerCase();
+	constructor(
+		public imgService: ImgService,
+		private _filterService: FilterService,
+	) {}
 
-		// this.records = this.records.filter(function(d) {
-		//   return d.name.toLowerCase().indexOf(val) !== -1 || !val;
-		// });
+	ngOnChanges(): void {
+		if (!this.fixedFilterColumn) this.selectedFilterColumn = this.columns[0].primeKey;
+	}
+
+	setFilter(target?: HTMLInputElement): void {
+		if (target) this.cachedTarget = target;
+		if (!this.cachedTarget) return;
+
+		const filteredRecords = this._filterService.filterRecords(
+			this.cachedTarget.value.toLowerCase(), 
+			(this.fixedFilterColumn) ? this.fixedFilterColumn : this.selectedFilterColumn, 
+			this.columns, 
+			this.records
+		);
+
+		this.recordsChange.emit(filteredRecords);
+	}
+
+	get placeholderText(): string {
+		return `Filter ${(this.fixedFilterColumn) ? this.fixedFilterColumn : 'selected'} column...`;
 	}
 }

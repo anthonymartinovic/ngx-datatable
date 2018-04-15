@@ -3,6 +3,8 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { ColumnMap } from '../../../models/column.model';
 
+import { ArrayComparatorService } from '../../../services/array-comparator.service';
+import { FilterService } from '../../../services/filter.service';
 import { TableDataService } from '../table.data.service';
 import { SortService } from '../../../services/sort.service';
 
@@ -13,6 +15,13 @@ import { SortService } from '../../../services/sort.service';
 	template: `
 		<ng-container *ngIf="headerType === 'standard'">
 			<div class="head-cell-text" (click)="setSort(column)">{{value}}</div>
+			<input
+				*ngIf="columnFilters"
+				type="text"
+				class="head-cell-search-input"
+				placeholder="Search..."
+				(keyup)="setFilter($event.target)"
+			/>
 		</ng-container>
 		<ng-container *ngIf="headerType === 'checkbox'">
 			<div class="head-cell-checkbox-container" [flexiCellStyle]="'checkbox'">
@@ -32,6 +41,8 @@ import { SortService } from '../../../services/sort.service';
 export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	recordsSub: Subscription;
 	checkedRecordsSub: Subscription;
+	columnsSub: Subscription;
+	columnFiltersSub: Subscription;
 	sortedColumnSub: Subscription;
 	isAllCheckedSub: Subscription;
 
@@ -39,7 +50,10 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	@Input() value: any;
 	@Input() column: ColumnMap;
 
+	columns: ColumnMap[];
+	columnFilters: boolean;
 	records: {}[];
+	cachedRecords: {}[];
 	checkedRecords: {}[];
 	sortedColumn: {
 		name: any,
@@ -49,7 +63,9 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 
 	constructor(
 		public tableData: TableDataService,
+		private _arrayComparator: ArrayComparatorService,
 		private _cdr: ChangeDetectorRef,
+		private _filterService: FilterService,
 		private _sortService: SortService
 	) {}
 
@@ -60,19 +76,29 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	ngOnInit(): void {
 		this.recordsSub        = this.tableData.records$.subscribe(records => this.records = records);
 		this.checkedRecordsSub = this.tableData.checkedRecords$.subscribe(checkedRecords => this.checkedRecords = checkedRecords);
+		this.columnsSub        = this.tableData.columns$.subscribe(columns => this.columns = columns);
+		this.columnFiltersSub  = this.tableData.columnFilters$.subscribe(columnFilters => this.columnFilters = columnFilters);
 		this.sortedColumnSub   = this.tableData.sortedColumn$.subscribe(sortedColumn => this.sortedColumn = sortedColumn);
 		this.isAllCheckedSub   = this.tableData.isAllCheckedSubject$.subscribe(() => this.isAllChecked());
+
+		this.cachedRecords = this.records;
 	}
 
 	ngOnDestroy(): void {
 		this.recordsSub.unsubscribe();
 		this.checkedRecordsSub.unsubscribe();
+		this.columnsSub.unsubscribe();
+		this.columnFiltersSub.unsubscribe();
 		this.sortedColumnSub.unsubscribe();
 		this.isAllCheckedSub.unsubscribe();
 	}
 
 	isAllChecked(): boolean {
-		if ((this.records && this.checkedRecords) && (this.checkedRecords.length === this.records.length))
+		if  (
+				(this.records && this.checkedRecords) && 
+				(this.records.length > 0) &&
+				(this._arrayComparator.arrayEquality([...this.records], [...this.checkedRecords], (!this.columnFilters) ? true : false))
+			)
 		{
 			if (!this.wasAllChecked) (this.wasAllChecked = true, this._cdr.markForCheck());
 			return true;
@@ -90,6 +116,17 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 			: this.checkedRecords = [];
 		
 		this.tableData.publishCheckedRecords(this.checkedRecords);
+	}
+
+	setFilter(target: HTMLInputElement): void {
+		const filteredRecords = this._filterService.filterRecords(
+			target.value.toLowerCase(), 
+			this.column.primeKey, 
+			this.columns, 
+			this.cachedRecords
+		);
+
+		this.tableData.runFilterRecords(filteredRecords);
 	}
 
 	setSort(column: any): void {
