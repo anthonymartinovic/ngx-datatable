@@ -97,7 +97,8 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 		if  (
 				(this.records && this.checkedRecords) && 
 				(this.records.length > 0) &&
-				(this._arrayComparator.arrayEquality([...this.records], [...this.checkedRecords], (!this.columnFilters) ? true : false))
+				(this._arrayComparator.arrayEquals([...this.records], [...this.checkedRecords], (!this.columnFilters) ? true : false)) ||
+				(this.columnFilters && this._arrayComparator.arrayIncludesAll([...this.records], [...this.checkedRecords]))
 			)
 		{
 			if (!this.wasAllChecked) (this.wasAllChecked = true, this._cdr.markForCheck());
@@ -111,10 +112,33 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	}
 
 	updateAll(): void {
-		(!this.checkedRecords || this.checkedRecords.length != this.records.length)
-			? this.checkedRecords = this.records.slice()
-			: this.checkedRecords = [];
-		
+		if  (this._arrayComparator.arrayIncludesAll([...this.checkedRecords], [...this.records]) &&
+			 (this.checkedRecords.length === this.records.length || this.checkedRecords.length > this.records.length))
+		{
+			this.checkedRecords = this.checkedRecords.filter((checkedRecord, i) => (this.records.indexOf(checkedRecord) === -1) ? true : false);
+		}
+		else if (this._arrayComparator.arrayIncludesAll([...this.records], [...this.checkedRecords]))
+		{
+			for (let i = 0; i < this.checkedRecords.length; i++)
+				if (this.records.indexOf(this.checkedRecords[i]) > -1) (this.checkedRecords.splice(i, 1), i--);
+		}
+		else if (this.checkedRecords.length === this.records.length ||
+				 this.checkedRecords.length > 0 && this._arrayComparator.arrayIncludesNone([...this.checkedRecords], [...this.records]))
+		{
+			this.checkedRecords = this.checkedRecords.concat(this.records);
+		}
+		else if (this.checkedRecords.length > this.records.length)
+		{
+			for (let i = 0; i < this.records.length; i++)
+				if (this.checkedRecords.indexOf(this.records[i]) === -1) this.checkedRecords.push(this.records[i]);
+		}
+		else
+		{
+			(!this.checkedRecords || this.checkedRecords.length != this.records.length)
+				? this.checkedRecords = this.records.slice()
+				: this.checkedRecords = [];
+		}
+
 		this.tableData.publishCheckedRecords(this.checkedRecords);
 	}
 

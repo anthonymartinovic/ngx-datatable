@@ -17,6 +17,7 @@ import { FakeService } from './fake/fake.service';
 			[recordsPerPage]="recordsPerPage"
 			[fixedFilterColumn]="filterColumn"
 			[columnFilters]="columnFilters"
+			(onRowSelection)="logEvent($event)"
 			>
 		</ngx-flexi-table>
 		<ngx-flexi-table
@@ -178,5 +179,9 @@ export class AppComponent implements OnInit {
 			this.filterColumn = undefined;
 			this.columnFilters = true;
 		}, 5000);
+	}
+
+	rowSelection(row: any) {
+		console.log(row);
 	}
 }

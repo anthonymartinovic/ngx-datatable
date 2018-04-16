@@ -10,10 +10,15 @@ import { TableDataService } from '../table.data.service';
 		<ngx-table-body-row 
 			*ngFor="let record of tableData.pagedRecords$ | async" 
 			[record]="record"
+			(click)="selectRow(record)"
 		></ngx-table-body-row>
 	`
 })
 export class TableBodyComponent {
 
 	constructor(public tableData: TableDataService) {}
+
+	selectRow(row: {}): void {
+		console.log(row);
+	}
 }
