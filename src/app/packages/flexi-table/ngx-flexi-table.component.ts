@@ -10,14 +10,16 @@ import {
 	EventEmitter,
 	ViewChild, 
 	SimpleChanges, 
-	ChangeDetectorRef
+	ChangeDetectorRef,
+	ErrorHandler
 } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+
+import { PagerComponent } from './components/pager/pager.component';
 
 import { ColumnConfig, ColumnMap } from './models/column.model';
 
-import { PagerComponent } from './components/pager/pager.component';
 import { TableDataService } from './components/table/table.data.service';
-import { Subscription } from 'rxjs/Subscription';
 
 @Component({
 	selector: 'ngx-flexi-table',
@@ -50,18 +52,23 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	checkedRecordsSub: Subscription;
 	filterRecordsSub: Subscription;
 	initSetPageSub: Subscription;
+	rowSelectionSub: Subscription;
+	newTabSelectionSub: Subscription;
 
 	@ViewChild(PagerComponent) private _pagerComponent: PagerComponent;
 
 	@Input() caption: string;
 	@Input() newTabCaption: string;
+	@Input() newTabKeys: string[];
 	@Input() config: ColumnConfig[];
 	@Input() fixedFilterColumn: string;
 	@Input() columnFilters: boolean = false;
 	@Input() records: {}[];
 	@Input() recordsPerPage: number;
 
-	@Output() onRowSelection: EventEmitter<{}> = new EventEmitter();
+	@Output() onRowSelection: EventEmitter<{}>     = new EventEmitter();
+	@Output() onCheckboxChange: EventEmitter<{}[]> = new EventEmitter();
+	@Output() onNewTabSelection: EventEmitter<any> = new EventEmitter();
 
 	recordsCopy: {}[];
 	checkedRecords: {}[];
@@ -70,12 +77,18 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 
 	constructor(
 		public tableData: TableDataService,
+		private _errorHandler: ErrorHandler,
 		private _cdr: ChangeDetectorRef
 	) {
 		this.recordsSub          = this.tableData.records$.subscribe(records => this.recordsCopy = records);
-		this.checkedRecordsSub   = this.tableData.checkedRecords$.subscribe(checkedRecords => this.checkedRecords = checkedRecords);
 		this.filterRecordsSub    = this.tableData.filterRecordsSubject$.subscribe(filteredRecords => this.filterRecords(filteredRecords));
 		this.initSetPageSub      = this.tableData.initSetPageSubject$.subscribe(() => this.initSetPage());
+		this.rowSelectionSub     = this.tableData.rowSelection$.subscribe(row => this.onRowSelection.emit(row));
+		this.newTabSelectionSub  = this.tableData.newTabSelection$.subscribe(newTab => this.onNewTabSelection.emit(newTab));
+		this.checkedRecordsSub   = this.tableData.checkedRecords$.subscribe(checkedRecords => {
+			this.checkedRecords = checkedRecords;
+			this.onCheckboxChange.emit(this.checkedRecords);
+		});
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -89,7 +102,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 			changes['records'] && changes['records'].previousValue ||
 			changes['recordsPerPage'] && changes['recordsPerPage'].previousValue
 		) 
-			this.redeployTable();
+			this.reDeployTable();
 	}
 
 	ngOnInit(): void { this.onInit() };
@@ -99,6 +112,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.tableData.publishRecords(this.recordsCopy);
 		this.tableData.publishCheckedRecords([]);
 		this.tableData.publishNewTabCaption(this.newTabCaption);
+		this.tableData.publishNewTabKeys(this.newTabKeys);
 		this.tableData.publishColumnFilters(this.columnFilters);
 		this._cdr.detectChanges();
 	}
@@ -113,9 +127,11 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.checkedRecordsSub.unsubscribe();
 		this.filterRecordsSub.unsubscribe();
 		this.initSetPageSub.unsubscribe();
+		this.rowSelectionSub.unsubscribe();
+		this.newTabSelectionSub.unsubscribe();
 	}
 
-	redeployTable(): void {
+	reDeployTable(): void {
 		this.onInit();
 		this.afterViewInit();
 	}

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, ChangeDetectorRef, ErrorHandler } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { ColumnMap } from '../../../models/column.model';
@@ -19,8 +19,10 @@ import { TableDataService } from '../table.data.service';
 		<ng-container *ngIf="dataType === 'newTab'">
 			<div
 				class="ngx-table-cell"
+				clickStopPropagationEvent
 				[flexiCellStyle]="'newTab'"
 				[innerHTML]="imgService.getSVG('newTab')"
+				(click)="emitNewTabValue(value)"
 			></div>
 		</ng-container>
 		<ng-container *ngIf="dataType === 'checkbox'">
@@ -30,6 +32,7 @@ import { TableDataService } from '../table.data.service';
 		>
 			<input 
 				type="checkbox" 
+				clickStopPropagationEvent
 				[checked]="isChecked(value)" 
 				(change)="update(value)"
 			/>
@@ -40,9 +43,11 @@ import { TableDataService } from '../table.data.service';
 export class TableBodyCellComponent implements OnInit, OnDestroy {
 	recordsSub: Subscription;
 	checkedRecordsSub: Subscription;
+	newTabKeysSub: Subscription;
 
 	records: {}[];
 	checkedRecords: {}[];
+	newTabKeys: string[];
 
 	@Input() dataType: string;
 	@Input() value: {};
@@ -50,11 +55,13 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private _cdr: ChangeDetectorRef,
+		private _errorHandler: ErrorHandler,
 		public imgService: ImgService,
 		public tableData: TableDataService
 	) {}
 
 	ngOnInit(): void {
+		this.newTabKeysSub = this.tableData.newTabKeys$.subscribe(newTabKeys => this.newTabKeys = newTabKeys);
 		this.recordsSub = this.tableData.records$.subscribe(records => {
 			this.records = records;
 			this._cdr.markForCheck();
@@ -68,6 +75,7 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 	ngOnDestroy(): void {
 		this.recordsSub.unsubscribe();
 		this.checkedRecordsSub.unsubscribe();
+		this.newTabKeysSub.unsubscribe();
 	}
 
 	isChecked(record): boolean {
@@ -85,5 +93,16 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 
 		this.tableData.publishCheckedRecords(this.checkedRecords);
 		this.tableData.runIsAllChecked();
+	}
+
+	emitNewTabValue(record: {}) {
+		for (let key of this.newTabKeys) {
+			if (record.hasOwnProperty(key)) return this.tableData.publishNewTabSelection(record[key]);
+		}
+
+		return this._errorHandler.handleError(
+			`No 'newTabKeys' provided match any keys within selected row.\n
+			Keys within selected row are: [${Object.keys(record)}]`
+		);
 	}
 }

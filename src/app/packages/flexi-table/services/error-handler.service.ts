@@ -1,15 +1,13 @@
 import { Injectable, ErrorHandler } from '@angular/core';
 
 @Injectable()
-export class ErrorHandlerService implements ErrorHandler {
-	handleError(error) {
-		console.log(error);
-		throw new Error(error);
+export class ErrorHandlerService extends ErrorHandler {
+
+	constructor() {
+		super();
+	}
+
+	handleError(errorMessage: string) {
+		super.handleError(`:: HANDLER :: 'ngx-flexi-table' : ${errorMessage}`);
 	}
 }
-
-//Insert into 'ngx-flexi-table.module.ts' when ready
-// {
-// 	provide: ErrorHandler, 
-// 	useClass: GlobalErrorHandler
-// }

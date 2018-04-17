@@ -14,7 +14,7 @@ import { TableDataService } from '../table.data.service';
 				[value]="record"
 			></ngx-table-body-cell>
 		</ng-container>
-		<ngx-table-body-cell [dataType]="'newTab'"></ngx-table-body-cell>
+		<ngx-table-body-cell [dataType]="'newTab'" [value]="record"></ngx-table-body-cell>
 		<ngx-table-body-cell [dataType]="'checkbox'" [value]="record"></ngx-table-body-cell>
 	`
 })

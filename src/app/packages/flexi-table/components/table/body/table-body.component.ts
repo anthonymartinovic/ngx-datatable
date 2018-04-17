@@ -19,6 +19,6 @@ export class TableBodyComponent {
 	constructor(public tableData: TableDataService) {}
 
 	selectRow(row: {}): void {
-		console.log(row);
+		this.tableData.publishRowSelection(row);
 	}
 }

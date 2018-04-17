@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -16,10 +16,12 @@ import { PagerLiComponent } from './components/pager/pager-li.component';
 
 import { CellStyleDirective } from './directives/cell.style.directive';
 import { PagerStyleDirective } from './directives/pager.style.directive';
+import { ClickStopPropagationDirective } from './directives/click-stop-propagation.event.directive';
 
 import { CellFormatPipe } from './pipes/cell.format.pipe';
 
 import { ArrayComparatorService } from './services/array-comparator.service';
+import { ErrorHandlerService } from './services/error-handler.service';
 import { FilterService } from './services/filter.service';
 import { ImgService } from './services/img.service';
 import { PagerService } from './services/pager.service';
@@ -45,13 +47,18 @@ import { SortService } from './services/sort.service';
 
 		CellStyleDirective, 
 		PagerStyleDirective, 
+		ClickStopPropagationDirective,
 
-		CellFormatPipe 
+		CellFormatPipe
 	],
 	providers: [
 		CurrencyPipe,
 		
 		ArrayComparatorService,
+		{
+			provide: ErrorHandler, 
+			useClass: ErrorHandlerService
+		},
 		FilterService,
 		ImgService,
 		PagerService,

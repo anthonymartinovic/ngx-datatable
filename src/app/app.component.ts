@@ -14,11 +14,14 @@ import { FakeService } from './fake/fake.service';
 			[caption]="'NASA Projects'"
 			[config]="projectConfig"
 			[newTabCaption]="'Route'"
+			[newTabKeys]="['cost', 'status']"
 			[recordsPerPage]="recordsPerPage"
 			[fixedFilterColumn]="filterColumn"
 			[columnFilters]="columnFilters"
-			(onRowSelection)="logEvent($event)"
-			>
+			(onRowSelection)="logRow($event)"
+			(onCheckboxChange)="logRows($event)"
+			(onNewTabSelection)="logRoute($event)"
+		>
 		</ngx-flexi-table>
 		<ngx-flexi-table
 			[records]="people"
@@ -185,7 +188,15 @@ export class AppComponent implements OnInit {
 		console.log(row);
 	}
 
-	logEvent(event) {
-		console.log(event);
+	logRow(event) {
+		console.log('SELECTED-ROW', event);
+	}
+
+	logRows(event) {
+		console.log('CHECKED-ROWS', event);
+	}
+
+	logRoute(event) {
+		console.log('ROUTE', event)
 	}
 }
