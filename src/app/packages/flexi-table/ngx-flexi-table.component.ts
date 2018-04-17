@@ -6,6 +6,8 @@ import {
 	AfterViewInit, 
 	OnDestroy, 
 	Input, 
+	Output,
+	EventEmitter,
 	ViewChild, 
 	SimpleChanges, 
 	ChangeDetectorRef
@@ -58,6 +60,8 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@Input() columnFilters: boolean = false;
 	@Input() records: {}[];
 	@Input() recordsPerPage: number;
+
+	@Output() onRowSelection: EventEmitter<{}> = new EventEmitter();
 
 	recordsCopy: {}[];
 	checkedRecords: {}[];

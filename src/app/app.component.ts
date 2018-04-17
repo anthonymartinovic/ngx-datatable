@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Project, Person } from './fake/model';
-import { ColumnConfig } from './modules/flexi-table/models/column.model';
+import { ColumnConfig } from './packages/flexi-table/models/column.model';
 
 import { FakeService } from './fake/fake.service';
 
@@ -183,5 +183,9 @@ export class AppComponent implements OnInit {
 
 	rowSelection(row: any) {
 		console.log(row);
+	}
+
+	logEvent(event) {
+		console.log(event);
 	}
 }
