@@ -10,8 +10,8 @@ export class ArrayComparatorService {
 		let aFirstKey = Object.keys(a[0])[0],
 			bFirstKey = Object.keys(b[0])[0];
 
-		a = [...a].sort((x, y) => x[`${aFirstKey}`] - y[`${bFirstKey}`]);
-		b = [...b].sort((x, y) => x[`${aFirstKey}`] - y[`${bFirstKey}`]);
+		a = a.sort((x, y) => x[`${aFirstKey}`] - y[`${bFirstKey}`]);
+		b = b.sort((x, y) => x[`${aFirstKey}`] - y[`${bFirstKey}`]);
 
 		return JSON.stringify(a) === JSON.stringify(b);
 	}
