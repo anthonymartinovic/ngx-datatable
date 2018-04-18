@@ -65,10 +65,13 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@Input() columnFilters: boolean = false;
 	@Input() records: {}[];
 	@Input() recordsPerPage: number;
+	@Input() groupBy: string[];
 
 	@Output() onRowSelection: EventEmitter<{}>     = new EventEmitter();
 	@Output() onCheckboxChange: EventEmitter<{}[]> = new EventEmitter();
 	@Output() onNewTabSelection: EventEmitter<any> = new EventEmitter();
+
+	stopEmission: boolean = false;
 
 	recordsCopy: {}[];
 	checkedRecords: {}[];
@@ -87,7 +90,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.newTabSelectionSub  = this.tableData.newTabSelection$.subscribe(newTab => this.onNewTabSelection.emit(newTab));
 		this.checkedRecordsSub   = this.tableData.checkedRecords$.subscribe(checkedRecords => {
 			this.checkedRecords = checkedRecords;
-			this.onCheckboxChange.emit(this.checkedRecords);
+			if (!this.stopEmission) this.onCheckboxChange.emit(this.checkedRecords);
 		});
 	}
 
@@ -107,13 +110,19 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 
 	ngOnInit(): void { this.onInit() };
 	onInit(): void {
+		this.tableData.publishGroupBy(this.groupBy);
+		
 		this.recordsCopy = this.records;
-
 		this.tableData.publishRecords(this.recordsCopy);
+
+		this.stopEmission = true;
 		this.tableData.publishCheckedRecords([]);
+		this.stopEmission = false;
+		
 		this.tableData.publishNewTabCaption(this.newTabCaption);
 		this.tableData.publishNewTabKeys(this.newTabKeys);
 		this.tableData.publishColumnFilters(this.columnFilters);
+
 		this._cdr.detectChanges();
 	}
 

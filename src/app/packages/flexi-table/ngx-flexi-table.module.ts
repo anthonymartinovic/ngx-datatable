@@ -8,6 +8,7 @@ import { TableHeadComponent } from './components/table/head/table-head.component
 import { TableHeadRowComponent } from './components/table/head/table-head-row.component';
 import { TableHeadCellComponent } from './components/table/head/table-head-cell.component';
 import { TableBodyComponent } from './components/table/body/table-body.component';
+import { TableBodyGroupComponent } from './components/table/body/table-body-group.component';
 import { TableBodyRowComponent } from './components/table/body/table-body-row.component';
 import { TableBodyCellComponent } from './components/table/body/table-body-cell.component';
 import { FilterComponent } from './components/filter/filter.component';
@@ -19,6 +20,7 @@ import { PagerStyleDirective } from './directives/pager.style.directive';
 import { ClickStopPropagationDirective } from './directives/click-stop-propagation.event.directive';
 
 import { CellFormatPipe } from './pipes/cell.format.pipe';
+import { GroupPipe } from './pipes/group.pipe';
 
 import { ArrayComparatorService } from './services/array-comparator.service';
 import { ErrorHandlerService } from './services/error-handler.service';
@@ -39,6 +41,7 @@ import { SortService } from './services/sort.service';
 		TableHeadRowComponent,
 		TableHeadCellComponent,
 		TableBodyComponent, 
+		TableBodyGroupComponent,
 		TableBodyRowComponent,
 		TableBodyCellComponent, 
 		FilterComponent,
@@ -49,7 +52,8 @@ import { SortService } from './services/sort.service';
 		PagerStyleDirective, 
 		ClickStopPropagationDirective,
 
-		CellFormatPipe
+		CellFormatPipe,
+		GroupPipe
 	],
 	providers: [
 		CurrencyPipe,

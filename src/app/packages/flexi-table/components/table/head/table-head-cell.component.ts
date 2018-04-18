@@ -153,14 +153,15 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 		this.tableData.runFilterRecords(filteredRecords);
 	}
 
-	setSort(column: any): void {
+	setSort(column: ColumnMap): void {
 		if (this.sortedColumn && this.sortedColumn.name === column.access(this.records[0]))
 		{
 			(this.sortedColumn.order === 'asc')
 				? this.sortedColumn.order = 'desc'
 				: this.sortedColumn.order = 'asc';
 		}
-		else {
+		else
+		{
 			this.sortedColumn = {
 				name: column.access(this.records[0]),
 				order: 'asc'

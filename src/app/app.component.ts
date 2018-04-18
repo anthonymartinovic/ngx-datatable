@@ -14,19 +14,19 @@ import { FakeService } from './fake/fake.service';
 			[caption]="'NASA Projects'"
 			[config]="projectConfig"
 			[newTabCaption]="'Route'"
-			[newTabKeys]="['cost', 'status']"
+			[newTabKeys]="['cost']"
 			[recordsPerPage]="recordsPerPage"
 			[fixedFilterColumn]="filterColumn"
 			[columnFilters]="columnFilters"
+			[groupBy]="['name']"
 			(onRowSelection)="logRow($event)"
 			(onCheckboxChange)="logRows($event)"
 			(onNewTabSelection)="logRoute($event)"
-		>
-		</ngx-flexi-table>
+		></ngx-flexi-table>
 		<ngx-flexi-table
 			[records]="people"
-			[caption]="'NASA Astronauts'">
-		</ngx-flexi-table>
+			[caption]="'NASA Astronauts'"
+		></ngx-flexi-table>
 	`
 })
 export class AppComponent implements OnInit {
