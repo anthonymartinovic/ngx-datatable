@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 
-import { ColumnMap } from '../../models/column.model';
+import { ColumnMap } from '../models/column.model';
+import { StylesModel } from '../models/styles.model';
 
 @Injectable()
 export class TableDataService {
@@ -18,6 +19,7 @@ export class TableDataService {
 	private sortedColumnSource    = new BehaviorSubject<{ name: any, order: string }>(undefined);
 	private rowSelectionSource    = new BehaviorSubject<{}>(undefined);
 	private groupBySource         = new BehaviorSubject<string[]>(undefined);
+	private stylesSource          = new BehaviorSubject<StylesModel>(undefined);
 	private filterRecordsSubject  = new Subject<{}[]>();
 	private initSetPageSubject    = new Subject();
 	private isAllCheckedSubject   = new Subject();
@@ -34,6 +36,7 @@ export class TableDataService {
 	sortedColumn$                 = this.sortedColumnSource.asObservable();
 	rowSelection$                 = this.rowSelectionSource.asObservable();
 	groupBy$                      = this.groupBySource.asObservable();
+	styles$                       = this.stylesSource.asObservable();
 	filterRecordsSubject$         = this.filterRecordsSubject.asObservable();
 	initSetPageSubject$           = this.initSetPageSubject.asObservable();
 	isAllCheckedSubject$          = this.isAllCheckedSubject.asObservable();
@@ -50,6 +53,7 @@ export class TableDataService {
 	publishSortedColumn           = (sortedColumn: { name: any, order: string }): void => this.sortedColumnSource.next(sortedColumn);
 	publishRowSelection           = (row: {}): void => this.rowSelectionSource.next(row);
 	publishGroupBy                = (groupings: string[]): void => this.groupBySource.next(groupings);
+	publishStyles                 = (styles: StylesModel): void => this.stylesSource.next(styles);
 	runFilterRecords              = (filteredRecords: {}[]): void => this.filterRecordsSubject.next(filteredRecords);
 	runInitSetPage                = (): void => this.initSetPageSubject.next();
 	runIsAllChecked               = (): void => this.isAllCheckedSubject.next();

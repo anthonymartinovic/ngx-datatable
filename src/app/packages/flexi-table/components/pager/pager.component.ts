@@ -10,6 +10,7 @@ import { PagerService } from '../../services/pager.service';
 	host: { 'class': 'pager' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
+		<div>Total: {{this.records.length}}</div>
 		<ul *ngIf="pager && pager.selectablePages && pager.selectablePages.length > 1" class="pager-ul">
 			<ngx-pager-li
 				[button]="{ name: 'first', symbol: '|<', value: 1 }"

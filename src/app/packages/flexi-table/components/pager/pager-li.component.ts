@@ -1,11 +1,11 @@
-import { Component, ChangeDetectionStrategy, OnChanges, Input, Output, EventEmitter} from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
 	selector: 'ngx-pager-li',
 	host: { 'class': 'pager-li' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<li [flexiPagerStyle]="styleParams">
+		<li [pagerStyle]="styleParams">
 			<a (click)="initSetPage(button.value)">
 				{{ button.symbol }}
 			</a>

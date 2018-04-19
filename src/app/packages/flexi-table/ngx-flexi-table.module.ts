@@ -15,9 +15,11 @@ import { FilterComponent } from './components/filter/filter.component';
 import { PagerComponent } from './components/pager/pager.component';
 import { PagerLiComponent } from './components/pager/pager-li.component';
 
-import { CellStyleDirective } from './directives/cell.style.directive';
-import { PagerStyleDirective } from './directives/pager.style.directive';
-import { ClickStopPropagationDirective } from './directives/click-stop-propagation.event.directive';
+import { CellStyleDirective } from './directives/style/cell.style.directive';
+import { HeadRowStyleDirective } from './directives/style/head-row.style.directive';
+import { BodyRowStyleDirective } from './directives/style/body-row.style.directive';
+import { PagerStyleDirective } from './directives/style/pager.style.directive';
+import { StopPropagationClickDirective } from './directives/event/stop-propagation.click.directive';
 
 import { CellFormatPipe } from './pipes/cell.format.pipe';
 import { GroupPipe } from './pipes/group.pipe';
@@ -49,11 +51,13 @@ import { SortService } from './services/sort.service';
 		PagerLiComponent, 
 
 		CellStyleDirective, 
+		HeadRowStyleDirective,
+		BodyRowStyleDirective,
 		PagerStyleDirective, 
-		ClickStopPropagationDirective,
+		StopPropagationClickDirective,
 
 		CellFormatPipe,
-		GroupPipe
+		GroupPipe,
 	],
 	providers: [
 		CurrencyPipe,

@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 
-import { TableDataService } from '../table.data.service';
+import { TableDataService } from '../../../data/table.data.service';
 
 @Component({
 	selector: 'ngx-table-head-row',

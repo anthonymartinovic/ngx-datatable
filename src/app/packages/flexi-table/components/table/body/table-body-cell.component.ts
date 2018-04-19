@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ColumnMap } from '../../../models/column.model';
 
 import { ImgService } from '../../../services/img.service';
-import { TableDataService } from '../table.data.service';
+import { TableDataService } from '../../../data/table.data.service';
 
 @Component({
 	selector: 'ngx-table-body-cell',
@@ -12,15 +12,15 @@ import { TableDataService } from '../table.data.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<ng-container *ngIf="dataType === 'standard'">
-			<div class="ngx-table-cell" [flexiCellStyle]="value[column.access(value)]">
+			<div class="ngx-table-cell" [cellStyle]="value[column.access(value)]">
 				{{ value[column.access(value)] | formatCell: column.format }}
 			</div>
 		</ng-container>
 		<ng-container *ngIf="dataType === 'newTab'">
 			<div
 				class="ngx-table-cell"
-				clickStopPropagationEvent
-				[flexiCellStyle]="'newTab'"
+				stopPropagationClick
+				[cellStyle]="'newTab'"
 				[innerHTML]="imgService.getSVG('newTab')"
 				(click)="emitNewTabValue(value)"
 			></div>
@@ -28,11 +28,11 @@ import { TableDataService } from '../table.data.service';
 		<ng-container *ngIf="dataType === 'checkbox'">
 		<div 
 			class="ngx-table-cell"
-			[flexiCellStyle]="'checkbox'"
+			[cellStyle]="'checkbox'"
 		>
 			<input 
 				type="checkbox" 
-				clickStopPropagationEvent
+				stopPropagationClick
 				[checked]="isChecked(value)" 
 				(change)="update(value)"
 			/>

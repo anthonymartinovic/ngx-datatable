@@ -5,7 +5,7 @@ import { ColumnMap } from '../../../models/column.model';
 
 import { ArrayComparatorService } from '../../../services/array-comparator.service';
 import { FilterService } from '../../../services/filter.service';
-import { TableDataService } from '../table.data.service';
+import { TableDataService } from '../../../data/table.data.service';
 import { SortService } from '../../../services/sort.service';
 
 @Component({
@@ -24,7 +24,7 @@ import { SortService } from '../../../services/sort.service';
 			/>
 		</ng-container>
 		<ng-container *ngIf="headerType === 'checkbox'">
-			<div class="head-cell-checkbox-container" [flexiCellStyle]="'checkbox'">
+			<div class="head-cell-checkbox-container" [cellStyle]="'checkbox'">
 				<input
 					type="checkbox"
 					class="header-cell-checkbox"
@@ -34,7 +34,7 @@ import { SortService } from '../../../services/sort.service';
 			</div>
 		</ng-container>
 		<ng-container *ngIf="headerType === 'newTab'">
-			<div class="head-cell-text" [flexiCellStyle]="'newTab'">{{value}}</div>
+			<div class="head-cell-text" [cellStyle]="'newTab'">{{value}}</div>
 		</ng-container>
 	`,
 })
@@ -154,6 +154,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	}
 
 	setSort(column: ColumnMap): void {
+		console.log(column);
 		if (this.sortedColumn && this.sortedColumn.name === column.access(this.records[0]))
 		{
 			(this.sortedColumn.order === 'asc')

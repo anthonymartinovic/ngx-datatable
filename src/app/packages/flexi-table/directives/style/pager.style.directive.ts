@@ -1,10 +1,10 @@
 import { Directive, Input, ElementRef, Renderer2, OnChanges } from '@angular/core';
 
 @Directive({
-	selector: '[flexiPagerStyle]',
+	selector: '[pagerStyle]',
 })
 export class PagerStyleDirective implements OnChanges {
-	@Input() flexiPagerStyle: {
+	@Input() pagerStyle: {
 		button: string,
 		page?: number,
 		currentPage: number,
@@ -17,25 +17,25 @@ export class PagerStyleDirective implements OnChanges {
 	) {}
 
 	ngOnChanges() {
-		if (this.flexiPagerStyle.button === 'first' || 
-			this.flexiPagerStyle.button === 'previous')
+		if (this.pagerStyle.button === 'first' || 
+			this.pagerStyle.button === 'previous')
 		{
-			(this.flexiPagerStyle.currentPage != 1)
+			(this.pagerStyle.currentPage != 1)
 				? this.enable()
 				: this.disable();
 		}
 
-		if (this.flexiPagerStyle.button === 'last' || 
-			this.flexiPagerStyle.button === 'next')
+		if (this.pagerStyle.button === 'last' || 
+			this.pagerStyle.button === 'next')
 		{
-			(this.flexiPagerStyle.currentPage != this.flexiPagerStyle.totalPages)
+			(this.pagerStyle.currentPage != this.pagerStyle.totalPages)
 				? this.enable()
 				: this.disable();
 		}
 
-		if (this.flexiPagerStyle.button === 'number')
+		if (this.pagerStyle.button === 'number')
 		{
-			(this.flexiPagerStyle.page != this.flexiPagerStyle.currentPage)
+			(this.pagerStyle.page != this.pagerStyle.currentPage)
 				? this.enable()
 				: this.disable();
 		}

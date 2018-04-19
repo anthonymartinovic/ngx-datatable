@@ -18,8 +18,9 @@ import { Subscription } from 'rxjs/Subscription';
 import { PagerComponent } from './components/pager/pager.component';
 
 import { ColumnConfig, ColumnMap } from './models/column.model';
+import { StylesModel } from './models/styles.model';
 
-import { TableDataService } from './components/table/table.data.service';
+import { TableDataService } from './data/table.data.service';
 
 @Component({
 	selector: 'ngx-flexi-table',
@@ -66,6 +67,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@Input() records: {}[];
 	@Input() recordsPerPage: number;
 	@Input() groupBy: string[];
+	@Input() styles: StylesModel;
 
 	@Output() onRowSelection: EventEmitter<{}>     = new EventEmitter();
 	@Output() onCheckboxChange: EventEmitter<{}[]> = new EventEmitter();
@@ -110,6 +112,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 
 	ngOnInit(): void { this.onInit() };
 	onInit(): void {
+		this.tableData.publishStyles(this.styles);
 		this.tableData.publishGroupBy(this.groupBy);
 		
 		this.recordsCopy = this.records;

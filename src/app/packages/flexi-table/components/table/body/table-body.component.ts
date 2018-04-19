@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { TableDataService } from '../table.data.service';
+import { TableDataService } from '../../../data/table.data.service';
 
 @Component({
 	selector: 'ngx-table-body',
@@ -18,6 +18,7 @@ import { TableDataService } from '../table.data.service';
 				<ng-container *ngIf="!hiddenGroupValues.includes(groupValue)">
 					<ngx-table-body-row 
 						*ngFor="let record of pagedRecords | groupBy: selectedGroup : groupValue"
+						bodyRowStyle
 						[record]="record"
 						(click)="selectRow(record)"
 					></ngx-table-body-row>
@@ -26,7 +27,8 @@ import { TableDataService } from '../table.data.service';
 		</ng-container>
 		<ng-template #noGroupOptions>
 			<ngx-table-body-row
-				*ngFor="let record of pagedRecords" 
+				*ngFor="let record of pagedRecords"
+				bodyRowStyle
 				[record]="record"
 				(click)="selectRow(record)"
 			></ngx-table-body-row>

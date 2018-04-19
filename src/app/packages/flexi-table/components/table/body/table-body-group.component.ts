@@ -5,7 +5,7 @@ import { ColumnMap } from '../../../models/column.model';
 
 import { ImgService } from '../../../services/img.service';
 import { SortService } from '../../../services/sort.service';
-import { TableDataService } from '../table.data.service';
+import { TableDataService } from '../../../data/table.data.service';
 
 @Component({
 	selector: 'ngx-table-body-group',
@@ -13,24 +13,33 @@ import { TableDataService } from '../table.data.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<div class="table-body-group-row">
-			<span class="group-row-name">{{selectedGroup}}: </span>
+			<span class="group-row-name" (click)="setSort(selectedGroup)">{{selectedGroup}}:</span>
 			<span class="group-row-value">{{value}}</span>
-			<div
-				class="group-row-toggle"
-				[innerHTML]="imgService.getSVG('open')"
-				(click)="setSort(selectedGroup)"
-			></div>
+			<ng-container *ngIf="groupOpen else groupClosed">
+				<div 
+					class="group-row-toggle" 
+					[innerHTML]="imgService.getSVG('close')"
+					(click)="groupOpen = !groupOpen"
+				></div>
+			</ng-container>
+			<ng-template #groupClosed>
+				<div 
+					class="group-row-toggle" 
+					[innerHTML]="imgService.getSVG('open')"
+					(click)="groupOpen = !groupOpen"
+				></div>
+			</ng-template>
 		</div>
 	`
 })
 export class TableBodyGroupComponent implements OnInit {
 	recordsSub: Subscription;
-	configSub: Subscription;
 	sortedColumnSub: Subscription;
 
 	@Input() selectedGroup: any;
 	@Input() value: any;
 
+	groupOpen: boolean;
 	records: {}[];
 	sortedColumn: {
 		name: any,
@@ -49,20 +58,19 @@ export class TableBodyGroupComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.recordsSub      = this.tableData.records$.subscribe(records => this.records = records);
-		this.configSub       = this.tableData.config$
 		this.sortedColumnSub = this.tableData.sortedColumn$.subscribe(sortedColumn => this.sortedColumn = sortedColumn);
+
+		this.groupOpen = true;
 	}
 
 	ngOnDestroy(): void {
 		this.recordsSub.unsubscribe();
-		this.configSub.unsubscribe();
 		this.sortedColumnSub.unsubscribe();
 	}
 
 	setSort(column: any): void {
-		this.config.map(col => new ColumnMap(col))
+		column = new ColumnMap({ primeKey: column });
 
-		console.log(column);
 		if (this.sortedColumn && this.sortedColumn.name === column.access(this.records[0]))
 		{
 			(this.sortedColumn.order === 'asc')

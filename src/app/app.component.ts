@@ -19,6 +19,7 @@ import { FakeService } from './fake/fake.service';
 			[fixedFilterColumn]="filterColumn"
 			[columnFilters]="columnFilters"
 			[groupBy]="['name']"
+			[styles]="styles"
 			(onRowSelection)="logRow($event)"
 			(onCheckboxChange)="logRows($event)"
 			(onNewTabSelection)="logRoute($event)"
@@ -51,6 +52,15 @@ export class AppComponent implements OnInit {
 
 	filterColumn: string = 'name';
 	columnFilters: boolean = false;
+
+	styles: any = {
+		head: {
+			rowHeight: '60px'
+		},
+		body: {
+			rowHeight: '40px'
+		}
+	}
 
 	constructor(
 		private _fakeService: FakeService
@@ -161,10 +171,6 @@ export class AppComponent implements OnInit {
 		];
 		setTimeout(() => {
 			this.projectConfig = [
-				{
-					primeKey: 'name',
-					header: 'Name',
-				},
 				{
 					primeKey: 'first_launch',
 					altKeys: ['launch', 'first_flight'],
