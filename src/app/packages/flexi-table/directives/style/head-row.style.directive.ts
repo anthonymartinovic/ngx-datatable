@@ -1,4 +1,4 @@
-import { Directive, OnInit, OnDestroy, ElementRef, Renderer2, HostBinding } from '@angular/core';
+import { Directive, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { TableDataService } from '../../data/table.data.service';
@@ -11,11 +11,7 @@ export class HeadRowStyleDirective implements OnInit, OnDestroy {
 
 	@HostBinding('style.height') height: string;
 
-	constructor(
-		public tableData: TableDataService,
-		private _elementRef: ElementRef, 
-		private _renderer: Renderer2
-	) {}
+	constructor(public tableData: TableDataService) {}
 
 	ngOnInit(): void {
 		this.stylesSub = this.tableData.styles$.subscribe(styles => {

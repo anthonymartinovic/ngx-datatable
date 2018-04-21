@@ -34,7 +34,7 @@ import { TableDataService } from './data/table.data.service';
 				*ngIf="!columnFilters"
 				[columns]="columns"
 				[records]="records"
-				[fixedFilterColumn]="fixedFilterColumn"
+				[globalFilter]="globalFilter"
 				(recordsChange)="filterRecords($event)"
 			></ngx-filter>
 		</div>
@@ -62,8 +62,8 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@Input() newTabCaption: string;
 	@Input() newTabKeys: string[];
 	@Input() config: ColumnConfig[];
-	@Input() fixedFilterColumn: string;
-	@Input() columnFilters: boolean = false;
+	@Input() globalFilter: string;
+	@Input() columnFilters: string[];
 	@Input() records: {}[];
 	@Input() recordsPerPage: number;
 	@Input() groupBy: string[];

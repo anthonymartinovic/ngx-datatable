@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { PagerModel } from '../../models/pager.model';
 
 import { PagerService } from '../../services/pager.service';
+import { RecordsFormatterService } from '../../services/records-formatter.service';
 
 @Component({
 	selector: 'ngx-pager',
@@ -11,6 +12,8 @@ import { PagerService } from '../../services/pager.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<div>Total: {{this.records.length}}</div>
+		<button type="button" (click)="exportRecords('csv')">Export as CSV</button>
+		<button type="button" (click)="exportRecords('json')">Export as JSON</button>
 		<ul *ngIf="pager && pager.selectablePages && pager.selectablePages.length > 1" class="pager-ul">
 			<ngx-pager-li
 				[button]="{ name: 'first', symbol: '|<', value: 1 }"
@@ -54,7 +57,10 @@ export class PagerComponent implements OnInit {
 	pager: PagerModel;
 	pagedRecords: {}[];
 
-	constructor(private _pagerService: PagerService) {}
+	constructor(
+		private _pagerService: PagerService,
+		private _recordsFormatter: RecordsFormatterService
+	) {}
 
 	ngOnInit(): void {}
 
@@ -68,5 +74,10 @@ export class PagerComponent implements OnInit {
 		this.pagedRecords = this.records.slice(this.pager.startIndex, this.pager.endIndex + 1);
 
 		this.pagedRecordsChange.emit(this.pagedRecords);
+	}
+
+	exportRecords(format: string): void {
+		if (format === 'csv') this._recordsFormatter.formatToCSV(this.records, true);
+		if (format === 'json') this._recordsFormatter.formatToJSON(this.records, true);
 	}
 }

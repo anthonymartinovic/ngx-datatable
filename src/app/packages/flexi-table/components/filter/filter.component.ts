@@ -13,7 +13,7 @@ import { FilterService } from '../../services/filter.service';
 		<div class="search-container">
 			<div class="search-icon" [innerHTML]="imgService.getSVG('search')"></div>
 			<select
-				*ngIf="!fixedFilterColumn" 
+				*ngIf="!globalFilter" 
 				[(ngModel)]="selectedFilterColumn" 
 				(change)="setFilter()"
 			>
@@ -31,7 +31,7 @@ import { FilterService } from '../../services/filter.service';
 export class FilterComponent implements OnChanges {
 	@Input() columns: ColumnMap[];
 	@Input() records: {}[];
-	@Input() fixedFilterColumn: string;
+	@Input() globalFilter: string;
 
 	@Output() recordsChange: EventEmitter<{}[]> = new EventEmitter();
 
@@ -44,7 +44,7 @@ export class FilterComponent implements OnChanges {
 	) {}
 
 	ngOnChanges(): void {
-		if (!this.fixedFilterColumn) this.selectedFilterColumn = this.columns[0].primeKey;
+		if (!this.globalFilter) this.selectedFilterColumn = this.columns[0].primeKey;
 	}
 
 	setFilter(target?: HTMLInputElement): void {
@@ -53,7 +53,7 @@ export class FilterComponent implements OnChanges {
 
 		const filteredRecords = this._filterService.filterRecords(
 			this.cachedTarget.value.toLowerCase(), 
-			(this.fixedFilterColumn) ? this.fixedFilterColumn : this.selectedFilterColumn, 
+			(this.globalFilter) ? this.globalFilter : this.selectedFilterColumn, 
 			this.columns, 
 			this.records
 		);
@@ -62,6 +62,6 @@ export class FilterComponent implements OnChanges {
 	}
 
 	get placeholderText(): string {
-		return `Filter ${(this.fixedFilterColumn) ? this.fixedFilterColumn : 'selected'} column...`;
+		return `Filter ${(this.globalFilter) ? this.globalFilter : 'selected'} column...`;
 	}
 }

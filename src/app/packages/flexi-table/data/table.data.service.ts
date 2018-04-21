@@ -9,7 +9,7 @@ import { StylesModel } from '../models/styles.model';
 export class TableDataService {
 	private loadingSource         = new BehaviorSubject<boolean>(false);
 	private columnsSource         = new BehaviorSubject<ColumnMap[]>(undefined);
-	private columnFiltersSource   = new BehaviorSubject<boolean>(undefined);
+	private columnFiltersSource   = new BehaviorSubject<string[]>(undefined);
 	private recordsSource         = new BehaviorSubject<{}[]>(undefined);
 	private checkedRecordsSource  = new BehaviorSubject<{}[]>(undefined);
 	private pagedRecordsSource    = new BehaviorSubject<{}[]>(undefined);
@@ -43,7 +43,7 @@ export class TableDataService {
 
 	publishLoading                = (loading: boolean): void => this.loadingSource.next(loading);
 	publishColumns                = (columns: ColumnMap[]): void => this.columnsSource.next(columns);
-	publishColumnFilters          = (columnFilters: boolean): void => this.columnFiltersSource.next(columnFilters);
+	publishColumnFilters          = (columnFilters: string[]): void => this.columnFiltersSource.next(columnFilters);
 	publishRecords                = (records: {}[]): void => this.recordsSource.next(records);
 	publishCheckedRecords         = (checkedRecords: {}[]): void => this.checkedRecordsSource.next(checkedRecords);
 	publishPagedRecords           = (pagedRecords: {}[]): void => this.pagedRecordsSource.next(pagedRecords);

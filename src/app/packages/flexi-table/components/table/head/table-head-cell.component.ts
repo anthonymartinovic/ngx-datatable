@@ -16,7 +16,7 @@ import { SortService } from '../../../services/sort.service';
 		<ng-container *ngIf="headerType === 'standard'">
 			<div class="head-cell-text" (click)="setSort(column)">{{value}}</div>
 			<input
-				*ngIf="columnFilters"
+				*ngIf="columnFilters && columnFilters.includes(value.toLowerCase())"
 				type="text"
 				class="head-cell-search-input"
 				placeholder="Search..."
@@ -51,7 +51,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	@Input() column: ColumnMap;
 
 	columns: ColumnMap[];
-	columnFilters: boolean;
+	columnFilters: string[];
 	records: {}[];
 	cachedRecords: {}[];
 	checkedRecords: {}[];
@@ -174,5 +174,9 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 		this.tableData.publishRecords(this.records);
 		this.tableData.publishSortedColumn(this.sortedColumn);
 		this.tableData.runInitSetPage();
+	}
+
+	filter(value): any {
+
 	}
 }

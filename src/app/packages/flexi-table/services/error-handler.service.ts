@@ -7,7 +7,7 @@ export class ErrorHandlerService extends ErrorHandler {
 		super();
 	}
 
-	handleError(errorMessage: string) {
-		super.handleError(`:: HANDLER :: 'ngx-flexi-table' : ${errorMessage}`);
-	}
+	// handleError(errorMessage: string) {
+		// super.handleError(`:: HANDLER :: 'ngx-flexi-table' : ${errorMessage}`);
+	// }
 }

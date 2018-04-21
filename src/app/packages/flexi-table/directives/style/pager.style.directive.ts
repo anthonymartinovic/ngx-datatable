@@ -1,4 +1,4 @@
-import { Directive, Input, ElementRef, Renderer2, OnChanges } from '@angular/core';
+import { Directive, OnChanges, Input, HostBinding } from '@angular/core';
 
 @Directive({
 	selector: '[pagerStyle]',
@@ -11,10 +11,9 @@ export class PagerStyleDirective implements OnChanges {
 		totalPages?: number
 	};
 
-	constructor(
-		private _elementRef: ElementRef, 
-		private _renderer: Renderer2
-	) {}
+	@HostBinding('style.color') color: string;
+	@HostBinding('style.cursor') cursor: string;
+	@HostBinding('style.pointer-events') pointerEvents: string;
 
 	ngOnChanges() {
 		if (this.pagerStyle.button === 'first' || 
@@ -42,13 +41,13 @@ export class PagerStyleDirective implements OnChanges {
 	}
 
 	enable() {
-		this._renderer.setStyle(this._elementRef.nativeElement, 'color', '#000');
-		this._renderer.setStyle(this._elementRef.nativeElement, 'pointer-events', 'auto');
-		this._renderer.setStyle(this._elementRef.nativeElement, 'cursor', 'pointer');
+		this.color = '#000';
+		this.cursor = 'pointer';
+		this.pointerEvents = 'auto';
 	}
 
 	disable() {
-		this._renderer.setStyle(this._elementRef.nativeElement, 'color', '#dcdcdc');
-		this._renderer.setStyle(this._elementRef.nativeElement, 'pointer-events', 'none');
+		this.color = '#dcdcdc';
+		this.pointerEvents = 'none';
 	}
 }

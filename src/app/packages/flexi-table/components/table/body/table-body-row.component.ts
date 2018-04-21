@@ -7,6 +7,7 @@ import { TableDataService } from '../../../data/table.data.service';
 	host: { 'class': 'table-body-row' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
+		<ngx-table-body-cell [dataType]="'rowDetail'" [value]="record"></ngx-table-body-cell>
 		<ng-container *ngFor="let column of tableData.columns$ | async">
 			<ngx-table-body-cell
 				[dataType]="'standard'"

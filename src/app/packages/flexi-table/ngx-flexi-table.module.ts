@@ -10,6 +10,7 @@ import { TableHeadCellComponent } from './components/table/head/table-head-cell.
 import { TableBodyComponent } from './components/table/body/table-body.component';
 import { TableBodyGroupComponent } from './components/table/body/table-body-group.component';
 import { TableBodyRowComponent } from './components/table/body/table-body-row.component';
+import { TableBodyRowDetailComponent } from './components/table/body/table-body-row-detail.component';
 import { TableBodyCellComponent } from './components/table/body/table-body-cell.component';
 import { FilterComponent } from './components/filter/filter.component';
 import { PagerComponent } from './components/pager/pager.component';
@@ -29,6 +30,7 @@ import { ErrorHandlerService } from './services/error-handler.service';
 import { FilterService } from './services/filter.service';
 import { ImgService } from './services/img.service';
 import { PagerService } from './services/pager.service';
+import { RecordsFormatterService } from './services/records-formatter.service';
 import { SortService } from './services/sort.service';
 
 @NgModule({
@@ -45,6 +47,7 @@ import { SortService } from './services/sort.service';
 		TableBodyComponent, 
 		TableBodyGroupComponent,
 		TableBodyRowComponent,
+		TableBodyRowDetailComponent,
 		TableBodyCellComponent, 
 		FilterComponent,
 		PagerComponent, 
@@ -57,7 +60,7 @@ import { SortService } from './services/sort.service';
 		StopPropagationClickDirective,
 
 		CellFormatPipe,
-		GroupPipe,
+		GroupPipe
 	],
 	providers: [
 		CurrencyPipe,
@@ -70,6 +73,7 @@ import { SortService } from './services/sort.service';
 		FilterService,
 		ImgService,
 		PagerService,
+		RecordsFormatterService,
 		SortService
 	],
 	exports: [FlexiTableComponent],

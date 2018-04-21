@@ -10,16 +10,16 @@ import { FakeService } from './fake/fake.service';
 	selector: 'ngx-root',
 	template: `
 		<ngx-flexi-table
-			[records]="projects"
 			[caption]="'NASA Projects'"
 			[config]="projectConfig"
+			[styles]="styles"
+			[records]="projects"
+			[recordsPerPage]="recordsPerPage"
+			[groupBy]="['name']"
+			[globalFilter]="filterColumn"
+			[columnFilters]="columnFilters"
 			[newTabCaption]="'Route'"
 			[newTabKeys]="['cost']"
-			[recordsPerPage]="recordsPerPage"
-			[fixedFilterColumn]="filterColumn"
-			[columnFilters]="columnFilters"
-			[groupBy]="['name']"
-			[styles]="styles"
 			(onRowSelection)="logRow($event)"
 			(onCheckboxChange)="logRows($event)"
 			(onNewTabSelection)="logRoute($event)"
@@ -51,9 +51,12 @@ export class AppComponent implements OnInit {
 	recordsPerPage: number = 5;
 
 	filterColumn: string = 'name';
-	columnFilters: boolean = false;
+	columnFilters: string[] = [];
 
 	styles: any = {
+		table: {
+			width: '300px'
+		},
 		head: {
 			rowHeight: '60px'
 		},
@@ -186,12 +189,8 @@ export class AppComponent implements OnInit {
 			this.projects = this._fakeService.getProjects();
 			this.recordsPerPage = 10;
 			this.filterColumn = undefined;
-			this.columnFilters = true;
+			this.columnFilters = ['first launch'];
 		}, 5000);
-	}
-
-	rowSelection(row: any) {
-		console.log(row);
 	}
 
 	logRow(event) {

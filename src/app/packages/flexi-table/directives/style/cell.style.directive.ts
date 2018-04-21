@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer2, Input, OnInit } from '@angular/core';
+import { Directive, Input, OnInit, HostBinding } from '@angular/core';
 
 @Directive({
 	selector: '[cellStyle]',
@@ -6,23 +6,21 @@ import { Directive, ElementRef, Renderer2, Input, OnInit } from '@angular/core';
 export class CellStyleDirective implements OnInit {
 	@Input() cellStyle: string;
 
-	constructor(
-		private _elementRef: ElementRef, 
-		private _renderer: Renderer2
-	) {}
+	@HostBinding('style.color') color: string;
+	@HostBinding('style.text-align') textAlign: string;
 
 	ngOnInit() {	
 		if (this.cellStyle === undefined)
 		{
-			this._renderer.setStyle(this._elementRef.nativeElement, 'color', '#dcdcdc');
-			this._renderer.setStyle(this._elementRef.nativeElement, 'text-align', 'center');
+			this.color = '#dcdcdc';
+			this.textAlign = 'center';
 		}
 
 		if (this.cellStyle === 'checkbox' || 
 			this.cellStyle === 'newTab' || 
 			typeof this.cellStyle === 'number')
 		{
-			this._renderer.setStyle(this._elementRef.nativeElement, 'text-align', 'right');
+			this.textAlign = 'right';
 		}
 	}
 }
