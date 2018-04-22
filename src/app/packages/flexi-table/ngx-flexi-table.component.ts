@@ -30,6 +30,7 @@ import { TableDataService } from './data/table.data.service';
 	template: `
 		<div class="flexi-table-header">
 			<caption *ngIf="caption" class="flexi-table-caption">{{ caption }}</caption>
+			<ngx-exporter [records]="records" [checkedRecords]="checkedRecords"></ngx-exporter>
 			<ngx-filter
 				*ngIf="!columnFilters"
 				[columns]="columns"
@@ -43,7 +44,6 @@ import { TableDataService } from './data/table.data.service';
 			<ngx-pager
 				[records]="recordsCopy"
 				[recordsPerPage]="recordsPerPage"
-				[checkedRecords]="checkedRecords"
 				(pagedRecordsChange)="updatePagedRecords($event)"
 			></ngx-pager>
 		</div>

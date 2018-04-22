@@ -12,36 +12,6 @@ import { RecordsFormatterService } from '../../services/records-formatter.servic
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<div class="total-records">Total: {{this.records.length}}</div>
-		<div class="export-options">
-			<button 
-				type="button" 
-				class="export-button" 
-				(click)="exportRecords('csv', false)"
-			>
-				Export all data (CSV)
-			</button>
-			<button 
-				type="button"
-				class="export-button" 
-				(click)="exportRecords('json', false)"
-			>
-				Export all data (JSON)
-			</button>
-			<button 
-				type="button" 
-				class="export-button" 
-				(click)="exportRecords('csv', true)"
-			>
-				Export selected data (CSV)
-			</button>
-			<button 
-				type="button" 
-				class="export-button" 
-				(click)="exportRecords('json', true)"
-			>
-				Export selected data (JSON)
-			</button>
-		</div>
 		<ul *ngIf="pager && pager.selectablePages && pager.selectablePages.length > 1" class="pager-ul">
 			<ngx-pager-li
 				[button]="{ name: 'first', symbol: '|<', value: 1 }"
@@ -79,17 +49,13 @@ import { RecordsFormatterService } from '../../services/records-formatter.servic
 export class PagerComponent implements OnInit {
 	@Input() records: {}[];
 	@Input() recordsPerPage: number;
-	@Input() checkedRecords: {}[];
 
 	@Output() pagedRecordsChange: EventEmitter<{}[]> = new EventEmitter();
 
 	pager: PagerModel;
 	pagedRecords: {}[];
 
-	constructor(
-		private _pagerService: PagerService,
-		private _recordsFormatter: RecordsFormatterService
-	) {}
+	constructor(private _pagerService: PagerService) {}
 
 	ngOnInit(): void {}
 
@@ -103,12 +69,5 @@ export class PagerComponent implements OnInit {
 		this.pagedRecords = this.records.slice(this.pager.startIndex, this.pager.endIndex + 1);
 
 		this.pagedRecordsChange.emit(this.pagedRecords);
-	}
-
-	exportRecords(format: string, checked: boolean): void {
-		if (format === 'csv' && !checked) this._recordsFormatter.formatToCSV(this.records, true);
-		if (format === 'json' && !checked) this._recordsFormatter.formatToJSON(this.records, true);
-		if (format === 'csv' && checked) this._recordsFormatter.formatToCSV(this.checkedRecords, true);
-		if (format === 'json' && checked) this._recordsFormatter.formatToJSON(this.checkedRecords, true);
 	}
 }
