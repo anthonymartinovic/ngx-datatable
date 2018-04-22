@@ -9,6 +9,7 @@ import { TableDataService } from '../../../data/table.data.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<ng-container *ngIf="groupOptions else noGroupOptions">
+
 			<ng-container *ngFor="let groupValue of groupValues">
 				<ngx-table-body-group 
 					[selectedGroup]="selectedGroup"
@@ -16,22 +17,27 @@ import { TableDataService } from '../../../data/table.data.service';
 					(click)="toggleGroupVisibility(groupValue)"
 				></ngx-table-body-group>
 				<ng-container *ngIf="!hiddenGroupValues.includes(groupValue)">
-					<ngx-table-body-row 
-						*ngFor="let record of pagedRecords | groupBy: selectedGroup : groupValue"
+				<ng-container *ngFor="let record of pagedRecords | groupBy: selectedGroup : groupValue">
+					<ngx-table-body-row
 						bodyRowStyle
 						[record]="record"
 						(click)="selectRow(record)"
 					></ngx-table-body-row>
+					<ngx-table-body-row-details [record]="record"></ngx-table-body-row-details>
 				</ng-container>
 			</ng-container>
+
 		</ng-container>
+
 		<ng-template #noGroupOptions>
+
 			<ngx-table-body-row
 				*ngFor="let record of pagedRecords"
 				bodyRowStyle
 				[record]="record"
 				(click)="selectRow(record)"
 			></ngx-table-body-row>
+
 		</ng-template>
 	`
 })

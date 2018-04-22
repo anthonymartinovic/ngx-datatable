@@ -43,6 +43,7 @@ import { TableDataService } from './data/table.data.service';
 			<ngx-pager
 				[records]="recordsCopy"
 				[recordsPerPage]="recordsPerPage"
+				[checkedRecords]="checkedRecords"
 				(pagedRecordsChange)="updatePagedRecords($event)"
 			></ngx-pager>
 		</div>

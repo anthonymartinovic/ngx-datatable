@@ -36,6 +36,9 @@ import { SortService } from '../../../services/sort.service';
 		<ng-container *ngIf="headerType === 'newTab'">
 			<div class="head-cell-text" [cellStyle]="'newTab'">{{value}}</div>
 		</ng-container>
+		<ng-container *ngIf="headerType === 'rowDetail'">
+			<div class="head-cell-text" [cellStyle]="'rowDetail'"></div>
+		</ng-container>
 	`,
 })
 export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {

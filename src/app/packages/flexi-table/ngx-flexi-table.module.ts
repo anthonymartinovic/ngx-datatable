@@ -10,7 +10,7 @@ import { TableHeadCellComponent } from './components/table/head/table-head-cell.
 import { TableBodyComponent } from './components/table/body/table-body.component';
 import { TableBodyGroupComponent } from './components/table/body/table-body-group.component';
 import { TableBodyRowComponent } from './components/table/body/table-body-row.component';
-import { TableBodyRowDetailComponent } from './components/table/body/table-body-row-detail.component';
+import { TableBodyRowDetailsComponent } from './components/table/body/table-body-row-details.component';
 import { TableBodyCellComponent } from './components/table/body/table-body-cell.component';
 import { FilterComponent } from './components/filter/filter.component';
 import { PagerComponent } from './components/pager/pager.component';
@@ -24,6 +24,7 @@ import { StopPropagationClickDirective } from './directives/event/stop-propagati
 
 import { CellFormatPipe } from './pipes/cell.format.pipe';
 import { GroupPipe } from './pipes/group.pipe';
+import { ObjectFormatPipe } from './pipes/object.format.pipe';
 
 import { ArrayComparatorService } from './services/array-comparator.service';
 import { ErrorHandlerService } from './services/error-handler.service';
@@ -47,7 +48,7 @@ import { SortService } from './services/sort.service';
 		TableBodyComponent, 
 		TableBodyGroupComponent,
 		TableBodyRowComponent,
-		TableBodyRowDetailComponent,
+		TableBodyRowDetailsComponent,
 		TableBodyCellComponent, 
 		FilterComponent,
 		PagerComponent, 
@@ -60,7 +61,8 @@ import { SortService } from './services/sort.service';
 		StopPropagationClickDirective,
 
 		CellFormatPipe,
-		GroupPipe
+		GroupPipe,
+		ObjectFormatPipe
 	],
 	providers: [
 		CurrencyPipe,

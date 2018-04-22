@@ -26,17 +26,24 @@ import { TableDataService } from '../../../data/table.data.service';
 			></div>
 		</ng-container>
 		<ng-container *ngIf="dataType === 'checkbox'">
-		<div 
-			class="ngx-table-cell"
-			[cellStyle]="'checkbox'"
-		>
-			<input 
-				type="checkbox" 
-				stopPropagationClick
-				[checked]="isChecked(value)" 
-				(change)="update(value)"
-			/>
-		</div>
+			<div 
+				class="ngx-table-cell"
+				[cellStyle]="'checkbox'"
+			>
+				<input 
+					type="checkbox" 
+					stopPropagationClick
+					[checked]="isChecked(value)" 
+					(change)="update(value)"
+				/>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="dataType === 'rowDetail'">
+			<div 
+				class="ngx-table-cell" 
+				[cellStyle]="'rowDetail'"
+				[innerHTML]="imgService.getSVG('arrowClosed')"
+			></div>
 		</ng-container>
 	`
 })

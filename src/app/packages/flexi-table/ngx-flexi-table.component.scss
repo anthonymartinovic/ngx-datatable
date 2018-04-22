@@ -107,6 +107,29 @@
 			.table-body-row:nth-child(even) {
 				background-color: #f2f2f2;
 			}
+
+			.table-body-row-details {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				width: 100%;
+				padding: 10px;
+
+				.row-detail-pair {
+					display: flex;
+					flex-direction: row;
+					justify-content: flex-start;
+					align-items: center;
+					width: 100%;
+					// padding-left: 20px;
+
+					.row-detail-key {
+						font-weight: 500;
+						padding-right: 5px;
+					}
+				}
+			}
 		}
 	}
 
@@ -114,7 +137,23 @@
 		border: 1px solid #999;
 		border-top: unset;
 
+		.export-options {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+
+			.export-button {
+				flex: 1 0 40%;
+				margin: 2px 5px;
+			}
+		}
+
 		.pager {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-around;
+			width: 100%;
 			font-weight: 700;
 	
 			.pager-ul {
