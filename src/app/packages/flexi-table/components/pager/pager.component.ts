@@ -8,7 +8,7 @@ import { RecordsFormatterService } from '../../services/records-formatter.servic
 
 @Component({
 	selector: 'ngx-pager',
-	host: { 'class': 'pager' },
+	host: { 'class': 'table-pager' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<div class="total-records">Total: {{this.records.length}}</div>

@@ -7,21 +7,28 @@ import { FilterService } from '../../services/filter.service';
 
 @Component({
 	selector: 'ngx-filter',
-	host: { class: 'filter' },
+	host: { class: 'table-filter' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<div class="search-container">
-			<div class="search-icon" [innerHTML]="imgService.getSVG('search')"></div>
+		<div class="filter-container">
+			<div class="filter-icon" [innerHTML]="imgService.getSVG('search')"></div>
 			<select
 				*ngIf="!globalFilter" 
+				class="filter-select"
 				[(ngModel)]="selectedFilterColumn" 
 				(change)="setFilter()"
 			>
-				<option *ngFor="let column of columns" [ngValue]="column.primeKey">{{column.header}}</option>
+				<option 
+					*ngFor="let column of columns" 
+					class="filter-option"
+					[ngValue]="column.primeKey"
+				>
+					{{column.header}}
+				</option>
 			</select>
 			<input
 				type="text"
-				class="search-input"
+				class="filter-input"
 				[placeholder]="placeholderText"
 				(keyup)="setFilter($event.target)"
 			/>

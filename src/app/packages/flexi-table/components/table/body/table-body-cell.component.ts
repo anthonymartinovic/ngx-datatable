@@ -12,13 +12,13 @@ import { TableDataService } from '../../../data/table.data.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<ng-container *ngIf="dataType === 'standard'">
-			<div class="ngx-table-cell" [cellStyle]="value[column.access(value)]">
+			<div class="body-cell text" [cellStyle]="value[column.access(value)]">
 				{{ value[column.access(value)] | formatCell: column.format }}
 			</div>
 		</ng-container>
 		<ng-container *ngIf="dataType === 'newTab'">
 			<div
-				class="ngx-table-cell"
+				class="body-cell text"
 				stopPropagationClick
 				[cellStyle]="'newTab'"
 				[innerHTML]="imgService.getSVG('newTab')"
@@ -27,11 +27,12 @@ import { TableDataService } from '../../../data/table.data.service';
 		</ng-container>
 		<ng-container *ngIf="dataType === 'checkbox'">
 			<div 
-				class="ngx-table-cell"
+				class="body-cell checkbox-container"
 				[cellStyle]="'checkbox'"
 			>
 				<input 
-					type="checkbox" 
+					type="checkbox"
+					class="checkbox"
 					stopPropagationClick
 					[checked]="isChecked(value)" 
 					(change)="update(value)"
@@ -40,7 +41,7 @@ import { TableDataService } from '../../../data/table.data.service';
 		</ng-container>
 		<ng-container *ngIf="dataType === 'rowDetail'">
 			<div 
-				class="ngx-table-cell" 
+				class="body-cell text" 
 				[cellStyle]="'rowDetail'"
 				[innerHTML]="(showRowDetails) ? imgService.getSVG('arrowOpen') : imgService.getSVG('arrowClosed')"
 				(click)="showRowDetailsChange.emit(!showRowDetails)"

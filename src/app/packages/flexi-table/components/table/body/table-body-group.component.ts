@@ -9,22 +9,22 @@ import { TableDataService } from '../../../data/table.data.service';
 
 @Component({
 	selector: 'ngx-table-body-group',
-	host: { 'class': 'table-body-group' },
+	host: { 'class': 'table-body-group-container' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<div class="table-body-group-row">
-			<span class="group-row-name" (click)="setSort(selectedGroup)">{{selectedGroup}}:</span>
-			<span class="group-row-value">{{value}}</span>
+		<div class="body-group">
+			<div class="group-name" (click)="setSort(selectedGroup)">{{selectedGroup}}:</div>
+			<div class="group-value">{{value}}</div>
 			<ng-container *ngIf="groupOpen else groupClosed">
 				<div 
-					class="group-row-toggle" 
+					class="group-toggle" 
 					[innerHTML]="imgService.getSVG('close')"
 					(click)="groupOpen = !groupOpen"
 				></div>
 			</ng-container>
 			<ng-template #groupClosed>
 				<div 
-					class="group-row-toggle" 
+					class="group-toggle" 
 					[innerHTML]="imgService.getSVG('open')"
 					(click)="groupOpen = !groupOpen"
 				></div>

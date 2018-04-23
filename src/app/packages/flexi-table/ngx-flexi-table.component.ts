@@ -29,7 +29,7 @@ import { TableDataService } from './data/table.data.service';
 	styleUrls: ['./ngx-flexi-table.component.scss'],
 	template: `
 		<div class="flexi-table-header">
-			<caption *ngIf="caption" class="flexi-table-caption">{{ caption }}</caption>
+			<caption *ngIf="caption" class="table-caption">{{ caption }}</caption>
 			<ngx-exporter [records]="records" [checkedRecords]="checkedRecords"></ngx-exporter>
 			<ngx-filter
 				*ngIf="!columnFilters"
@@ -39,7 +39,7 @@ import { TableDataService } from './data/table.data.service';
 				(recordsChange)="filterRecords($event)"
 			></ngx-filter>
 		</div>
-		<div class="flexi-table">
+		<div class="flexi-table-content">
 			<ngx-table></ngx-table>
 		</div>
 		<div class="flexi-table-footer">

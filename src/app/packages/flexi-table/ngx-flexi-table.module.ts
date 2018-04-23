@@ -33,7 +33,7 @@ import { ImgService } from './services/img.service';
 import { PagerService } from './services/pager.service';
 import { RecordsFormatterService } from './services/records-formatter.service';
 import { SortService } from './services/sort.service';
-import { ExporterComponent } from './components/exporter/exporter/exporter.component';
+import { ExporterComponent } from './components/exporter/exporter.component';
 
 @NgModule({
 	imports: [

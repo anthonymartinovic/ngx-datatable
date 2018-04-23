@@ -4,7 +4,7 @@ import { TableDataService } from '../../../data/table.data.service';
 
 @Component({
 	selector: 'ngx-table-body-row',
-	host: { 'class': 'table-body-row' },
+	host: { 'class': 'table-body-row-container' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<div class="body-row" bodyRowStyle>

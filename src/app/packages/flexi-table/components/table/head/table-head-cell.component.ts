@@ -14,30 +14,30 @@ import { SortService } from '../../../services/sort.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<ng-container *ngIf="headerType === 'standard'">
-			<div class="head-cell-text" (click)="setSort(column)">{{value}}</div>
+			<div class="head-cell column-filter-container input-container" (click)="setSort(column)">{{value}}</div>
 			<input
 				*ngIf="columnFilters && columnFilters.includes(value.toLowerCase())"
 				type="text"
-				class="head-cell-search-input"
+				class="column-filter input"
 				placeholder="Search..."
 				(keyup)="setFilter($event.target)"
 			/>
 		</ng-container>
 		<ng-container *ngIf="headerType === 'checkbox'">
-			<div class="head-cell-checkbox-container" [cellStyle]="'checkbox'">
+			<div class="head-cell checkbox-container" [cellStyle]="'checkbox'">
 				<input
 					type="checkbox"
-					class="header-cell-checkbox"
+					class="checkbox"
 					[checked]="isAllChecked()" 
 					(change)="updateAll()"
 				/>
 			</div>
 		</ng-container>
 		<ng-container *ngIf="headerType === 'newTab'">
-			<div class="head-cell-text" [cellStyle]="'newTab'">{{value}}</div>
+			<div class="head-cell text" [cellStyle]="'newTab'">{{value}}</div>
 		</ng-container>
 		<ng-container *ngIf="headerType === 'rowDetail'">
-			<div class="head-cell-text" [cellStyle]="'rowDetail'"></div>
+			<div class="head-cell text" [cellStyle]="'rowDetail'"></div>
 		</ng-container>
 	`,
 })

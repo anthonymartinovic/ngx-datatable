@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
-import { RecordsFormatterService } from '../../../services/records-formatter.service';
+import { RecordsFormatterService } from '../../services/records-formatter.service';
 
 @Component({
 	selector: 'ngx-exporter',

@@ -5,8 +5,8 @@ import { Component, ChangeDetectionStrategy, OnChanges, Input, Output, EventEmit
 	host: { 'class': 'pager-li' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<li [pagerStyle]="styleParams">
-			<a (click)="initSetPage(button.value)">
+		<li class="li-item" [pagerStyle]="styleParams">
+			<a class="li-a" (click)="initSetPage(button.value)">
 				{{ button.symbol }}
 			</a>
 		</li>
