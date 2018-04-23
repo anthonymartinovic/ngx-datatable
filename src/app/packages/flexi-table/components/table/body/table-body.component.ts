@@ -23,7 +23,6 @@ import { TableDataService } from '../../../data/table.data.service';
 						[record]="record"
 						(click)="selectRow(record)"
 					></ngx-table-body-row>
-					<ngx-table-body-row-details [record]="record"></ngx-table-body-row-details>
 				</ng-container>
 			</ng-container>
 

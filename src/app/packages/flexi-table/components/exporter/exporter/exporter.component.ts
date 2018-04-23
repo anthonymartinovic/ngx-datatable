@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, SimpleChanges } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 import { RecordsFormatterService } from '../../../services/records-formatter.service';
 
@@ -46,10 +46,6 @@ export class ExporterComponent {
 	@Input() checkedRecords: {}[];
 
 	constructor(private _recordsFormatter: RecordsFormatterService) {}
-
-	ngOnChanges(changes: SimpleChanges) {
-		console.log(changes);
-	}
 
 	exportRecords(format: string, checked: boolean): void {
 		if (format === 'csv' && !checked) this._recordsFormatter.formatToCSV(this.records, true);

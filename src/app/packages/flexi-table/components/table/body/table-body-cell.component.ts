@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, ChangeDetectorRef, ErrorHandler } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, ErrorHandler } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { ColumnMap } from '../../../models/column.model';
@@ -42,7 +42,8 @@ import { TableDataService } from '../../../data/table.data.service';
 			<div 
 				class="ngx-table-cell" 
 				[cellStyle]="'rowDetail'"
-				[innerHTML]="imgService.getSVG('arrowClosed')"
+				[innerHTML]="(showRowDetails) ? imgService.getSVG('arrowOpen') : imgService.getSVG('arrowClosed')"
+				(click)="showRowDetailsChange.emit(!showRowDetails)"
 			></div>
 		</ng-container>
 	`
@@ -59,6 +60,8 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 	@Input() dataType: string;
 	@Input() value: {};
 	@Input() column: ColumnMap;
+	@Input() showRowDetails: boolean;
+	@Output() showRowDetailsChange: EventEmitter<boolean> = new EventEmitter();
 
 	constructor(
 		private _cdr: ChangeDetectorRef,
@@ -92,13 +95,14 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 	}
 
 	update(record): void {
-		let index = this.checkedRecords.indexOf(record);
+		let checkedRecords = [...this.checkedRecords],
+			index = checkedRecords.indexOf(record);
 		
 		(index > -1)
-			? this.checkedRecords.splice(index, 1)
-			: this.checkedRecords.push(record);
+			? checkedRecords.splice(index, 1)
+			: checkedRecords.push(record);
 
-		this.tableData.publishCheckedRecords(this.checkedRecords);
+		this.tableData.publishCheckedRecords(checkedRecords);
 		this.tableData.runIsAllChecked();
 	}
 

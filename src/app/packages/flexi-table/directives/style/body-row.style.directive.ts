@@ -15,7 +15,7 @@ export class BodyRowStyleDirective implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.stylesSub = this.tableData.styles$.subscribe(styles => {
-			this.height = (styles && styles.body) ? styles.body.rowHeight : '60px';
+			// this.height = (styles && styles.body) ? styles.body.rowHeight : '60px';
 		})
 	}
 

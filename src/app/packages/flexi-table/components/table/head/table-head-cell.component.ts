@@ -157,7 +157,6 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	}
 
 	setSort(column: ColumnMap): void {
-		console.log(column);
 		if (this.sortedColumn && this.sortedColumn.name === column.access(this.records[0]))
 		{
 			(this.sortedColumn.order === 'asc')
@@ -177,9 +176,5 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 		this.tableData.publishRecords(this.records);
 		this.tableData.publishSortedColumn(this.sortedColumn);
 		this.tableData.runInitSetPage();
-	}
-
-	filter(value): any {
-
 	}
 }

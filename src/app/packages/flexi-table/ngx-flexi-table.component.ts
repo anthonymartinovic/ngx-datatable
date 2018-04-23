@@ -39,7 +39,9 @@ import { TableDataService } from './data/table.data.service';
 				(recordsChange)="filterRecords($event)"
 			></ngx-filter>
 		</div>
-		<ngx-table></ngx-table>
+		<div class="flexi-table">
+			<ngx-table></ngx-table>
+		</div>
 		<div class="flexi-table-footer">
 			<ngx-pager
 				[records]="recordsCopy"
