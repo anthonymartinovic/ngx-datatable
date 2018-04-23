@@ -29,7 +29,9 @@ import { TableDataService } from './data/table.data.service';
 	styleUrls: ['./ngx-flexi-table.component.scss'],
 	template: `
 		<div class="flexi-table-header">
-			<caption *ngIf="caption" class="table-caption">{{ caption }}</caption>
+			<div class="table-caption-container">
+				<caption *ngIf="caption" class="table-caption">{{ caption }}</caption>
+			</div>
 			<ngx-exporter [records]="records" [checkedRecords]="checkedRecords"></ngx-exporter>
 			<ngx-filter
 				*ngIf="!columnFilters"

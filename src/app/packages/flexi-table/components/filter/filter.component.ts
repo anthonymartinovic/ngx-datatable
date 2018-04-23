@@ -11,7 +11,15 @@ import { FilterService } from '../../services/filter.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<div class="filter-container">
-			<div class="filter-icon" [innerHTML]="imgService.getSVG('search')"></div>
+			<div class="filter-input-container">
+				<div class="filter-input-icon" [innerHTML]="imgService.getSVG('search')"></div>
+				<input
+					type="text"
+					class="filter-input"
+					[placeholder]="placeholderText"
+					(keyup)="setFilter($event.target)"
+				/>
+			</div>
 			<select
 				*ngIf="!globalFilter" 
 				class="filter-select"
@@ -26,12 +34,6 @@ import { FilterService } from '../../services/filter.service';
 					{{column.header}}
 				</option>
 			</select>
-			<input
-				type="text"
-				class="filter-input"
-				[placeholder]="placeholderText"
-				(keyup)="setFilter($event.target)"
-			/>
 		</div>
 	`,
 })

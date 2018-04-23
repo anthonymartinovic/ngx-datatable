@@ -5,6 +5,10 @@ import { ColumnConfig } from './packages/flexi-table/models/column.model';
 
 import { FakeService } from './fake/fake.service';
 
+// <ngx-flexi-table
+// 	[records]="people"
+// 	[caption]="'NASA Astronauts'"
+// ></ngx-flexi-table>
 
 @Component({
 	selector: 'ngx-root',
@@ -23,10 +27,6 @@ import { FakeService } from './fake/fake.service';
 			(onRowSelection)="logRow($event)"
 			(onCheckboxChange)="logRows($event)"
 			(onNewTabSelection)="logRoute($event)"
-		></ngx-flexi-table>
-		<ngx-flexi-table
-			[records]="people"
-			[caption]="'NASA Astronauts'"
 		></ngx-flexi-table>
 	`
 })
