@@ -77,10 +77,22 @@
 		border-bottom: 1px solid #dedede;
 
 		.table {
+			display: grid;
+
 			.table-head {
+
 				.table-head-row-container {
+
 					.head-row {
+						display: flex;
+						flex-direction: row;
+						justify-content: flex-start;
+						align-items: center;
+
 						.table-head-cell {
+							display: flex;
+							flex-grow: 1;
+
 							.head-cell {
 
 							}
@@ -98,10 +110,17 @@
 								}
 							}
 							.input-container {
+								grid-area: ngx-checkbox;
+								display: grid;
+
 								.input {
 
 								}
 							}
+						}
+
+						.row-detail-table-cell {
+							width: 10%;
 						}
 					}
 				}
