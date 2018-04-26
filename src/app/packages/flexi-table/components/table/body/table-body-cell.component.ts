@@ -18,7 +18,7 @@ import { TableDataService } from '../../../data/table.data.service';
 		</ng-container>
 		<ng-container *ngIf="dataType === 'newTab'">
 			<div
-				class="body-cell text"
+				class="body-cell svg"
 				stopPropagationClick
 				[cellStyle]="'newTab'"
 				[innerHTML]="imgService.getSVG('newTab')"
@@ -41,7 +41,7 @@ import { TableDataService } from '../../../data/table.data.service';
 		</ng-container>
 		<ng-container *ngIf="dataType === 'rowDetail'">
 			<div 
-				class="body-cell text" 
+				class="body-cell svg" 
 				[cellStyle]="'rowDetail'"
 				[innerHTML]="(showRowDetails) ? imgService.getSVG('arrowOpen') : imgService.getSVG('arrowClosed')"
 				(click)="showRowDetailsChange.emit(!showRowDetails)"

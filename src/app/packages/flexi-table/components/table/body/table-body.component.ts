@@ -14,7 +14,8 @@ import { TableDataService } from '../../../data/table.data.service';
 				<ngx-table-body-group 
 					[selectedGroup]="selectedGroup"
 					[value]="groupValue"
-					(click)="toggleGroupVisibility(groupValue)"
+					[hiddenGroupValues]="hiddenGroupValues"
+					(toggleChange)="toggleGroupVisibility(groupValue)"
 				></ngx-table-body-group>
 				<ng-container *ngIf="!hiddenGroupValues.includes(groupValue)">
 				<ng-container *ngFor="let record of pagedRecords | groupBy: selectedGroup : groupValue">

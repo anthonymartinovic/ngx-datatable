@@ -9,6 +9,7 @@ import { TableDataService } from '../../../data/table.data.service';
 	template: `
 		<div class="body-row" bodyRowStyle>
 			<ngx-table-body-cell 
+				class="row-detail-table-body-cell"
 				[dataType]="'rowDetail'" 
 				[value]="record"
 				[showRowDetails]="showRowDetails"

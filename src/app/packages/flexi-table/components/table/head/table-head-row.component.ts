@@ -8,7 +8,7 @@ import { TableDataService } from '../../../data/table.data.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<div class="head-row" headRowStyle>
-			<ngx-table-head-cell class="row-detail-table-cell" [headerType]="'rowDetail'"></ngx-table-head-cell>
+			<ngx-table-head-cell class="row-detail-table-head-cell" [headerType]="'rowDetail'"></ngx-table-head-cell>
 			<ng-container *ngFor="let column of tableData.columns$ | async">
 				<ngx-table-head-cell
 					[headerType]="'standard'"

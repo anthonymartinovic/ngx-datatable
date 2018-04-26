@@ -3,6 +3,7 @@
 :host-context(ngx-flexi-table) ::ng-deep {
 	display: grid;
 	grid-template-rows: 70px auto 70px;
+	min-width: 700px;
 	border: 1px solid #dedede;
 
 	* {
@@ -11,7 +12,7 @@
 		
 	.flexi-table-header {
 		display: grid;
-		grid-template-columns: 1fr 2.5fr 1.5fr;
+		grid-template-columns: 1fr 2.5fr minmax(0, 1.5fr);
 		align-items: center;
 
 		.table-caption-container {
@@ -88,82 +89,168 @@
 						flex-direction: row;
 						justify-content: flex-start;
 						align-items: center;
+						padding: 5px;
+						height: 50px;
 
 						.table-head-cell {
 							display: flex;
-							flex-grow: 1;
+							flex: 1 1 150px;
+							flex-direction: column;
+							justify-content: center;
+							height: 100%;
+							padding: 5px 10px;
+							// border-right: 1px solid #dedede;
 
-							.head-cell {
+							.head-cell {}
 
-							}
-							.text {
+							.text {}
 
-							}
 							.checkbox-container {
-								.checkbox {
-
-								}
+								.checkbox {}
 							}
+
 							.column-filter-container {
-								.column-filter {
-
-								}
+								.column-filter {}
 							}
+
 							.input-container {
 								grid-area: ngx-checkbox;
 								display: grid;
 
-								.input {
-
-								}
+								.input {}
 							}
 						}
 
-						.row-detail-table-cell {
-							width: 10%;
+						.table-head-cell:last-child {
+							border-right: unset;
+						}
+
+						.row-detail-table-head-cell {
+							max-width: 20px;
 						}
 					}
 				}
 			}
 
 			.table-body {
+
 				.table-body-group-container {
+
 					.body-group {
-						.group-name {
+						display: flex;
+						flex-direction: row;
+						justify-content: space-between;
+						align-items: center;
+						height: 40px;
+						padding: 5px;
+						background-color: #dedede;
 
+						.group-info {
+							display: flex;
+							flex-direction: row;
+							padding: 5px 10px;
+
+							.group-name {
+								text-transform: capitalize;
+								padding-right: 10px;
+							}
+
+							.group-value {}
 						}
-						.group-value {
 
-						}
-						.group-toggle {
+						.group-toggle-options {
+							padding: 5px 10px;
 
+							.group-toggle {
+								display: flex;
+								cursor: pointer;
+								width: 20px;
+								height: auto;
+							}
+
+							.group-toggle-open {}
+
+							.group-toggle-closed {}
 						}
 					}
 				}
 				.table-body-row-container {
+
 					.body-row {
+						display: flex;
+						flex-direction: row;
+						justify-content: flex-start;
+						align-items: center;
+						height: 40px;
+						padding: 5px;
+						border-bottom: 1px solid #dedede;
+
 						.table-body-cell {
-							.body-cell {
+							display: flex;
+							flex: 1 1 150px;
+							flex-direction: column;
+							justify-content: center;
+							height: 100%;
+							padding: 5px 10px;
+							// border-right: 1px solid #dedede;
+							
+							.body-cell {}
 
-							}
-							.text {
+							.text {}
 
-							}
-							.checkbox-container {
-								.checkbox {
+							.svg {
+								display: flex;
+								justify-content: center;
 
+								svg {
+									width: 20px;
+									height: auto;
 								}
 							}
+
+							.checkbox-container {
+
+								.checkbox {}
+							}
+						}
+
+						.table-body-cell:last-child {
+							border-right: unset;
+						}
+
+						.row-detail-table-body-cell {
+							max-width: 20px;
 						}
 					}
-					.body-row-details {
-						.row-detail-pair {
-							.row-detail-key {
 
+					.body-row-details {
+						display: flex;
+						flex-direction: column;
+						justify-content: flex-start;
+						align-items: left;
+						padding: 0px;
+						background-color: #eee;
+						border-bottom: 0px solid #dedede;
+						
+						.row-detail-pair {
+							display: flex;
+							flex-direction: row;
+							padding: 1px 15px;
+
+							.row-detail-key {
+								padding-right: 10px;
+								font-weight: 500;
 							}
-							.row-detail-value {
-								
-							}
+
+							.row-detail-value {}
+						}
+
+						.row-detail-pair:nth-child(1) {
+							padding-top: 10px;
+						}
+
+						.row-detail-pair:last-child {
+							padding-bottom: 10px;
 						}
 					}
 				}

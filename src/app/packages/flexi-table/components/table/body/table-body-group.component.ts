@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { ColumnMap } from '../../../models/column.model';
@@ -13,22 +13,26 @@ import { TableDataService } from '../../../data/table.data.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<div class="body-group">
-			<div class="group-name" (click)="setSort(selectedGroup)">{{selectedGroup}}:</div>
-			<div class="group-value">{{value}}</div>
-			<ng-container *ngIf="groupOpen else groupClosed">
-				<div 
-					class="group-toggle" 
-					[innerHTML]="imgService.getSVG('close')"
-					(click)="groupOpen = !groupOpen"
-				></div>
-			</ng-container>
-			<ng-template #groupClosed>
-				<div 
-					class="group-toggle" 
-					[innerHTML]="imgService.getSVG('open')"
-					(click)="groupOpen = !groupOpen"
-				></div>
-			</ng-template>
+			<div class="group-info">
+				<div class="group-name" (click)="setSort(selectedGroup)">{{selectedGroup}}:</div>
+				<div class="group-value">{{value}}</div>
+			</div>
+			<div class="group-toggle-options">
+				<ng-container *ngIf="hiddenGroupValues.includes(value) else groupOpen">
+					<div
+						class="group-toggle group-toggle-open" 
+						[innerHTML]="imgService.getSVG('open')"
+						(click)="toggleChange.emit(this.value)"
+					></div>
+				</ng-container>
+				<ng-template #groupOpen>
+					<div 
+						class="group-toggle group-toggle-close" 
+						[innerHTML]="imgService.getSVG('close')"
+						(click)="toggleChange.emit(this.value)"
+					></div>
+				</ng-template>
+			</div>
 		</div>
 	`
 })
@@ -36,10 +40,11 @@ export class TableBodyGroupComponent implements OnInit {
 	recordsSub: Subscription;
 	sortedColumnSub: Subscription;
 
+	@Input() hiddenGroupValues: any[]
 	@Input() selectedGroup: any;
 	@Input() value: any;
+	@Output() toggleChange: EventEmitter<boolean> = new EventEmitter();
 
-	groupOpen: boolean;
 	records: {}[];
 	sortedColumn: {
 		name: any,
@@ -59,8 +64,6 @@ export class TableBodyGroupComponent implements OnInit {
 	ngOnInit(): void {
 		this.recordsSub      = this.tableData.records$.subscribe(records => this.records = records);
 		this.sortedColumnSub = this.tableData.sortedColumn$.subscribe(sortedColumn => this.sortedColumn = sortedColumn);
-
-		this.groupOpen = true;
 	}
 
 	ngOnDestroy(): void {

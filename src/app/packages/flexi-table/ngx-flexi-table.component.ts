@@ -28,7 +28,7 @@ import { TableDataService } from './data/table.data.service';
 	providers: [TableDataService],
 	styleUrls: ['./ngx-flexi-table.component.scss'],
 	template: `
-		<div class="flexi-table-header">
+		<div *ngIf="!hideHeader" class="flexi-table-header">
 			<div class="table-caption-container">
 				<caption *ngIf="caption" class="table-caption">{{ caption }}</caption>
 			</div>
@@ -69,9 +69,10 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@Input() config: ColumnConfig[];
 	@Input() globalFilter: string;
 	@Input() columnFilters: string[];
+	@Input() hideHeader: boolean;
+	@Input() groupBy: string[];
 	@Input() records: {}[];
 	@Input() recordsPerPage: number;
-	@Input() groupBy: string[];
 	@Input() styles: StylesModel;
 
 	@Output() onRowSelection: EventEmitter<{}>     = new EventEmitter();
