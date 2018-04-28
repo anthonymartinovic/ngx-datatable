@@ -35,7 +35,9 @@
 				align-items: center;
 				padding: 0 20px;
 
-				.export-button {}
+				.export-button {
+					cursor: pointer;
+				}
 			}
 		}
 
@@ -106,7 +108,10 @@
 							.text {}
 
 							.checkbox-container {
-								.checkbox {}
+								
+								.checkbox {
+									cursor: pointer;
+								}
 							}
 
 							.column-filter-container {
@@ -153,6 +158,7 @@
 							.group-name {
 								text-transform: capitalize;
 								padding-right: 10px;
+								cursor: pointer;
 							}
 
 							.group-value {}
@@ -201,6 +207,7 @@
 							.svg {
 								display: flex;
 								justify-content: center;
+								cursor: pointer;
 
 								svg {
 									width: 20px;
@@ -210,7 +217,9 @@
 
 							.checkbox-container {
 
-								.checkbox {}
+								.checkbox {
+									cursor: pointer;
+								}
 							}
 						}
 
