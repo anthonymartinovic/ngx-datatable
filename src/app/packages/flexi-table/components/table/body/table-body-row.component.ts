@@ -8,8 +8,9 @@ import { TableDataService } from '../../../data/table.data.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<div class="body-row" bodyRowStyle>
-			<ngx-table-body-cell 
+			<ngx-table-body-cell
 				class="row-detail-table-body-cell"
+				stopPropagationClick
 				[dataType]="'rowDetail'" 
 				[value]="record"
 				[showRowDetails]="showRowDetails"
@@ -25,7 +26,7 @@ import { TableDataService } from '../../../data/table.data.service';
 			<ngx-table-body-cell [dataType]="'newTab'" [value]="record"></ngx-table-body-cell>
 			<ngx-table-body-cell [dataType]="'checkbox'" [value]="record"></ngx-table-body-cell>
 		</div>
-		<div class="body-row-details">
+		<div stopPropagationClick class="body-row-details">
 			<ngx-table-body-row-details *ngIf="showRowDetails" [record]="record"></ngx-table-body-row-details>
 		</div>
 	`
