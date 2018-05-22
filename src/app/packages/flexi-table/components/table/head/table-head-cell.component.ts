@@ -23,17 +23,18 @@ import { SortService } from '../../../services/sort.service';
 				(keyup)="setFilter($event.target)"
 			/>
 		</ng-container>
-		<ng-container *ngIf="headerType === 'checkbox'">
+		<ng-container *ngIf="headerType === 'checkbox' && tableData.checkboxState$ | async">
 			<div class="head-cell checkbox-container" [cellStyle]="'checkbox'">
 				<input
 					type="checkbox"
 					class="checkbox"
+					[disabled]="records.length === 0"
 					[checked]="isAllChecked()" 
 					(change)="updateAll()"
 				/>
 			</div>
 		</ng-container>
-		<ng-container *ngIf="headerType === 'newTab'">
+		<ng-container *ngIf="headerType === 'newTab' && tableData.newTabState$ | async">
 			<div class="head-cell text" [cellStyle]="'newTab'">{{value}}</div>
 		</ng-container>
 		<ng-container *ngIf="headerType === 'rowDetail'">

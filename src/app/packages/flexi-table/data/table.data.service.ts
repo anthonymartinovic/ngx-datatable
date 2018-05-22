@@ -13,6 +13,9 @@ export class TableDataService {
 	private recordsSource         = new BehaviorSubject<{}[]>(undefined);
 	private checkedRecordsSource  = new BehaviorSubject<{}[]>(undefined);
 	private pagedRecordsSource    = new BehaviorSubject<{}[]>(undefined);
+	private selectableStateSource = new BehaviorSubject<boolean>(undefined);
+	private checkboxStateSource   = new BehaviorSubject<boolean>(undefined);
+	private newTabStateSource     = new BehaviorSubject<boolean>(undefined);
 	private newTabCaptionSource   = new BehaviorSubject<string>(undefined);
 	private newTabKeysSource      = new BehaviorSubject<string[]>(undefined);
 	private newTabSelectionSource = new BehaviorSubject<any>(undefined);
@@ -30,6 +33,9 @@ export class TableDataService {
 	records$                      = this.recordsSource.asObservable();
 	checkedRecords$               = this.checkedRecordsSource.asObservable();
 	pagedRecords$                 = this.pagedRecordsSource.asObservable();
+	selectableState$              = this.selectableStateSource.asObservable();
+	checkboxState$                = this.checkboxStateSource.asObservable();
+	newTabState$                  = this.newTabStateSource.asObservable();
 	newTabCaption$                = this.newTabCaptionSource.asObservable();
 	newTabKeys$                   = this.newTabKeysSource.asObservable();
 	newTabSelection$              = this.newTabSelectionSource.asObservable();
@@ -47,6 +53,9 @@ export class TableDataService {
 	publishRecords                = (records: {}[]): void => this.recordsSource.next(records);
 	publishCheckedRecords         = (checkedRecords: {}[]): void => this.checkedRecordsSource.next(checkedRecords);
 	publishPagedRecords           = (pagedRecords: {}[]): void => this.pagedRecordsSource.next(pagedRecords);
+	publishSelectableState        = (selectableState: boolean): void => this.selectableStateSource.next(selectableState);
+	publishCheckboxState          = (checkboxState: boolean): void => this.checkboxStateSource.next(checkboxState);
+	publishNewTabState            = (newTabState: boolean): void => this.newTabStateSource.next(newTabState);
 	publishNewTabCaption          = (newTabCaption: string): void => this.newTabCaptionSource.next(newTabCaption);
 	publishNewTabKeys             = (newTabKeys: string[]): void => this.newTabKeysSource.next(newTabKeys);
 	publishNewTabSelection        = (newTabSelection: any): void => this.newTabSelectionSource.next(newTabSelection);

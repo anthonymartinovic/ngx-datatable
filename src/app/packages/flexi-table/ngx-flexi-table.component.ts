@@ -29,12 +29,16 @@ import { TableDataService } from './data/table.data.service';
 	styleUrls: ['./ngx-flexi-table.component.scss'],
 	template: `
 		<div *ngIf="!hideHeader" class="flexi-table-header">
-			<div class="table-caption-container">
+			<div class="table-caption-container" [class.caption-container-border]="caption">
 				<caption *ngIf="caption" class="table-caption">{{ caption }}</caption>
 			</div>
-			<ngx-exporter [records]="records" [checkedRecords]="checkedRecords"></ngx-exporter>
+			<ngx-exporter
+				*ngIf="exportOptions"
+				[records]="records"
+				[checkedRecords]="checkedRecords"
+			></ngx-exporter>
 			<ngx-filter
-				*ngIf="!columnFilters"
+				*ngIf="globalFilter && (!columnFilters || !columnFilters.length)"
 				[columns]="columns"
 				[records]="records"
 				[globalFilter]="globalFilter"
@@ -64,6 +68,10 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@ViewChild(PagerComponent) private _pagerComponent: PagerComponent;
 
 	@Input() caption: string;
+	@Input() exportOptions: boolean;
+	@Input() selectable: boolean;
+	@Input() checkboxes: boolean;
+	@Input() newTab: boolean;
 	@Input() newTabCaption: string;
 	@Input() newTabKeys: string[];
 	@Input() config: ColumnConfig[];
@@ -127,7 +135,10 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.stopEmission = true;
 		this.tableData.publishCheckedRecords([]);
 		this.stopEmission = false;
-		
+
+		this.tableData.publishSelectableState(this.selectable);
+		this.tableData.publishCheckboxState(this.checkboxes);
+		this.tableData.publishNewTabState(this.newTab);
 		this.tableData.publishNewTabCaption(this.newTabCaption);
 		this.tableData.publishNewTabKeys(this.newTabKeys);
 		this.tableData.publishColumnFilters(this.columnFilters);

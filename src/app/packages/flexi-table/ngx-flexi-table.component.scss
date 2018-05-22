@@ -20,9 +20,12 @@
 			align-items: center;
 			width: 100%;
 			height: 100%;
-			border-right: 1px solid #dedede;
 			
 			.table-caption {}
+		}
+
+		.caption-container-border {
+			border-right: 1px solid #dedede;
 		}
 
 		.table-exporter {
@@ -103,7 +106,9 @@
 							padding: 5px 10px;
 							// border-right: 1px solid #dedede;
 
-							.head-cell {}
+							.head-cell {
+								cursor: pointer;
+							}
 
 							.text {}
 
@@ -111,6 +116,10 @@
 								
 								.checkbox {
 									cursor: pointer;
+								}
+
+								.checkbox:disabled {
+									cursor: not-allowed;
 								}
 							}
 
@@ -180,6 +189,7 @@
 						}
 					}
 				}
+
 				.table-body-row-container {
 
 					.body-row {
@@ -231,6 +241,14 @@
 						.row-detail-table-body-cell {
 							max-width: 20px;
 						}
+					}
+
+					.body-row-border-top-add {
+						border-top: 1px solid #dedede;
+					}
+	
+					.body-row-border-bottom-remove {
+						border-bottom: 0px solid #dedede;
 					}
 
 					.body-row-details {

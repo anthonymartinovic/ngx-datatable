@@ -7,7 +7,12 @@ import { TableDataService } from '../../../data/table.data.service';
 	host: { 'class': 'table-body-row-container' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<div class="body-row" bodyRowStyle>
+		<div 
+			bodyRowStyle 
+			class="body-row"
+			[class.body-row-border-top-add]="addBorder"
+			[class.body-row-border-bottom-remove]="removeBorder"
+		>
 			<ngx-table-body-cell
 				class="row-detail-table-body-cell"
 				stopPropagationClick
@@ -23,8 +28,16 @@ import { TableDataService } from '../../../data/table.data.service';
 					[value]="record"
 				></ngx-table-body-cell>
 			</ng-container>
-			<ngx-table-body-cell [dataType]="'newTab'" [value]="record"></ngx-table-body-cell>
-			<ngx-table-body-cell [dataType]="'checkbox'" [value]="record"></ngx-table-body-cell>
+			<ngx-table-body-cell
+				*ngIf="tableData.newTabState$ | async"
+				[dataType]="'newTab'"
+				[value]="record"
+			></ngx-table-body-cell>
+			<ngx-table-body-cell
+				*ngIf="tableData.checkboxState$ | async"
+				[dataType]="'checkbox'"
+				[value]="record"
+			></ngx-table-body-cell>
 		</div>
 		<div stopPropagationClick class="body-row-details">
 			<ngx-table-body-row-details *ngIf="showRowDetails" [record]="record"></ngx-table-body-row-details>
@@ -33,6 +46,8 @@ import { TableDataService } from '../../../data/table.data.service';
 })
 export class TableBodyRowComponent implements OnInit {
 	@Input() record: {};
+	@Input() addBorder: boolean;
+	@Input() removeBorder: boolean;
 
 	showRowDetails: boolean;
 

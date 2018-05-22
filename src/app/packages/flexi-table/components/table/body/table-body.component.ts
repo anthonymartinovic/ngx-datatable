@@ -18,12 +18,13 @@ import { TableDataService } from '../../../data/table.data.service';
 					(toggleChange)="toggleGroupVisibility(groupValue)"
 				></ngx-table-body-group>
 				<ng-container *ngIf="!hiddenGroupValues.includes(groupValue)">
-				<ng-container *ngFor="let record of pagedRecords | groupBy: selectedGroup : groupValue">
-					<ngx-table-body-row
-						bodyRowStyle
-						[record]="record"
-						(click)="selectRow(record)"
-					></ngx-table-body-row>
+					<ng-container *ngFor="let record of pagedRecords | groupBy: selectedGroup : groupValue">
+						<ngx-table-body-row
+							bodyRowStyle
+							[record]="record"
+							(click)="selectRow(record)"
+						></ngx-table-body-row>
+					</ng-container>
 				</ng-container>
 			</ng-container>
 
@@ -32,9 +33,11 @@ import { TableDataService } from '../../../data/table.data.service';
 		<ng-template #noGroupOptions>
 
 			<ngx-table-body-row
-				*ngFor="let record of pagedRecords"
+				*ngFor="let record of pagedRecords; let i = index"
 				bodyRowStyle
 				[record]="record"
+				[addBorder]="i === 0"
+				[removeBorder]="i === (pagedRecords.length - 1)"
 				(click)="selectRow(record)"
 			></ngx-table-body-row>
 
@@ -44,11 +47,13 @@ import { TableDataService } from '../../../data/table.data.service';
 export class TableBodyComponent implements OnInit, OnDestroy {
 	groupOptionsSub: Subscription;
 	pagedRecordsSub: Subscription;
+	selectableSub: Subscription;
 
 	hiddenGroupValues: any[];
 	selectedGroup: string;
 	groupOptions: string[];
 	pagedRecords: {}[];
+	selectableState: boolean;
 
 	constructor(
 		public tableData: TableDataService, 
@@ -66,16 +71,16 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 			this.pagedRecords = pagedRecords;
 			this._cdr.markForCheck();
 		});
+		this.selectableSub = this.tableData.selectableState$.subscribe(selectableState => this.selectableState = selectableState);
 	}
 
 	ngOnDestroy(): void {
 		this.groupOptionsSub.unsubscribe();
 		this.pagedRecordsSub.unsubscribe();
+		this.selectableSub.unsubscribe();
 	}
 
-	selectRow(row: {}): void {
-		this.tableData.publishRowSelection(row);
-	}
+	selectRow = (row: {}): void => (this.selectableState) ? this.tableData.publishRowSelection(row) : null;
 
 	toggleGroupVisibility(groupValue: any): void {
 		(this.hiddenGroupValues.indexOf(groupValue) != -1)

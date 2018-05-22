@@ -10,20 +10,38 @@ import { FakeService } from './fake/fake.service';
 // 	[caption]="'NASA Astronauts'"
 // ></ngx-flexi-table>
 
+// <ngx-flexi-table
+// 	[caption]="'NASA Projects'"
+// 	[config]="projectConfig"
+// 	[styles]="styles"
+// 	[records]="projects"
+// 	[recordsPerPage]="recordsPerPage"
+// 	[groupBy]="['name']"
+// 	[globalFilter]="filterColumn"
+// 	[columnFilters]="columnFilters"
+// 	[newTab]="true"
+// 	[newTabCaption]="'Route'"
+// 	[newTabKeys]="['cost']"
+//	[checkboxes]="true"
+//	[selectable]="true"
+//	[exportOptions]="true"
+// 	(onRowSelection)="logRow($event)"
+// 	(onCheckboxChange)="logRows($event)"
+// 	(onNewTabSelection)="logRoute($event)"
+// ></ngx-flexi-table>
+
+//NOTES:
+//	- Config is required to use filters
+//	- columnFilters overrides globalFilter
+//	- if newTab is true, newTabKeys are required
+
 @Component({
 	selector: 'ngx-root',
 	template: `
 		<ngx-flexi-table
-			[caption]="'NASA Projects'"
 			[config]="projectConfig"
 			[styles]="styles"
 			[records]="projects"
-			[recordsPerPage]="recordsPerPage"
-			[groupBy]="['name']"
-			[globalFilter]="filterColumn"
-			[columnFilters]="columnFilters"
-			[newTabCaption]="'Route'"
-			[newTabKeys]="['cost']"
 			(onRowSelection)="logRow($event)"
 			(onCheckboxChange)="logRows($event)"
 			(onNewTabSelection)="logRoute($event)"
