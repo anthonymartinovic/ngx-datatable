@@ -14,6 +14,7 @@ import { TableDataService } from '../../../data/table.data.service';
 			[class.body-row-border-bottom-remove]="removeBorder"
 		>
 			<ngx-table-body-cell
+				*ngIf="tableData.rowDetailState$ | async"
 				class="row-detail-table-body-cell"
 				stopPropagationClick
 				[dataType]="'rowDetail'" 

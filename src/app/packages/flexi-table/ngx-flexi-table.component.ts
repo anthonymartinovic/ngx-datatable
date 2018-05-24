@@ -11,7 +11,8 @@ import {
 	ViewChild, 
 	SimpleChanges, 
 	ChangeDetectorRef,
-	ErrorHandler
+	ErrorHandler,
+	HostBinding
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -19,6 +20,7 @@ import { PagerComponent } from './components/pager/pager.component';
 
 import { ColumnConfig, ColumnMap } from './models/column.model';
 import { StylesModel } from './models/styles.model';
+import { TableInit } from './models/table-init.model';
 
 import { TableDataService } from './data/table.data.service';
 
@@ -28,12 +30,12 @@ import { TableDataService } from './data/table.data.service';
 	providers: [TableDataService],
 	styleUrls: ['./ngx-flexi-table.component.scss'],
 	template: `
-		<div *ngIf="!hideHeader" class="flexi-table-header">
-			<div class="table-caption-container" [class.caption-container-border]="caption">
-				<caption *ngIf="caption" class="table-caption">{{ caption }}</caption>
+		<div class="flexi-table-header" [class.hide-table-header-inner]="init && !init.header">
+			<div class="table-caption-container" [class.caption-container-border]="init.caption">
+				<caption *ngIf="init.caption" class="table-caption">{{ init.caption }}</caption>
 			</div>
 			<ngx-exporter
-				*ngIf="exportOptions"
+				*ngIf="init.exportOptions"
 				[records]="records"
 				[checkedRecords]="checkedRecords"
 			></ngx-exporter>
@@ -48,7 +50,7 @@ import { TableDataService } from './data/table.data.service';
 		<div class="flexi-table-content">
 			<ngx-table></ngx-table>
 		</div>
-		<div class="flexi-table-footer">
+		<div class="flexi-table-footer" [class.hide-table-footer-inner]="init && !init.footer">
 			<ngx-pager
 				[records]="recordsCopy"
 				[recordsPerPage]="recordsPerPage"
@@ -65,19 +67,16 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	rowSelectionSub: Subscription;
 	newTabSelectionSub: Subscription;
 
+	@HostBinding('class.hide-table-header') hideTableHeader;
+	@HostBinding('class.hide-table-footer') hideTableFooter;
+	@HostBinding('class.only-table-content') onlyTableContent;
+
 	@ViewChild(PagerComponent) private _pagerComponent: PagerComponent;
 
-	@Input() caption: string;
-	@Input() exportOptions: boolean;
-	@Input() selectable: boolean;
-	@Input() checkboxes: boolean;
-	@Input() newTab: boolean;
-	@Input() newTabCaption: string;
-	@Input() newTabKeys: string[];
+	@Input() init: TableInit;
 	@Input() config: ColumnConfig[];
 	@Input() globalFilter: string;
 	@Input() columnFilters: string[];
-	@Input() hideHeader: boolean;
 	@Input() groupBy: string[];
 	@Input() records: {}[];
 	@Input() recordsPerPage: number;
@@ -126,6 +125,14 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 
 	ngOnInit(): void { this.onInit() };
 	onInit(): void {
+		if (!this.init) this.init = new TableInit;
+
+		this.hideTableHeader = (this.init.header) ? false : true;
+		this.hideTableFooter = (this.init.footer) ? false : true;
+		this.onlyTableContent = (this.hideTableHeader && this.hideTableFooter) ? true : false;
+
+		if (!this.records) return this._errorHandler.handleError(`No records passed into table`);
+
 		this.tableData.publishStyles(this.styles);
 		this.tableData.publishGroupBy(this.groupBy);
 		
@@ -136,11 +143,12 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.tableData.publishCheckedRecords([]);
 		this.stopEmission = false;
 
-		this.tableData.publishSelectableState(this.selectable);
-		this.tableData.publishCheckboxState(this.checkboxes);
-		this.tableData.publishNewTabState(this.newTab);
-		this.tableData.publishNewTabCaption(this.newTabCaption);
-		this.tableData.publishNewTabKeys(this.newTabKeys);
+		this.tableData.publishSelectableState(this.init.selectable);
+		this.tableData.publishCheckboxState(this.init.checkboxes);
+		this.tableData.publishRowDetailState(this.init.rowDetail);
+		this.tableData.publishNewTabState(this.init.newTab.show);
+		this.tableData.publishNewTabCaption(this.init.newTab.caption);
+		this.tableData.publishNewTabKeys(this.init.newTab.keys);
 		this.tableData.publishColumnFilters(this.columnFilters);
 
 		this._cdr.detectChanges();

@@ -4,18 +4,21 @@ import { Subject } from 'rxjs/Subject';
 
 import { ColumnMap } from '../models/column.model';
 import { StylesModel } from '../models/styles.model';
+import { TableInit } from '../models/table-init.model';
 
 @Injectable()
 export class TableDataService {
 	private loadingSource         = new BehaviorSubject<boolean>(false);
+	private initSource            = new BehaviorSubject<TableInit>(undefined);
 	private columnsSource         = new BehaviorSubject<ColumnMap[]>(undefined);
 	private columnFiltersSource   = new BehaviorSubject<string[]>(undefined);
 	private recordsSource         = new BehaviorSubject<{}[]>(undefined);
 	private checkedRecordsSource  = new BehaviorSubject<{}[]>(undefined);
 	private pagedRecordsSource    = new BehaviorSubject<{}[]>(undefined);
-	private selectableStateSource = new BehaviorSubject<boolean>(undefined);
-	private checkboxStateSource   = new BehaviorSubject<boolean>(undefined);
-	private newTabStateSource     = new BehaviorSubject<boolean>(undefined);
+	private selectableStateSource = new BehaviorSubject<boolean>(false);
+	private checkboxStateSource   = new BehaviorSubject<boolean>(false);
+	private rowDetailStateSource  = new BehaviorSubject<boolean>(false);
+	private newTabStateSource     = new BehaviorSubject<boolean>(false);
 	private newTabCaptionSource   = new BehaviorSubject<string>(undefined);
 	private newTabKeysSource      = new BehaviorSubject<string[]>(undefined);
 	private newTabSelectionSource = new BehaviorSubject<any>(undefined);
@@ -28,6 +31,7 @@ export class TableDataService {
 	private isAllCheckedSubject   = new Subject();
 
 	loading$                      = this.loadingSource.asObservable();
+	init$                         = this.initSource.asObservable();
 	columns$                      = this.columnsSource.asObservable();
 	columnFilters$                = this.columnFiltersSource.asObservable();
 	records$                      = this.recordsSource.asObservable();
@@ -35,6 +39,7 @@ export class TableDataService {
 	pagedRecords$                 = this.pagedRecordsSource.asObservable();
 	selectableState$              = this.selectableStateSource.asObservable();
 	checkboxState$                = this.checkboxStateSource.asObservable();
+	rowDetailState$               = this.rowDetailStateSource.asObservable();
 	newTabState$                  = this.newTabStateSource.asObservable();
 	newTabCaption$                = this.newTabCaptionSource.asObservable();
 	newTabKeys$                   = this.newTabKeysSource.asObservable();
@@ -48,6 +53,7 @@ export class TableDataService {
 	isAllCheckedSubject$          = this.isAllCheckedSubject.asObservable();
 
 	publishLoading                = (loading: boolean): void => this.loadingSource.next(loading);
+	publishInit                   = (init: TableInit): void => this.initSource.next(init);
 	publishColumns                = (columns: ColumnMap[]): void => this.columnsSource.next(columns);
 	publishColumnFilters          = (columnFilters: string[]): void => this.columnFiltersSource.next(columnFilters);
 	publishRecords                = (records: {}[]): void => this.recordsSource.next(records);
@@ -55,6 +61,7 @@ export class TableDataService {
 	publishPagedRecords           = (pagedRecords: {}[]): void => this.pagedRecordsSource.next(pagedRecords);
 	publishSelectableState        = (selectableState: boolean): void => this.selectableStateSource.next(selectableState);
 	publishCheckboxState          = (checkboxState: boolean): void => this.checkboxStateSource.next(checkboxState);
+	publishRowDetailState         = (rowDetailState: boolean): void => this.rowDetailStateSource.next(rowDetailState);
 	publishNewTabState            = (newTabState: boolean): void => this.newTabStateSource.next(newTabState);
 	publishNewTabCaption          = (newTabCaption: string): void => this.newTabCaptionSource.next(newTabCaption);
 	publishNewTabKeys             = (newTabKeys: string[]): void => this.newTabKeysSource.next(newTabKeys);

@@ -23,7 +23,7 @@ import { SortService } from '../../../services/sort.service';
 				(keyup)="setFilter($event.target)"
 			/>
 		</ng-container>
-		<ng-container *ngIf="headerType === 'checkbox' && tableData.checkboxState$ | async">
+		<ng-container *ngIf="headerType === 'checkbox'">
 			<div class="head-cell checkbox-container" [cellStyle]="'checkbox'">
 				<input
 					type="checkbox"
@@ -34,7 +34,7 @@ import { SortService } from '../../../services/sort.service';
 				/>
 			</div>
 		</ng-container>
-		<ng-container *ngIf="headerType === 'newTab' && tableData.newTabState$ | async">
+		<ng-container *ngIf="headerType === 'newTab'">
 			<div class="head-cell text" [cellStyle]="'newTab'">{{value}}</div>
 		</ng-container>
 		<ng-container *ngIf="headerType === 'rowDetail'">

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Project, Person } from './fake/model';
 import { ColumnConfig } from './packages/flexi-table/models/column.model';
+import { TableInit } from './packages/flexi-table/models/table-init.model';
 
 import { FakeService } from './fake/fake.service';
 
@@ -11,7 +12,6 @@ import { FakeService } from './fake/fake.service';
 // ></ngx-flexi-table>
 
 // <ngx-flexi-table
-// 	[caption]="'NASA Projects'"
 // 	[config]="projectConfig"
 // 	[styles]="styles"
 // 	[records]="projects"
@@ -19,12 +19,7 @@ import { FakeService } from './fake/fake.service';
 // 	[groupBy]="['name']"
 // 	[globalFilter]="filterColumn"
 // 	[columnFilters]="columnFilters"
-// 	[newTab]="true"
-// 	[newTabCaption]="'Route'"
-// 	[newTabKeys]="['cost']"
-//	[checkboxes]="true"
-//	[selectable]="true"
-//	[exportOptions]="true"
+//  [init]="tableInit"
 // 	(onRowSelection)="logRow($event)"
 // 	(onCheckboxChange)="logRows($event)"
 // 	(onNewTabSelection)="logRoute($event)"
@@ -39,8 +34,8 @@ import { FakeService } from './fake/fake.service';
 	selector: 'ngx-root',
 	template: `
 		<ngx-flexi-table
+			[init]="tableInit"
 			[config]="projectConfig"
-			[styles]="styles"
 			[records]="projects"
 			(onRowSelection)="logRow($event)"
 			(onCheckboxChange)="logRows($event)"
@@ -65,6 +60,21 @@ export class AppComponent implements OnInit {
 			header: 'Name',
 		}
 	];
+
+	tableInit: TableInit = {
+		header: true,
+		footer: true,
+		caption: 'New Table Title',
+		exportOptions: true,
+		selectable: true,
+		checkboxes: true,
+		rowDetail: true,
+		newTab: {
+			show: true,
+			caption: 'New Route Title',
+			keys: ['first_flight']
+		},
+	};
 
 	recordsPerPage: number = 5;
 

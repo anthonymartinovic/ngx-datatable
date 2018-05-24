@@ -8,7 +8,11 @@ import { TableDataService } from '../../../data/table.data.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<div class="head-row" headRowStyle>
-			<ngx-table-head-cell class="row-detail-table-head-cell" [headerType]="'rowDetail'"></ngx-table-head-cell>
+			<ngx-table-head-cell
+				*ngIf="tableData.rowDetailState$ | async"
+				class="row-detail-table-head-cell"
+				[headerType]="'rowDetail'"
+			></ngx-table-head-cell>
 			<ng-container *ngFor="let column of tableData.columns$ | async">
 				<ngx-table-head-cell
 					[headerType]="'standard'"
@@ -17,10 +21,12 @@ import { TableDataService } from '../../../data/table.data.service';
 				></ngx-table-head-cell>
 			</ng-container>
 			<ngx-table-head-cell
+				*ngIf="tableData.newTabState$ | async"
 				[headerType]="'newTab'"
 				[value]="tableData.newTabCaption$ | async"
 			></ngx-table-head-cell>
 			<ngx-table-head-cell
+				*ngIf="tableData.checkboxState$ | async"
 				[headerType]="'checkbox'"
 			></ngx-table-head-cell>
 		</div>

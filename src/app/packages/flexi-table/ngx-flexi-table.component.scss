@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Rubik:300,400,500,700');
 
+// :host-context(.red-theme) .btn-theme {
+// 	background: red;
+// }
+// :host-context(.blue-theme) .btn-theme {
+// 	background: blue;
+// }
+
 :host-context(ngx-flexi-table) ::ng-deep {
 	display: grid;
 	grid-template-rows: 70px auto 70px;
@@ -76,6 +83,10 @@
 				}
 			}
 		}
+	}
+
+	.hide-table-header-inner {
+		display: none;
 	}
 
 	.flexi-table-content {
@@ -319,6 +330,10 @@
 		}
 	}
 
+	.hide-table-footer-inner {
+		display: none;
+	}
+
 	// .flexi-table-header {
 	// 	display: flex;
 	// 	flex-direction: row;
@@ -480,4 +495,16 @@
 	// 		}
 	// 	}
 	// }
+}
+
+:host-context(.hide-table-header) ::ng-deep {
+	grid-template-rows: auto 70px;
+}
+
+:host-context(.hide-table-footer) ::ng-deep {
+	grid-template-rows: 70px auto;
+}
+
+:host-context(.only-table-content) ::ng-deep {
+	grid-template-rows: 0 auto 0;
 }
