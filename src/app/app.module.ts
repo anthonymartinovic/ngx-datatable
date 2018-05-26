@@ -6,11 +6,13 @@ import { FlexiTableModule } from './packages/flexi-table/ngx-flexi-table.module'
 import { AppComponent } from './app.component';
 
 import { FakeService } from './fake/fake.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
 	declarations: [AppComponent],
 	imports: [
-		BrowserModule, 
+		BrowserModule,
+		HttpClientModule,
 		FlexiTableModule
 	],
 	providers: [FakeService],

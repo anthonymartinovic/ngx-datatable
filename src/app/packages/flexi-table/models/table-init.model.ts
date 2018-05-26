@@ -1,4 +1,5 @@
 export class TableInit {
+	serverSide: boolean    = false;
 	header: boolean        = true;
 	footer: boolean        = true;
 	caption: string        = '';
@@ -10,7 +11,7 @@ export class TableInit {
 		show: boolean,
 		caption: string,
 		keys: string[]
-}                          = {
+	}                      = {
 								show: false,
 								caption: '',
 								keys: undefined

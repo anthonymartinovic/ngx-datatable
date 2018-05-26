@@ -40,17 +40,31 @@ export class ColumnMap {
 			: 'default';
 	}
 
-	access(object: any): string | number {
-		if (object[this.primeKey] || !this.altKeys) 
+	access(object: any, returnKey?: boolean): string {
+		if (returnKey)
 		{
-			return this.primeKey; 
-		}
+			if (object[this.primeKey] || !this.altKeys) return this.primeKey;
 
-		for (let key of this.altKeys) 
+			for (let key of this.altKeys)
+				if (object[key]) return key;
+	
+			return this.primeKey;
+		}
+		else
 		{
-			if (object[key]) return key;
+			if (this.primeKey.includes('.'))
+				return this._getPropertyValue(object, this.primeKey);
+	
+			if (object[this.primeKey] || !this.altKeys) return object[this.primeKey]; 
+	
+			for (let key of this.altKeys)
+				if (key.includes('.')) this._getPropertyValue(object, key);
+				else if (object[key]) return object[key];
+	
+			return object[this.primeKey];
 		}
-
-		return this.primeKey;
 	};
+
+	private _getPropertyValue = (object: any, key: string): any =>
+		key.split(".").reduce((item, index) => item[index], object);
 }

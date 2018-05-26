@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef, ErrorHandler } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { TableDataService } from '../../../data/table.data.service';
@@ -57,6 +57,7 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 
 	constructor(
 		public tableData: TableDataService, 
+		private _errorHandler: ErrorHandler,
 		private _cdr: ChangeDetectorRef
 	) {}
 
@@ -108,6 +109,8 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 		for (let record of this.pagedRecords)
 			if (record.hasOwnProperty(this.selectedGroup))
 				if (groupValues.indexOf(record[this.selectedGroup]) === -1) groupValues.push(record[this.selectedGroup]);
+
+		if (!groupValues.length) this._errorHandler.handleError(`No groupBy values match any keys in provided records`);
 
 		return groupValues;
 	}

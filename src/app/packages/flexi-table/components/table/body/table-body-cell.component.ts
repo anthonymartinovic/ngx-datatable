@@ -12,8 +12,8 @@ import { TableDataService } from '../../../data/table.data.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<ng-container *ngIf="dataType === 'standard'">
-			<div class="body-cell text" [cellStyle]="value[column.access(value)]">
-				{{ value[column.access(value)] | formatCell: column.format }}
+			<div class="body-cell text" [cellStyle]="column.access(value)">
+				{{ column.access(value) | formatCell: column.format }}
 			</div>
 		</ng-container>
 		<ng-container *ngIf="dataType === 'newTab'">
@@ -88,6 +88,13 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 		this.checkedRecordsSub.unsubscribe();
 		this.newTabKeysSub.unsubscribe();
 	}
+
+	// getCellValue(value: any) {
+	// 	const cellKey = this.column.access(value);
+		
+	// 	if (cellKey.includes('.'))
+	// 		return cellKey.split(".").reduce((item, index) => item[index], value);
+	// }
 
 	isChecked(record): boolean {
 		return (this.checkedRecords.indexOf(record) > -1)

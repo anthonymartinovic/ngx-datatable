@@ -6,20 +6,17 @@ import { TableInit } from './packages/flexi-table/models/table-init.model';
 
 import { FakeService } from './fake/fake.service';
 
-// <ngx-flexi-table
-// 	[records]="people"
-// 	[caption]="'NASA Astronauts'"
-// ></ngx-flexi-table>
-
+//ALL OPTIONS:
 // <ngx-flexi-table
 // 	[config]="projectConfig"
 // 	[styles]="styles"
 // 	[records]="projects"
-// 	[recordsPerPage]="recordsPerPage"
+// 	[pageLimit]="pageLimit"
 // 	[groupBy]="['name']"
 // 	[globalFilter]="filterColumn"
 // 	[columnFilters]="columnFilters"
 //  [init]="tableInit"
+//	[pageData]="pageData"
 // 	(onRowSelection)="logRow($event)"
 // 	(onCheckboxChange)="logRows($event)"
 // 	(onNewTabSelection)="logRoute($event)"
@@ -29,14 +26,18 @@ import { FakeService } from './fake/fake.service';
 //	- Config is required to use filters
 //	- columnFilters overrides globalFilter
 //	- if newTab is true, newTabKeys are required
+//	- pageData ignored if serverSide is false
+//	- pageLimit ignored if serverSide is true
 
 @Component({
 	selector: 'ngx-root',
 	template: `
 		<ngx-flexi-table
+			*ngIf="!loading"
 			[init]="tableInit"
 			[config]="projectConfig"
 			[records]="projects"
+			[columnFilters]="columnFilters"
 			(onRowSelection)="logRow($event)"
 			(onCheckboxChange)="logRows($event)"
 			(onNewTabSelection)="logRoute($event)"
@@ -44,7 +45,9 @@ import { FakeService } from './fake/fake.service';
 	`
 })
 export class AppComponent implements OnInit {
-	people: Person[];
+	loading: boolean = false;
+
+	people: any[];
 	personnelConfig: ColumnConfig[] = [
 		{  primeKey: 'name' },
 		{  primeKey: 'year_joined', header: 'Joined' },
@@ -53,7 +56,7 @@ export class AppComponent implements OnInit {
 		{  primeKey: 'crewWith', header: 'Crew mates'},
 	];
 
-	projects: Project[];
+	projects: any[];
 	projectConfig: ColumnConfig[] = [
 		{
 			primeKey: 'name',
@@ -62,21 +65,28 @@ export class AppComponent implements OnInit {
 	];
 
 	tableInit: TableInit = {
+		serverSide: false,
 		header: true,
 		footer: true,
 		caption: 'New Table Title',
-		exportOptions: true,
-		selectable: true,
-		checkboxes: true,
-		rowDetail: true,
+		exportOptions: false,
+		selectable: false,
+		checkboxes: false,
+		rowDetail: false,
 		newTab: {
-			show: true,
+			show: false,
 			caption: 'New Route Title',
 			keys: ['first_flight']
 		},
 	};
 
-	recordsPerPage: number = 5;
+	pageLimit: number = 10;
+
+	pageData: {
+		currentPage: number,
+		limit: number,
+		total: number
+	}
 
 	filterColumn: string = 'name';
 	columnFilters: string[] = [];
@@ -97,128 +107,162 @@ export class AppComponent implements OnInit {
 		private _fakeService: FakeService
 	) {}
 
+	// ngOnInit() {
+	// 	this.projects = this._fakeService.getProjects();
+	// 	this.people = this._fakeService.getPersonnel();
+	// 	this.projects = [
+	// 		{
+	// 			id: 1,
+	// 			name: 'Mercury',
+	// 			cost: 277000000,
+	// 			first_flight: 'September 9, 1959',
+	// 			status: 'Complete',
+	// 		},
+	// 		{
+	// 			id: 2,
+	// 			name: 'Gemini',
+	// 			cost: 1300000000,
+	// 			first_flight: 'April 8, 1964',
+	// 			status: 'Complete',
+	// 		},
+	// 		{
+	// 			id: 1,
+	// 			name: 'Mercury',
+	// 			cost: 277000000,
+	// 			first_flight: 'September 9, 1959',
+	// 			status: 'Complete',
+	// 		},
+	// 		{
+	// 			id: 2,
+	// 			name: 'Gemini',
+	// 			cost: 1300000000,
+	// 			first_flight: 'April 8, 1964',
+	// 			status: 'Complete',
+	// 		},
+	// 		{
+	// 			id: 1,
+	// 			name: 'Mercury',
+	// 			cost: 277000000,
+	// 			first_flight: 'September 9, 1959',
+	// 			status: 'Complete',
+	// 		},
+	// 		{
+	// 			id: 2,
+	// 			name: 'Gemini',
+	// 			cost: 1300000000,
+	// 			first_flight: 'April 8, 1964',
+	// 			status: 'Complete',
+	// 		},
+	// 		{
+	// 			id: 1,
+	// 			name: 'Mercury',
+	// 			cost: 277000000,
+	// 			first_flight: 'September 9, 1959',
+	// 			status: 'Complete',
+	// 		},
+	// 		{
+	// 			id: 2,
+	// 			name: 'Gemini',
+	// 			cost: 1300000000,
+	// 			first_flight: 'April 8, 1964',
+	// 			status: 'Complete',
+	// 		},
+	// 		{
+	// 			id: 1,
+	// 			name: 'Mercury',
+	// 			cost: 277000000,
+	// 			first_flight: 'September 9, 1959',
+	// 			status: 'Complete',
+	// 		},
+	// 		{
+	// 			id: 2,
+	// 			name: 'Gemini',
+	// 			cost: 1300000000,
+	// 			first_flight: 'April 8, 1964',
+	// 			status: 'Complete',
+	// 		},
+	// 		{
+	// 			id: 1,
+	// 			name: 'Mercury',
+	// 			cost: 277000000,
+	// 			first_flight: 'September 9, 1959',
+	// 			status: 'Complete',
+	// 		},
+	// 		{
+	// 			id: 2,
+	// 			name: 'Gemini',
+	// 			cost: 1300000000,
+	// 			first_flight: 'April 8, 1964',
+	// 			status: 'Complete',
+	// 		},
+	// 		{
+	// 			id: 1,
+	// 			name: 'Mercury',
+	// 			cost: 277000000,
+	// 			first_flight: 'September 9, 1959',
+	// 			status: 'Complete',
+	// 		},
+	// 		{
+	// 			id: 2,
+	// 			name: 'Gemini',
+	// 			cost: 1300000000,
+	// 			first_flight: 'April 8, 1964',
+	// 			status: 'Complete',
+	// 		},
+	// 	];
+	// 	setTimeout(() => {
+	// 		this.projectConfig = [
+	// 			{
+	// 				primeKey: 'first_launch',
+	// 				altKeys: ['launch', 'first_flight'],
+	// 				header: 'First launch',
+	// 			},
+	// 			{
+	// 				primeKey: 'cost',
+	// 				altKeys: ['total_cost'],
+	// 				header: 'Cost',
+	// 				format: 'currency',
+	// 			},
+	// 		];
+	// 		this.projects = this._fakeService.getProjects();
+	// 		this.pageLimit = 10;
+	// 		this.filterColumn = undefined;
+	// 		this.columnFilters = ['first launch'];
+	// 	}, 5000);
+	// }
+
 	ngOnInit() {
-		this.projects = this._fakeService.getProjects();
-		this.people = this._fakeService.getPersonnel();
-		this.projects = [
-			{
-				id: 1,
-				name: 'Mercury',
-				cost: 277000000,
-				first_flight: 'September 9, 1959',
-				status: 'Complete',
+		this.loading = true;
+		this.getAppraisals();
+	}
+
+	getAppraisals() {
+		this._fakeService.getAppraisals().subscribe(
+			res => {
+				console.log(res);
+				this.projects = res.appraisals;
+				this.pageData = {
+					currentPage: res.page,
+					limit: res.limit,
+					total: res.total
+				}
+				this.projectConfig = [
+					{
+						primeKey: 'property.displayAddress',
+						header: 'Address',
+					},
+					{
+						primeKey: 'team.officeName',
+						altKeys: ['team.office'],
+						header: 'Office',
+					},
+				];
+				this.filterColumn = undefined;
+				this.columnFilters = ['Address'];
 			},
-			{
-				id: 2,
-				name: 'Gemini',
-				cost: 1300000000,
-				first_flight: 'April 8, 1964',
-				status: 'Complete',
-			},
-			{
-				id: 1,
-				name: 'Mercury',
-				cost: 277000000,
-				first_flight: 'September 9, 1959',
-				status: 'Complete',
-			},
-			{
-				id: 2,
-				name: 'Gemini',
-				cost: 1300000000,
-				first_flight: 'April 8, 1964',
-				status: 'Complete',
-			},
-			{
-				id: 1,
-				name: 'Mercury',
-				cost: 277000000,
-				first_flight: 'September 9, 1959',
-				status: 'Complete',
-			},
-			{
-				id: 2,
-				name: 'Gemini',
-				cost: 1300000000,
-				first_flight: 'April 8, 1964',
-				status: 'Complete',
-			},
-			{
-				id: 1,
-				name: 'Mercury',
-				cost: 277000000,
-				first_flight: 'September 9, 1959',
-				status: 'Complete',
-			},
-			{
-				id: 2,
-				name: 'Gemini',
-				cost: 1300000000,
-				first_flight: 'April 8, 1964',
-				status: 'Complete',
-			},
-			{
-				id: 1,
-				name: 'Mercury',
-				cost: 277000000,
-				first_flight: 'September 9, 1959',
-				status: 'Complete',
-			},
-			{
-				id: 2,
-				name: 'Gemini',
-				cost: 1300000000,
-				first_flight: 'April 8, 1964',
-				status: 'Complete',
-			},
-			{
-				id: 1,
-				name: 'Mercury',
-				cost: 277000000,
-				first_flight: 'September 9, 1959',
-				status: 'Complete',
-			},
-			{
-				id: 2,
-				name: 'Gemini',
-				cost: 1300000000,
-				first_flight: 'April 8, 1964',
-				status: 'Complete',
-			},
-			{
-				id: 1,
-				name: 'Mercury',
-				cost: 277000000,
-				first_flight: 'September 9, 1959',
-				status: 'Complete',
-			},
-			{
-				id: 2,
-				name: 'Gemini',
-				cost: 1300000000,
-				first_flight: 'April 8, 1964',
-				status: 'Complete',
-			},
-		];
-		setTimeout(() => {
-			this.projectConfig = [
-				{
-					primeKey: 'first_launch',
-					altKeys: ['launch', 'first_flight'],
-					header: 'First launch',
-				},
-				{
-					primeKey: 'cost',
-					altKeys: ['total_cost'],
-					header: 'Cost',
-					format: 'currency',
-				},
-			];
-			this.projects = this._fakeService.getProjects();
-			this.recordsPerPage = 10;
-			this.filterColumn = undefined;
-			this.columnFilters = ['first launch'];
-		}, 5000);
+			err => console.log(err),
+			() => this.loading = false
+		)
 	}
 
 	logRow(event) {
@@ -233,3 +277,125 @@ export class AppComponent implements OnInit {
 		console.log('ROUTE', event)
 	}
 }
+
+// this.projects = this._fakeService.getProjects();
+// 		this.people = this._fakeService.getPersonnel();
+// 		this.projects = [
+// 			{
+// 				id: 1,
+// 				name: 'Mercury',
+// 				cost: 277000000,
+// 				first_flight: 'September 9, 1959',
+// 				status: 'Complete',
+// 			},
+// 			{
+// 				id: 2,
+// 				name: 'Gemini',
+// 				cost: 1300000000,
+// 				first_flight: 'April 8, 1964',
+// 				status: 'Complete',
+// 			},
+// 			{
+// 				id: 1,
+// 				name: 'Mercury',
+// 				cost: 277000000,
+// 				first_flight: 'September 9, 1959',
+// 				status: 'Complete',
+// 			},
+// 			{
+// 				id: 2,
+// 				name: 'Gemini',
+// 				cost: 1300000000,
+// 				first_flight: 'April 8, 1964',
+// 				status: 'Complete',
+// 			},
+// 			{
+// 				id: 1,
+// 				name: 'Mercury',
+// 				cost: 277000000,
+// 				first_flight: 'September 9, 1959',
+// 				status: 'Complete',
+// 			},
+// 			{
+// 				id: 2,
+// 				name: 'Gemini',
+// 				cost: 1300000000,
+// 				first_flight: 'April 8, 1964',
+// 				status: 'Complete',
+// 			},
+// 			{
+// 				id: 1,
+// 				name: 'Mercury',
+// 				cost: 277000000,
+// 				first_flight: 'September 9, 1959',
+// 				status: 'Complete',
+// 			},
+// 			{
+// 				id: 2,
+// 				name: 'Gemini',
+// 				cost: 1300000000,
+// 				first_flight: 'April 8, 1964',
+// 				status: 'Complete',
+// 			},
+// 			{
+// 				id: 1,
+// 				name: 'Mercury',
+// 				cost: 277000000,
+// 				first_flight: 'September 9, 1959',
+// 				status: 'Complete',
+// 			},
+// 			{
+// 				id: 2,
+// 				name: 'Gemini',
+// 				cost: 1300000000,
+// 				first_flight: 'April 8, 1964',
+// 				status: 'Complete',
+// 			},
+// 			{
+// 				id: 1,
+// 				name: 'Mercury',
+// 				cost: 277000000,
+// 				first_flight: 'September 9, 1959',
+// 				status: 'Complete',
+// 			},
+// 			{
+// 				id: 2,
+// 				name: 'Gemini',
+// 				cost: 1300000000,
+// 				first_flight: 'April 8, 1964',
+// 				status: 'Complete',
+// 			},
+// 			{
+// 				id: 1,
+// 				name: 'Mercury',
+// 				cost: 277000000,
+// 				first_flight: 'September 9, 1959',
+// 				status: 'Complete',
+// 			},
+// 			{
+// 				id: 2,
+// 				name: 'Gemini',
+// 				cost: 1300000000,
+// 				first_flight: 'April 8, 1964',
+// 				status: 'Complete',
+// 			},
+// 		];
+// 		setTimeout(() => {
+// 			this.projectConfig = [
+// 				{
+// 					primeKey: 'first_launch',
+// 					altKeys: ['launch', 'first_flight'],
+// 					header: 'First launch',
+// 				},
+// 				{
+// 					primeKey: 'cost',
+// 					altKeys: ['total_cost'],
+// 					header: 'Cost',
+// 					format: 'currency',
+// 				},
+// 			];
+// 			this.projects = this._fakeService.getProjects();
+// 			this.pageLimit = 10;
+// 			this.filterColumn = undefined;
+// 			this.columnFilters = ['first launch'];
+// 		}, 5000);

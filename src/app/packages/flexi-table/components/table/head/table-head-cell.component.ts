@@ -16,7 +16,7 @@ import { SortService } from '../../../services/sort.service';
 		<ng-container *ngIf="headerType === 'standard'">
 			<div class="head-cell column-filter-container input-container" (click)="setSort(column)">{{value}}</div>
 			<input
-				*ngIf="columnFilters && columnFilters.includes(value.toLowerCase())"
+				*ngIf="columnFilters && columnFilters.includes(value)"
 				type="text"
 				class="column-filter input"
 				placeholder="Search..."
@@ -86,6 +86,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 		this.isAllCheckedSub   = this.tableData.isAllCheckedSubject$.subscribe(() => this.isAllChecked());
 
 		this.cachedRecords = this.records;
+		console.log(this.columnFilters);
 	}
 
 	ngOnDestroy(): void {
@@ -158,9 +159,9 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	}
 
 	setSort(column: ColumnMap): void {
-		(this.sortedColumn && this.sortedColumn.name === column.access(this.records[0]))
+		(this.sortedColumn && this.sortedColumn.name === column.access(this.records[0], true))
 			? this.sortedColumn.order = (this.sortedColumn.order === 'asc') ? 'desc' : 'asc'
-			: this.sortedColumn = { name: column.access(this.records[0]), order: 'asc' };
+			: this.sortedColumn = { name: column.access(this.records[0], true), order: 'asc' };
 
 		this.records = this._sortService.sortRecords(this.records, this.sortedColumn);
 

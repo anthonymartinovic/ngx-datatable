@@ -53,7 +53,7 @@ import { TableDataService } from './data/table.data.service';
 		<div class="flexi-table-footer" [class.hide-table-footer-inner]="init && !init.footer">
 			<ngx-pager
 				[records]="recordsCopy"
-				[recordsPerPage]="recordsPerPage"
+				[pageLimit]="pageLimit"
 				(pagedRecordsChange)="updatePagedRecords($event)"
 			></ngx-pager>
 		</div>
@@ -79,7 +79,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@Input() columnFilters: string[];
 	@Input() groupBy: string[];
 	@Input() records: {}[];
-	@Input() recordsPerPage: number;
+	@Input() pageLimit: number;
 	@Input() styles: StylesModel;
 
 	@Output() onRowSelection: EventEmitter<{}>     = new EventEmitter();
@@ -118,7 +118,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 
 		if (
 			changes['records'] && changes['records'].previousValue ||
-			changes['recordsPerPage'] && changes['recordsPerPage'].previousValue
+			changes['pageLimit'] && changes['pageLimit'].previousValue
 		) 
 			this.reDeployTable();
 	}
@@ -130,6 +130,8 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.hideTableHeader = (this.init.header) ? false : true;
 		this.hideTableFooter = (this.init.footer) ? false : true;
 		this.onlyTableContent = (this.hideTableHeader && this.hideTableFooter) ? true : false;
+
+		this.tableData.publishServerSideState(this.init.serverSide);
 
 		if (!this.records) return this._errorHandler.handleError(`No records passed into table`);
 
@@ -152,6 +154,9 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.tableData.publishColumnFilters(this.columnFilters);
 
 		this._cdr.detectChanges();
+
+		console.log(this.config);
+		console.log(this.records);
 	}
 
 	ngAfterViewInit(): void { this.afterViewInit() };

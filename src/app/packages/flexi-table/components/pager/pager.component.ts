@@ -48,7 +48,7 @@ import { RecordsFormatterService } from '../../services/records-formatter.servic
 })
 export class PagerComponent implements OnInit {
 	@Input() records: {}[];
-	@Input() recordsPerPage: number;
+	@Input() pageLimit: number;
 
 	@Output() pagedRecordsChange: EventEmitter<{}[]> = new EventEmitter();
 
@@ -64,7 +64,7 @@ export class PagerComponent implements OnInit {
 			(page < 1 || page > this.pager.totalPages || page === this.pager.currentPage))
 			return;
 
-		this.pager = this._pagerService.getPager(this.records.length, page, this.recordsPerPage || 10);
+		this.pager = this._pagerService.getPager(this.records.length, page, this.pageLimit || 10);
  
 		this.pagedRecords = this.records.slice(this.pager.startIndex, this.pager.endIndex + 1);
 
