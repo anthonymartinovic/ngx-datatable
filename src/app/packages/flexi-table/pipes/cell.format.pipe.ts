@@ -23,11 +23,11 @@ export class CellFormatPipe implements PipeTransform {
 				return (typeof input[0] !== 'object') 
 					? input.join(', ')
 					: input.map(object => { 
-							return object.name; 
+							return 'N/A'; 
 						}).join(', ');
 			}
 
-			if (typeof input === 'object') return input.name;
+			if (typeof input === 'object') return 'N/A';
 		}
 
 		return input;

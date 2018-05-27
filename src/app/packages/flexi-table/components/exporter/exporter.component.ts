@@ -1,4 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+
+import { TableInit } from '../../models/table-init.model';
 
 import { RecordsFormatterService } from '../../services/records-formatter.service';
 
@@ -42,14 +44,21 @@ import { RecordsFormatterService } from '../../services/records-formatter.servic
 	`,
 })
 export class ExporterComponent {
+	@Input() init: TableInit;
 	@Input() records: {}[];
 	@Input() checkedRecords: {}[];
+
+	@Output() serverExportAll: EventEmitter<string> = new EventEmitter();
 
 	constructor(private _recordsFormatter: RecordsFormatterService) {}
 
 	exportRecords(format: string, checked: boolean): void {
+		if (this.init.serverSide && format === 'csv' && !checked) return this.serverExportAll.emit('csv');
+		if (this.init.serverSide && format === 'json' && !checked) return this.serverExportAll.emit('json');
+
 		if (format === 'csv' && !checked) this._recordsFormatter.formatToCSV(this.records, true);
 		if (format === 'json' && !checked) this._recordsFormatter.formatToJSON(this.records, true);
+
 		if (format === 'csv' && checked) this._recordsFormatter.formatToCSV(this.checkedRecords, true);
 		if (format === 'json' && checked) this._recordsFormatter.formatToJSON(this.checkedRecords, true);
 	}

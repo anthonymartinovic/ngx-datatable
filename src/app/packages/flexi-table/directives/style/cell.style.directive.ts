@@ -11,7 +11,7 @@ export class CellStyleDirective implements OnInit {
 	@HostBinding('style.text-align') textAlign: string;
 
 	ngOnInit() {	
-		if (this.cellStyle === undefined)
+		if (this.cellStyle === undefined || this.cellStyle === null)
 		{
 			this.color = '#dcdcdc';
 			this.textAlign = 'center';

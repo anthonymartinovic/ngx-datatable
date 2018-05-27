@@ -23,6 +23,7 @@ export class TableDataService {
 	private rowSelectionSource    = new BehaviorSubject<{}>(undefined);
 	private groupBySource         = new BehaviorSubject<string[]>(undefined);
 	private stylesSource          = new BehaviorSubject<StylesModel>(undefined);
+	private pageDataSource        = new BehaviorSubject<{}>(undefined);
 	private filterRecordsSubject  = new Subject<{}[]>();
 	private initSetPageSubject    = new Subject();
 	private isAllCheckedSubject   = new Subject();
@@ -54,6 +55,7 @@ export class TableDataService {
 	rowSelection$                 = this.rowSelectionSource.asObservable();
 	groupBy$                      = this.groupBySource.asObservable();
 	styles$                       = this.stylesSource.asObservable();
+	pageData$                     = this.pageDataSource.asObservable();
 	filterRecordsSubject$         = this.filterRecordsSubject.asObservable();
 	initSetPageSubject$           = this.initSetPageSubject.asObservable();
 	isAllCheckedSubject$          = this.isAllCheckedSubject.asObservable();
@@ -85,6 +87,7 @@ export class TableDataService {
 	publishRowSelection           = (row: {}): void => this.rowSelectionSource.next(row);
 	publishGroupBy                = (groupings: string[]): void => this.groupBySource.next(groupings);
 	publishStyles                 = (styles: StylesModel): void => this.stylesSource.next(styles);
+	publishPageData               = (pageData: {}): void => this.pageDataSource.next(pageData);
 	runFilterRecords              = (filteredRecords: {}[]): void => this.filterRecordsSubject.next(filteredRecords);
 	runInitSetPage                = (): void => this.initSetPageSubject.next();
 	runIsAllChecked               = (): void => this.isAllCheckedSubject.next();

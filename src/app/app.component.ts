@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Project, Person } from './fake/model';
 import { ColumnConfig } from './packages/flexi-table/models/column.model';
+import { PageData } from './packages/flexi-table/models/server-init.model';
 import { TableInit } from './packages/flexi-table/models/table-init.model';
 
 import { FakeService } from './fake/fake.service';
@@ -17,6 +18,7 @@ import { FakeService } from './fake/fake.service';
 // 	[columnFilters]="columnFilters"
 //  [init]="tableInit"
 //	[pageData]="pageData"
+//	(onPageChange)="logPage($event)"
 // 	(onRowSelection)="logRow($event)"
 // 	(onCheckboxChange)="logRows($event)"
 // 	(onNewTabSelection)="logRoute($event)"
@@ -28,6 +30,7 @@ import { FakeService } from './fake/fake.service';
 //	- if newTab is true, newTabKeys are required
 //	- pageData ignored if serverSide is false
 //	- pageLimit ignored if serverSide is true
+//	- pageData required if serverSide is true
 
 @Component({
 	selector: 'ngx-root',
@@ -37,7 +40,9 @@ import { FakeService } from './fake/fake.service';
 			[init]="tableInit"
 			[config]="projectConfig"
 			[records]="projects"
-			[columnFilters]="columnFilters"
+			[pageData]="pageData"
+			(onPageChange)="logPage($event)"
+			(onExportAll)="logExportAll($event)"
 			(onRowSelection)="logRow($event)"
 			(onCheckboxChange)="logRows($event)"
 			(onNewTabSelection)="logRoute($event)"
@@ -65,11 +70,11 @@ export class AppComponent implements OnInit {
 	];
 
 	tableInit: TableInit = {
-		serverSide: false,
+		serverSide: true,
 		header: true,
 		footer: true,
 		caption: 'New Table Title',
-		exportOptions: false,
+		exportOptions: true,
 		selectable: false,
 		checkboxes: false,
 		rowDetail: false,
@@ -82,11 +87,7 @@ export class AppComponent implements OnInit {
 
 	pageLimit: number = 10;
 
-	pageData: {
-		currentPage: number,
-		limit: number,
-		total: number
-	}
+	pageData: PageData;
 
 	filterColumn: string = 'name';
 	columnFilters: string[] = [];
@@ -236,15 +237,16 @@ export class AppComponent implements OnInit {
 		this.getAppraisals();
 	}
 
-	getAppraisals() {
-		this._fakeService.getAppraisals().subscribe(
+	getAppraisals(searchParam?, pageNumber?, filterParam?, sortParam?) {
+		this._fakeService.getAppraisals(searchParam, pageNumber, filterParam, sortParam).subscribe(
 			res => {
 				console.log(res);
 				this.projects = res.appraisals;
 				this.pageData = {
 					currentPage: res.page,
 					limit: res.limit,
-					total: res.total
+					total: res.total,
+					totalPages: Math.ceil(res.total / res.limit)
 				}
 				this.projectConfig = [
 					{
@@ -263,6 +265,15 @@ export class AppComponent implements OnInit {
 			err => console.log(err),
 			() => this.loading = false
 		)
+	}
+
+	logPage(event) {
+		console.log('SELECTED-PAGE', event);
+		this.getAppraisals('', event, null, null);
+	}
+
+	logExportAll(event) {
+		console.log('EXPORT-ALL-DATA', event);
 	}
 
 	logRow(event) {

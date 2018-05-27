@@ -19,6 +19,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { PagerComponent } from './components/pager/pager.component';
 
 import { ColumnConfig, ColumnMap } from './models/column.model';
+import { PageData } from './models/server-init.model';
 import { StylesModel } from './models/styles.model';
 import { TableInit } from './models/table-init.model';
 
@@ -36,8 +37,10 @@ import { TableDataService } from './data/table.data.service';
 			</div>
 			<ngx-exporter
 				*ngIf="init.exportOptions"
+				[init]="init"
 				[records]="records"
 				[checkedRecords]="checkedRecords"
+				(serverExportAll)="onExportAll.emit($event)"
 			></ngx-exporter>
 			<ngx-filter
 				*ngIf="globalFilter && (!columnFilters || !columnFilters.length)"
@@ -52,9 +55,12 @@ import { TableDataService } from './data/table.data.service';
 		</div>
 		<div class="flexi-table-footer" [class.hide-table-footer-inner]="init && !init.footer">
 			<ngx-pager
+				[init]="init"
 				[records]="recordsCopy"
 				[pageLimit]="pageLimit"
+				[pageData]="pageData"
 				(pagedRecordsChange)="updatePagedRecords($event)"
+				(serverPageChange)="onPageChange.emit($event)"
 			></ngx-pager>
 		</div>
 	`
@@ -66,6 +72,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	initSetPageSub: Subscription;
 	rowSelectionSub: Subscription;
 	newTabSelectionSub: Subscription;
+	serverSideStateSub: Subscription;
 
 	@HostBinding('class.hide-table-header') hideTableHeader;
 	@HostBinding('class.hide-table-footer') hideTableFooter;
@@ -79,15 +86,22 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@Input() columnFilters: string[];
 	@Input() groupBy: string[];
 	@Input() records: {}[];
+	@Input() pageData: PageData;
 	@Input() pageLimit: number;
 	@Input() styles: StylesModel;
 
+	//GENERAL OUTPUTS
 	@Output() onRowSelection: EventEmitter<{}>     = new EventEmitter();
 	@Output() onCheckboxChange: EventEmitter<{}[]> = new EventEmitter();
 	@Output() onNewTabSelection: EventEmitter<any> = new EventEmitter();
 
+	//SERVER-SPECIFIC OUTPUTS
+	@Output() onPageChange: EventEmitter<number>   = new EventEmitter();
+	@Output() onExportAll: EventEmitter<string>    = new EventEmitter();
+
 	stopEmission: boolean = false;
 
+	serverSideState: boolean = false;
 	recordsCopy: {}[];
 	checkedRecords: {}[];
 	pagedRecords: {}[];
@@ -104,7 +118,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.rowSelectionSub     = this.tableData.rowSelection$.subscribe(row => this.onRowSelection.emit(row));
 		this.newTabSelectionSub  = this.tableData.newTabSelection$.subscribe(newTab => this.onNewTabSelection.emit(newTab));
 		this.checkedRecordsSub   = this.tableData.checkedRecords$.subscribe(checkedRecords => {
-			this.checkedRecords = checkedRecords;
+			this.checkedRecords  = checkedRecords;
 			if (!this.stopEmission) this.onCheckboxChange.emit(this.checkedRecords);
 		});
 	}
@@ -132,6 +146,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.onlyTableContent = (this.hideTableHeader && this.hideTableFooter) ? true : false;
 
 		this.tableData.publishServerSideState(this.init.serverSide);
+		this.tableData.publishPageData(this.pageData);
 
 		if (!this.records) return this._errorHandler.handleError(`No records passed into table`);
 
@@ -179,7 +194,10 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	}
 
 	initSetPage(): void {
-		this._pagerComponent.setPage(1, true);
+		(this.serverSideState)
+			? this._pagerComponent.setPage(this.pageData.currentPage, true)
+			: this._pagerComponent.setPage(1, true);
+
 		this._cdr.detectChanges();
 	}
 
