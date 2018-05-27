@@ -44,10 +44,12 @@ import { TableDataService } from './data/table.data.service';
 			></ngx-exporter>
 			<ngx-filter
 				*ngIf="globalFilter && (!columnFilters || !columnFilters.length)"
+				[init]="init"
 				[columns]="columns"
 				[records]="records"
 				[globalFilter]="globalFilter"
 				(recordsChange)="filterRecords($event)"
+				(serverGlobalFilterChange)="onGlobalFilterChange.emit($event)"
 			></ngx-filter>
 		</div>
 		<div class="flexi-table-content">
@@ -72,7 +74,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	initSetPageSub: Subscription;
 	rowSelectionSub: Subscription;
 	newTabSelectionSub: Subscription;
-	serverSideStateSub: Subscription;
+	serverFiltersSub: Subscription;
 
 	@HostBinding('class.hide-table-header') hideTableHeader;
 	@HostBinding('class.hide-table-footer') hideTableFooter;
@@ -96,8 +98,10 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@Output() onNewTabSelection: EventEmitter<any> = new EventEmitter();
 
 	//SERVER-SPECIFIC OUTPUTS
-	@Output() onPageChange: EventEmitter<number>   = new EventEmitter();
-	@Output() onExportAll: EventEmitter<string>    = new EventEmitter();
+	@Output() onPageChange: EventEmitter<number>         = new EventEmitter();
+	@Output() onExportAll: EventEmitter<string>          = new EventEmitter();
+	@Output() onGlobalFilterChange: EventEmitter<string> = new EventEmitter();
+	@Output() onColumnFiltersChange: EventEmitter<{}>    = new EventEmitter();
 
 	stopEmission: boolean = false;
 
@@ -117,6 +121,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.initSetPageSub      = this.tableData.initSetPageSubject$.subscribe(() => this.initSetPage());
 		this.rowSelectionSub     = this.tableData.rowSelection$.subscribe(row => this.onRowSelection.emit(row));
 		this.newTabSelectionSub  = this.tableData.newTabSelection$.subscribe(newTab => this.onNewTabSelection.emit(newTab));
+		this.serverFiltersSub    = this.tableData.serverFilters$.subscribe(serverFilters => this.onColumnFiltersChange.emit(serverFilters));
 		this.checkedRecordsSub   = this.tableData.checkedRecords$.subscribe(checkedRecords => {
 			this.checkedRecords  = checkedRecords;
 			if (!this.stopEmission) this.onCheckboxChange.emit(this.checkedRecords);
@@ -186,6 +191,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.initSetPageSub.unsubscribe();
 		this.rowSelectionSub.unsubscribe();
 		this.newTabSelectionSub.unsubscribe();
+		this.serverFiltersSub.unsubscribe();
 	}
 
 	reDeployTable(): void {

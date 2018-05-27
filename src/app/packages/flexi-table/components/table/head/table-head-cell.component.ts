@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, OnChanges, OnInit, OnDestroy, Input
 import { Subscription } from 'rxjs/Subscription';
 
 import { ColumnMap } from '../../../models/column.model';
+import { TableInit } from '../../../models/table-init.model';
 
 import { ArrayComparatorService } from '../../../services/array-comparator.service';
 import { FilterService } from '../../../services/filter.service';
@@ -43,10 +44,12 @@ import { SortService } from '../../../services/sort.service';
 	`,
 })
 export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
+	serverSideStateSub: Subscription;
 	recordsSub: Subscription;
 	checkedRecordsSub: Subscription;
 	columnsSub: Subscription;
 	columnFiltersSub: Subscription;
+	serverFiltersSub: Subscription;
 	sortedColumnSub: Subscription;
 	isAllCheckedSub: Subscription;
 
@@ -54,8 +57,10 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	@Input() value: any;
 	@Input() column: ColumnMap;
 
+	serverSideState: boolean;
 	columns: ColumnMap[];
 	columnFilters: string[];
+	serverFilters: {}[];
 	records: {}[];
 	cachedRecords: {}[];
 	checkedRecords: {}[];
@@ -64,6 +69,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 		order: string
 	}
 	wasAllChecked: boolean = false;
+	timer: any = null;
 
 	constructor(
 		public tableData: TableDataService,
@@ -78,22 +84,26 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		this.recordsSub        = this.tableData.records$.subscribe(records => this.records = records);
-		this.checkedRecordsSub = this.tableData.checkedRecords$.subscribe(checkedRecords => this.checkedRecords = checkedRecords);
-		this.columnsSub        = this.tableData.columns$.subscribe(columns => this.columns = columns);
-		this.columnFiltersSub  = this.tableData.columnFilters$.subscribe(columnFilters => this.columnFilters = columnFilters);
-		this.sortedColumnSub   = this.tableData.sortedColumn$.subscribe(sortedColumn => this.sortedColumn = sortedColumn);
-		this.isAllCheckedSub   = this.tableData.isAllCheckedSubject$.subscribe(() => this.isAllChecked());
+		this.serverSideStateSub = this.tableData.serverSideState$.subscribe(sss => this.serverSideState = sss);
+		this.recordsSub         = this.tableData.records$.subscribe(records => this.records = records);
+		this.checkedRecordsSub  = this.tableData.checkedRecords$.subscribe(checkedRecords => this.checkedRecords = checkedRecords);
+		this.columnsSub         = this.tableData.columns$.subscribe(columns => this.columns = columns);
+		this.columnFiltersSub   = this.tableData.columnFilters$.subscribe(columnFilters => this.columnFilters = columnFilters);
+		this.serverFiltersSub   = this.tableData.serverFilters$.subscribe(serverFilters => this.serverFilters = serverFilters);
+		this.sortedColumnSub    = this.tableData.sortedColumn$.subscribe(sortedColumn => this.sortedColumn = sortedColumn);
+		this.isAllCheckedSub    = this.tableData.isAllCheckedSubject$.subscribe(() => this.isAllChecked());
 
 		this.cachedRecords = this.records;
 		console.log(this.columnFilters);
 	}
 
 	ngOnDestroy(): void {
+		this.serverSideStateSub.unsubscribe();
 		this.recordsSub.unsubscribe();
 		this.checkedRecordsSub.unsubscribe();
 		this.columnsSub.unsubscribe();
 		this.columnFiltersSub.unsubscribe();
+		this.serverFiltersSub.unsubscribe();
 		this.sortedColumnSub.unsubscribe();
 		this.isAllCheckedSub.unsubscribe();
 	}
@@ -147,15 +157,54 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 		this.tableData.publishCheckedRecords(this.checkedRecords);
 	}
 
-	setFilter(target: HTMLInputElement): void {
-		const filteredRecords = this._filterService.filterRecords(
-			target.value.toLowerCase(), 
-			this.column.primeKey, 
-			this.columns, 
-			this.cachedRecords
-		);
+	setFilterTimer(target: HTMLInputElement): void {
+		if (this.timer) clearTimeout(this.timer);
+			this.timer = setTimeout(() => this.setFilter(target, true), 1000);
+	}
 
-		this.tableData.runFilterRecords(filteredRecords);
+	setFilter(target: HTMLInputElement, serverBypassTimer: boolean = false): void {
+		if (this.serverSideState)
+		{
+			if (!serverBypassTimer) return this.setFilterTimer(target);
+
+			if (!this.serverFilters) this.serverFilters = [];
+			const keyCheck = this.serverFilters.find(filter => filter['key'] === this.column.access(this.value, true));
+			this.serverFilters.forEach(filter => filter['latestInput'] = false);
+
+			if (keyCheck)
+			{
+				if (keyCheck['value'] != target.value)
+				{
+					const updateIndex = this.serverFilters.indexOf(keyCheck);
+					this.serverFilters[updateIndex] = {
+						key: this.column.access(this.value, true),
+						value: target.value,
+						latestInput: true
+					};
+					this.tableData.publishServerFilters(this.serverFilters);
+				}
+			}
+			else
+			{
+				this.serverFilters.push({
+					key: this.column.access(this.value, true),
+					value: target.value,
+					latestInput: true
+				});
+				this.tableData.publishServerFilters(this.serverFilters);
+			}
+		}
+		else
+		{
+			const filteredRecords = this._filterService.filterRecords(
+				target.value.toLowerCase(), 
+				this.column.primeKey, 
+				this.columns, 
+				this.cachedRecords
+			);
+	
+			this.tableData.runFilterRecords(filteredRecords);
+		}
 	}
 
 	setSort(column: ColumnMap): void {

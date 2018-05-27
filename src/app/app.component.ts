@@ -25,12 +25,13 @@ import { FakeService } from './fake/fake.service';
 // ></ngx-flexi-table>
 
 //NOTES:
-//	- Config is required to use filters
+//	- config is required to use filters
 //	- columnFilters overrides globalFilter
 //	- if newTab is true, newTabKeys are required
 //	- pageData ignored if serverSide is false
 //	- pageLimit ignored if serverSide is true
 //	- pageData required if serverSide is true
+//	- when globalFilter is applied while serverSide is true, property is only used to determine placeholder text
 
 @Component({
 	selector: 'ngx-root',
@@ -41,8 +42,12 @@ import { FakeService } from './fake/fake.service';
 			[config]="projectConfig"
 			[records]="projects"
 			[pageData]="pageData"
+			[globalFilter]="filterColumn"
+			[columnFilters]="columnFilters"
 			(onPageChange)="logPage($event)"
 			(onExportAll)="logExportAll($event)"
+			(onGlobalFilterChange)="logGlobalFilterChange($event)"
+			(onColumnFiltersChange)="logColumnFilterChange($event)"
 			(onRowSelection)="logRow($event)"
 			(onCheckboxChange)="logRows($event)"
 			(onNewTabSelection)="logRoute($event)"
@@ -259,8 +264,8 @@ export class AppComponent implements OnInit {
 						header: 'Office',
 					},
 				];
-				this.filterColumn = undefined;
-				this.columnFilters = ['Address'];
+				this.filterColumn = 'name';
+				this.columnFilters = ['Address', 'Office'];
 			},
 			err => console.log(err),
 			() => this.loading = false
@@ -269,11 +274,20 @@ export class AppComponent implements OnInit {
 
 	logPage(event) {
 		console.log('SELECTED-PAGE', event);
-		this.getAppraisals('', event, null, null);
+		this.getAppraisals(null, event, null, null);
 	}
 
 	logExportAll(event) {
 		console.log('EXPORT-ALL-DATA', event);
+	}
+
+	logGlobalFilterChange(event) {
+		console.log('GLOBAL FILTER', event);
+		this.getAppraisals(event, null, null, null);
+	}
+
+	logColumnFilterChange(event) {
+		console.log('COLUMN FILTER', event);
 	}
 
 	logRow(event) {

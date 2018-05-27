@@ -15,6 +15,7 @@ export class TableDataService {
 	private loadingSource         = new BehaviorSubject<boolean>(false);
 	private columnsSource         = new BehaviorSubject<ColumnMap[]>(undefined);
 	private columnFiltersSource   = new BehaviorSubject<string[]>(undefined);
+	private serverFiltersSource   = new BehaviorSubject<{}[]>(undefined);
 	private recordsSource         = new BehaviorSubject<{}[]>(undefined);
 	private checkedRecordsSource  = new BehaviorSubject<{}[]>(undefined);
 	private pagedRecordsSource    = new BehaviorSubject<{}[]>(undefined);
@@ -47,6 +48,7 @@ export class TableDataService {
 	loading$                      = this.loadingSource.asObservable();
 	columns$                      = this.columnsSource.asObservable();
 	columnFilters$                = this.columnFiltersSource.asObservable();
+	serverFilters$                = this.serverFiltersSource.asObservable();
 	records$                      = this.recordsSource.asObservable();
 	checkedRecords$               = this.checkedRecordsSource.asObservable();
 	pagedRecords$                 = this.pagedRecordsSource.asObservable();
@@ -79,6 +81,7 @@ export class TableDataService {
 	publishLoading                = (loading: boolean): void => this.loadingSource.next(loading);
 	publishColumns                = (columns: ColumnMap[]): void => this.columnsSource.next(columns);
 	publishColumnFilters          = (columnFilters: string[]): void => this.columnFiltersSource.next(columnFilters);
+	publishServerFilters          = (serverFilters: {}[]): void => this.serverFiltersSource.next(serverFilters);
 	publishRecords                = (records: {}[]): void => this.recordsSource.next(records);
 	publishCheckedRecords         = (checkedRecords: {}[]): void => this.checkedRecordsSource.next(checkedRecords);
 	publishPagedRecords           = (pagedRecords: {}[]): void => this.pagedRecordsSource.next(pagedRecords);
