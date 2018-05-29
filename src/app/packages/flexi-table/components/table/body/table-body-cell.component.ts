@@ -50,10 +50,12 @@ import { TableDataService } from '../../../data/table.data.service';
 	`
 })
 export class TableBodyCellComponent implements OnInit, OnDestroy {
+	serverSideStateSub: Subscription;
 	recordsSub: Subscription;
 	checkedRecordsSub: Subscription;
 	newTabKeysSub: Subscription;
 
+	serverSideState: boolean;
 	records: {}[];
 	checkedRecords: {}[];
 	newTabKeys: string[];
@@ -72,6 +74,7 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 	) {}
 
 	ngOnInit(): void {
+		this.serverSideStateSub = this.tableData.serverSideState$.subscribe(sss => this.serverSideState = sss);
 		this.newTabKeysSub = this.tableData.newTabKeys$.subscribe(newTabKeys => this.newTabKeys = newTabKeys);
 		this.recordsSub = this.tableData.records$.subscribe(records => {
 			this.records = records;
@@ -84,22 +87,27 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
+		this.serverSideStateSub.unsubscribe();
 		this.recordsSub.unsubscribe();
 		this.checkedRecordsSub.unsubscribe();
 		this.newTabKeysSub.unsubscribe();
 	}
 
-	// getCellValue(value: any) {
-	// 	const cellKey = this.column.access(value);
-		
-	// 	if (cellKey.includes('.'))
-	// 		return cellKey.split(".").reduce((item, index) => item[index], value);
-	// }
-
 	isChecked(record): boolean {
-		return (this.checkedRecords.indexOf(record) > -1)
-			? true
-			: false;
+		if (this.serverSideState)
+		{
+			const checkedCheck = this.checkedRecords.find(checkedRecord =>
+				(JSON.stringify(checkedRecord) === JSON.stringify(record)) ? true : false
+			);
+
+			return (checkedCheck) ? true : false;
+		}
+		else
+		{
+			return (this.checkedRecords.indexOf(record) > -1)
+				? true
+				: false;
+		}
 	}
 
 	update(record): void {

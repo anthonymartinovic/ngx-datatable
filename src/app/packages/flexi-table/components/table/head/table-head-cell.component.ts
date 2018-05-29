@@ -94,7 +94,6 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 		this.isAllCheckedSub    = this.tableData.isAllCheckedSubject$.subscribe(() => this.isAllChecked());
 
 		this.cachedRecords = this.records;
-		console.log(this.columnFilters);
 	}
 
 	ngOnDestroy(): void {
@@ -109,6 +108,8 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	}
 
 	isAllChecked(): boolean {
+		if (this.serverSideState && this._arrayComparator.arrayIncludesAll([...this.records], [...this.checkedRecords], true)) return true;
+
 		if  (
 				(this.records && this.checkedRecords) && 
 				(this.records.length > 0) &&
@@ -127,31 +128,55 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	}
 
 	updateAll(): void {
-		if  (this._arrayComparator.arrayIncludesAll([...this.checkedRecords], [...this.records]) &&
-			 (this.checkedRecords.length === this.records.length || this.checkedRecords.length > this.records.length))
+		if (this.serverSideState)
 		{
-			this.checkedRecords = this.checkedRecords.filter((checkedRecord, i) => (this.records.indexOf(checkedRecord) === -1) ? true : false);
-		}
-		else if (this._arrayComparator.arrayIncludesAll([...this.records], [...this.checkedRecords]))
-		{
-			for (let i = 0; i < this.checkedRecords.length; i++)
-				if (this.records.indexOf(this.checkedRecords[i]) > -1) (this.checkedRecords.splice(i, 1), i--);
-		}
-		else if (this.checkedRecords.length === this.records.length ||
-				 this.checkedRecords.length > 0 && this._arrayComparator.arrayIncludesNone([...this.checkedRecords], [...this.records]))
-		{
-			this.checkedRecords = this.checkedRecords.concat(this.records);
-		}
-		else if (this.checkedRecords.length > this.records.length)
-		{
-			for (let i = 0; i < this.records.length; i++)
-				if (this.checkedRecords.indexOf(this.records[i]) === -1) this.checkedRecords.push(this.records[i]);
+			if (this.serverSideState && this._arrayComparator.arrayIncludesAll([...this.records], [...this.checkedRecords]), true)
+			{
+				this.checkedRecords = this.checkedRecords.filter(
+					(checkedRecord, i) => {
+						const recordCheck = this.records.find(record =>
+							(JSON.stringify(record) === JSON.stringify(checkedRecord)) ? true : false);
+						return (recordCheck) ? false : true;
+					}
+				);
+			}
+			else
+			{
+				(!this.checkedRecords || this.checkedRecords.length != this.records.length)
+					? this.checkedRecords = this.records.slice()
+					: this.checkedRecords = [];
+			}
 		}
 		else
 		{
-			(!this.checkedRecords || this.checkedRecords.length != this.records.length)
-				? this.checkedRecords = this.records.slice()
-				: this.checkedRecords = [];
+			if  (this._arrayComparator.arrayIncludesAll([...this.checkedRecords], [...this.records]) &&
+				 (this.checkedRecords.length === this.records.length || this.checkedRecords.length > this.records.length))
+			{
+				this.checkedRecords = this.checkedRecords.filter(
+					(checkedRecord, i) => (this.records.indexOf(checkedRecord) === -1) ? true : false
+				);
+			}
+			else if (this._arrayComparator.arrayIncludesAll([...this.records], [...this.checkedRecords]))
+			{
+				for (let i = 0; i < this.checkedRecords.length; i++)
+					if (this.records.indexOf(this.checkedRecords[i]) > -1) (this.checkedRecords.splice(i, 1), i--);
+			}
+			else if (this.checkedRecords.length === this.records.length ||
+					 this.checkedRecords.length > 0 && this._arrayComparator.arrayIncludesNone([...this.checkedRecords], [...this.records]))
+			{
+				this.checkedRecords = this.checkedRecords.concat(this.records);
+			}
+			else if (this.checkedRecords.length > this.records.length)
+			{
+				for (let i = 0; i < this.records.length; i++)
+					if (this.checkedRecords.indexOf(this.records[i]) === -1) this.checkedRecords.push(this.records[i]);
+			}
+			else
+			{
+				(!this.checkedRecords || this.checkedRecords.length != this.records.length)
+					? this.checkedRecords = this.records.slice()
+					: this.checkedRecords = [];
+			}
 		}
 
 		this.tableData.publishCheckedRecords(this.checkedRecords);

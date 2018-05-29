@@ -80,8 +80,8 @@ export class AppComponent implements OnInit {
 		footer: true,
 		caption: 'New Table Title',
 		exportOptions: true,
-		selectable: false,
-		checkboxes: false,
+		selectable: true,
+		checkboxes: true,
 		rowDetail: false,
 		newTab: {
 			show: false,

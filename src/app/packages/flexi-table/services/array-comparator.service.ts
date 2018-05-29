@@ -16,7 +16,17 @@ export class ArrayComparatorService {
 		return JSON.stringify(a) === JSON.stringify(b);
 	}
 
-	arrayIncludesAll(a: any[], b: any[]): boolean {
+	arrayIncludesAll(a: any[], b: any[], server: boolean = false): boolean {
+		if (server)
+		{
+			for (let i = 0; i < a.length; i++)
+			{
+				const includesCheck = b.find(item => (JSON.stringify(a[i]) === JSON.stringify(b)) ? true : false);
+				if (!includesCheck) return false;
+			}
+			return true;
+		}
+
 		for (let i = 0; i < a.length; i++) if (b.indexOf(a[i]) === -1) return false;
 		return true;
 	}
