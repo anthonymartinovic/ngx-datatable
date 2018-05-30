@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { ColumnMap } from '../../../models/column.model';
 
+import { ArrayComparatorService } from '../../../services/array-comparator.service';
 import { ImgService } from '../../../services/img.service';
 import { TableDataService } from '../../../data/table.data.service';
 
@@ -69,6 +70,7 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 	constructor(
 		private _cdr: ChangeDetectorRef,
 		private _errorHandler: ErrorHandler,
+		private _arrayComparator: ArrayComparatorService,
 		public imgService: ImgService,
 		public tableData: TableDataService
 	) {}
@@ -94,29 +96,31 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 	}
 
 	isChecked(record): boolean {
-		if (this.serverSideState)
-		{
-			const checkedCheck = this.checkedRecords.find(checkedRecord =>
-				(JSON.stringify(checkedRecord) === JSON.stringify(record)) ? true : false
-			);
-
-			return (checkedCheck) ? true : false;
-		}
-		else
-		{
-			return (this.checkedRecords.indexOf(record) > -1)
-				? true
-				: false;
-		}
+		return (this.serverSideState)
+			? this._arrayComparator.arrayIncludes(record, this.checkedRecords)
+			: (this.checkedRecords.indexOf(record) > -1);
 	}
 
 	update(record): void {
-		let checkedRecords = [...this.checkedRecords],
-			index = checkedRecords.indexOf(record);
+		let checkedRecords = [...this.checkedRecords];
+
+		if (this.serverSideState)
+		{
+			if (this._arrayComparator.arrayIncludes(record, checkedRecords))
+			{
+				const recordToRemove = checkedRecords.find(checkedRecord => JSON.stringify(checkedRecord) === JSON.stringify(record));
+				checkedRecords.splice(checkedRecords.indexOf(recordToRemove), 1);
+			}
+			else checkedRecords.push(record);
+		}
+		else
+		{
+			let index = checkedRecords.indexOf(record);
 		
-		(index > -1)
-			? checkedRecords.splice(index, 1)
-			: checkedRecords.push(record);
+			(index > -1)
+				? checkedRecords.splice(index, 1)
+				: checkedRecords.push(record);
+		}
 
 		this.tableData.publishCheckedRecords(checkedRecords);
 		this.tableData.runIsAllChecked();

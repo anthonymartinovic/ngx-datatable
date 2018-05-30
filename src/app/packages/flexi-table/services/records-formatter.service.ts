@@ -29,7 +29,7 @@ export class RecordsFormatterService {
 	}
 
 	formatToJSON(records: {}[], download: boolean): void {
-		let json = JSON.stringify([...records]);
+		let json = JSON.stringify([...records], null, 2);
 		if (download) this._downloadFile(json, 'json');
 	}
 

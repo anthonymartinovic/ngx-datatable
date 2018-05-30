@@ -16,14 +16,13 @@ export class ArrayComparatorService {
 		return JSON.stringify(a) === JSON.stringify(b);
 	}
 
+	arrayIncludes = (a: any, b: any[]): boolean => b.find(item => JSON.stringify(a) === JSON.stringify(item));
+
 	arrayIncludesAll(a: any[], b: any[], server: boolean = false): boolean {
 		if (server)
 		{
 			for (let i = 0; i < a.length; i++)
-			{
-				const includesCheck = b.find(item => (JSON.stringify(a[i]) === JSON.stringify(b)) ? true : false);
-				if (!includesCheck) return false;
-			}
+				if (!this.arrayIncludes(a[i], b)) return false;
 			return true;
 		}
 
@@ -31,7 +30,14 @@ export class ArrayComparatorService {
 		return true;
 	}
 
-	arrayIncludesNone(a: any[], b: any[]): boolean {
+	arrayIncludesNone(a: any[], b: any[], server: boolean = false): boolean {
+		if (server)
+		{
+			for (let i = 0; i < a.length; i++)
+				if (this.arrayIncludes(a[i], b)) return false;
+			return true;
+		}
+
 		const arrayCheck = a.find(item => b.indexOf(item) > -1);
 		return (arrayCheck) ? false : true;
 	}
