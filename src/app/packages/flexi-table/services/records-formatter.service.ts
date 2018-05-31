@@ -1,5 +1,4 @@
 import { Injectable, Renderer2, RendererFactory2, Inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 
 @Injectable()
 export class RecordsFormatterService {
@@ -7,19 +6,14 @@ export class RecordsFormatterService {
 
 	private _headers: string[];
 
-	constructor(
-		private _rendererFactory: RendererFactory2, 
-		@Inject(DOCUMENT) private document
-	) {
+	constructor(private _rendererFactory: RendererFactory2) {
 		this._renderer = _rendererFactory.createRenderer(null, null);
 	}
 
 	formatToCSV(records: {}[], download: boolean): void {
 		this._headers = [];
 
-		const	recordsToFormat  = [...records],
-				formattedRecords = this._csvConvert(recordsToFormat),
-				replacer         = (key, value) => value === null ? '' : value;
+		const	formattedRecords = this._csvConvert([...records]);
 
 		for (let record of formattedRecords)
 		{
@@ -37,33 +31,26 @@ export class RecordsFormatterService {
 			else break;
 		}
 
-		console.log(formattedRecords.slice(-1).pop().split('.')[1]);
-
-		const mappedFormattedRecords = formattedRecords.map(row => this._headers.map(fieldName => {
-			if (row.includes(fieldName)) return JSON.stringify(`${row}${fieldName}`, replacer);
-			// JSON.stringify(`${row}${fieldName}`, replacer);
-			// console.log(row);
-			// console.log(fieldName);
-			// JSON.stringify(`${row}${fieldName}`, replacer)
+		const mappedRecords = records.map(row => this._headers.map(fieldName => {
+			const value = fieldName.split('.').reduce((part,index) => part[index], row);
+			return (value && value.includes(',')) ? value.replace(',', '') : value;
 		}).join(','));
-		mappedFormattedRecords.unshift(this._headers.join(','));
+
+		mappedRecords.unshift(this._headers.join(',').replace(/\./g, '/'));
 		
-		const csv = mappedFormattedRecords.join('\r\n');
+		const csv = mappedRecords.join('\r\n');
 
-		console.log(csv);
-
-		// if (download) this._downloadFile(csv, 'csv');
+		if (download) this._downloadFile(csv, 'csv');
 	}
 
 	formatToJSON(records: {}[], download: boolean): void {
-		this._headers = [];
-		let json = JSON.stringify([...records], null, 2);
+		const json = JSON.stringify([...records], null, 2);
 		if (download) this._downloadFile(json, 'json');
 	}
 
-	private _csvConvert(recordsToFormat: {}[], prefix: string = 'obj') {
-		return Object.keys(recordsToFormat).reduce((accumulator, key) => {
-			const value = recordsToFormat[key];
+	private _csvConvert(records: {}[], prefix: string = 'obj') {
+		return Object.keys(records).reduce((accumulator, key) => {
+			const value = records[key];
 
 			if (value === null || value === undefined) accumulator.push(prefix + '.' + key + ' = ' + '');
 			else 
@@ -73,7 +60,7 @@ export class RecordsFormatterService {
 			
 			return accumulator;
 		}, []);
-	  }
+	}
 
 	private _downloadFile(data: {}[] | string, format: string): void {
 		let blob;
@@ -81,15 +68,15 @@ export class RecordsFormatterService {
 		if (format === 'csv')  blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });
 		if (format === 'json') blob = new Blob([data], { type: 'text/json' });
 
-		const downloadLink    = this._renderer.createElement('a'),
-			  url             = URL.createObjectURL(blob);
+		const	downloadLink    = this._renderer.createElement('a'),
+				url             = URL.createObjectURL(blob);
 
 		this._renderer.setAttribute(downloadLink, 'href', url);
 		this._renderer.setAttribute(downloadLink, 'download', `ngx-flexi-table.${format}`);
 		this._renderer.setStyle(downloadLink, 'visibility', 'hidden');
 
-		this._renderer.appendChild(this.document.body, downloadLink);
+		this._renderer.appendChild(document.body, downloadLink);
 		downloadLink.click();
-		this._renderer.removeChild(this.document.body, downloadLink);
+		this._renderer.removeChild(document.body, downloadLink);
 	}
 }

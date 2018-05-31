@@ -104,6 +104,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@Output() onColumnFiltersChange: EventEmitter<{}>    = new EventEmitter();
 
 	stopEmission: boolean = false;
+	clientSideInitCompleted: boolean = false;
 	serverSideInitCompleted: boolean = false;
 
 	serverSideState: boolean = false;
