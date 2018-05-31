@@ -1,5 +1,5 @@
 import { Directive, OnInit, OnDestroy, HostBinding } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { TableDataService } from '../../data/table.data.service';
 

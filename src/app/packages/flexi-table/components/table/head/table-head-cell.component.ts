@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, OnChanges, OnInit, OnDestroy, Input, ChangeDetectorRef } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { ColumnMap } from '../../../models/column.model';
 import { TableInit } from '../../../models/table-init.model';
@@ -266,10 +266,14 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 			? this.sortedColumn.order = (this.sortedColumn.order === 'asc') ? 'desc' : 'asc'
 			: this.sortedColumn = { name: column.access(this.records[0], true), order: 'asc' };
 
-		this.records = this._sortService.sortRecords(this.records, this.sortedColumn);
+		if (!this.serverSideState)
+		{
+			this.records = this._sortService.sortRecords(this.records, this.sortedColumn);
 
-		this.tableData.publishRecords(this.records);
-		this.tableData.publishSortedColumn(this.sortedColumn);
-		this.tableData.runInitSetPage();
+			this.tableData.publishRecords(this.records);
+			this.tableData.publishSortedColumn(this.sortedColumn);
+			this.tableData.runInitSetPage();
+		}
+		else this.tableData.publishSortedColumn(this.sortedColumn);
 	}
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { ColumnMap } from '../../../models/column.model';
 
@@ -37,6 +37,7 @@ import { TableDataService } from '../../../data/table.data.service';
 	`
 })
 export class TableBodyGroupComponent implements OnInit {
+	serverSideStateSub: Subscription;
 	recordsSub: Subscription;
 	sortedColumnSub: Subscription;
 
@@ -45,6 +46,7 @@ export class TableBodyGroupComponent implements OnInit {
 	@Input() value: any;
 	@Output() toggleChange: EventEmitter<boolean> = new EventEmitter();
 
+	serverSideState: boolean;
 	records: {}[];
 	sortedColumn: {
 		name: any,
@@ -62,11 +64,13 @@ export class TableBodyGroupComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.recordsSub      = this.tableData.records$.subscribe(records => this.records = records);
-		this.sortedColumnSub = this.tableData.sortedColumn$.subscribe(sortedColumn => this.sortedColumn = sortedColumn);
+		this.serverSideStateSub = this.tableData.serverSideState$.subscribe(sss => this.serverSideState = sss);
+		this.recordsSub         = this.tableData.records$.subscribe(records => this.records = records);
+		this.sortedColumnSub    = this.tableData.sortedColumn$.subscribe(sortedColumn => this.sortedColumn = sortedColumn);
 	}
 
 	ngOnDestroy(): void {
+		this.serverSideStateSub.unsubscribe();
 		this.recordsSub.unsubscribe();
 		this.sortedColumnSub.unsubscribe();
 	}
@@ -88,10 +92,14 @@ export class TableBodyGroupComponent implements OnInit {
 			}
 		}
 
-		this.records = this._sortService.sortRecords(this.records, this.sortedColumn);
+		if (!this.serverSideState)
+		{
+			this.records = this._sortService.sortRecords(this.records, this.sortedColumn);
 
-		this.tableData.publishRecords(this.records);
-		this.tableData.publishSortedColumn(this.sortedColumn);
-		this.tableData.runInitSetPage();
+			this.tableData.publishRecords(this.records);
+			this.tableData.publishSortedColumn(this.sortedColumn);
+			this.tableData.runInitSetPage();
+		}
+		else this.tableData.publishSortedColumn(this.sortedColumn);
 	}
 }

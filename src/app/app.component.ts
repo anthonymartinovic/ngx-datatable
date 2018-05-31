@@ -51,6 +51,7 @@ import { FakeService } from './fake/fake.service';
 			(onRowSelection)="logRow($event)"
 			(onCheckboxChange)="logRows($event)"
 			(onNewTabSelection)="logRoute($event)"
+			(onSort)="logSort($event)"
 		></ngx-flexi-table>
 	`
 })
@@ -299,7 +300,12 @@ export class AppComponent implements OnInit {
 	}
 
 	logRoute(event) {
-		console.log('ROUTE', event)
+		console.log('ROUTE', event);
+	}
+
+	logSort(event) {
+		console.log('SORT', event);
+		this.getAppraisals(null, null, event.name, event.order);
 	}
 }
 

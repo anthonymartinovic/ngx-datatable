@@ -14,7 +14,7 @@ import {
 	ErrorHandler,
 	HostBinding
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { PagerComponent } from './components/pager/pager.component';
 
@@ -75,6 +75,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	rowSelectionSub: Subscription;
 	newTabSelectionSub: Subscription;
 	serverFiltersSub: Subscription;
+	sortedColumnSub: Subscription;
 
 	@HostBinding('class.hide-table-header') hideTableHeader;
 	@HostBinding('class.hide-table-footer') hideTableFooter;
@@ -102,6 +103,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@Output() onExportAll: EventEmitter<string>          = new EventEmitter();
 	@Output() onGlobalFilterChange: EventEmitter<string> = new EventEmitter();
 	@Output() onColumnFiltersChange: EventEmitter<{}>    = new EventEmitter();
+	@Output() onSort: EventEmitter<{}>                   = new EventEmitter();
 
 	stopEmission: boolean = false;
 	clientSideInitCompleted: boolean = false;
@@ -112,6 +114,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	checkedRecords: {}[];
 	pagedRecords: {}[];
 	columns: ColumnMap[];
+	sortedColumn: {};
 
 	constructor(
 		public tableData: TableDataService,
@@ -128,6 +131,10 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 			this.checkedRecords  = checkedRecords;
 			if (!this.stopEmission) this.onCheckboxChange.emit(this.checkedRecords);
 		});
+		this.sortedColumnSub     = this.tableData.sortedColumn$.subscribe(sortedColumn =>
+			(this.serverSideState) ? (this.sortedColumn = sortedColumn, this.onSort.emit(this.sortedColumn)) : null
+		)
+
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -152,7 +159,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.hideTableFooter = (this.init.footer) ? false : true;
 		this.onlyTableContent = (this.hideTableHeader && this.hideTableFooter) ? true : false;
 
-		if (!this.init.serverSide) this.serverSideInitCompleted = true;
+		(!this.init.serverSide) ? this.serverSideInitCompleted = true : this.serverSideState = true;
 		this.tableData.publishServerSideState(this.init.serverSide);
 		this.tableData.publishPageData(this.pageData);
 

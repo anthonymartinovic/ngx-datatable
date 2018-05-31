@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { Person, Project } from './model';
 
@@ -33,7 +33,7 @@ export class FakeService {
 				`http://localhost:3333/appraisals?search=${search}&page=${page}&filter=${filter}&sort=${sort}`,
 				{ 
 					headers: {
-						'Authorization': 'Bearer 990e317039ca3bd58c431ddb880e1501506734b1ab1a530f25b1c0ae305370b4c0a1ce92b571ae60f40399715736b9b6pNQOZ8WI2li3BQQEhZu8CCm+Hlar/QlUfIR9vPGt80I='
+						'Authorization': 'Bearer 5166b2683e3d648c4c8ac9accdb148b9132b0183f7651be8baea20c6e3caa24674f637f3961b5787f6f8d294775027fdSI2xel4mVwPzJGafpY3CrhscDfpdWSDJ/Osz7tOZTEg='
 					}
 				}
 			);
