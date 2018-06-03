@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef, ErrorHandler } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { ObjectComparatorService } from '../../../services/object-comparator.service';
 import { TableDataService } from '../../../data/table.data.service';
 
 @Component({
@@ -58,7 +59,8 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 	constructor(
 		public tableData: TableDataService, 
 		private _errorHandler: ErrorHandler,
-		private _cdr: ChangeDetectorRef
+		private _cdr: ChangeDetectorRef,
+		private _objectComparator: ObjectComparatorService
 	) {}
 
 	ngOnInit(): void {
@@ -97,7 +99,7 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 			this.selectedGroup = this.groupOptions.find(group =>
 			{
 				for (let record of this.pagedRecords)
-					if (record.hasOwnProperty(group)) return true;
+					if (record.hasOwnProperty(group) || this._objectComparator.hasOwnNestedProperty(record, group)) return true;
 
 				return false;
 			});
@@ -107,8 +109,9 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 		let groupValues = [];
 
 		for (let record of this.pagedRecords)
-			if (record.hasOwnProperty(this.selectedGroup))
-				if (groupValues.indexOf(record[this.selectedGroup]) === -1) groupValues.push(record[this.selectedGroup]);
+			if (record.hasOwnProperty(this.selectedGroup) || this._objectComparator.hasOwnNestedProperty(record, this.selectedGroup))
+				if (groupValues.indexOf(this._objectComparator.getNestedProperty(record, this.selectedGroup)) === -1)
+					groupValues.push(this._objectComparator.getNestedProperty(record, this.selectedGroup));
 
 		if (!groupValues.length) this._errorHandler.handleError(`No groupBy values match any keys in provided records`);
 

@@ -59,5 +59,6 @@ export class TableBodyRowComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.showRowDetails = false;
+		console.log(this.record);
 	}
 }

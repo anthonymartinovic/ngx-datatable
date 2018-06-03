@@ -42,6 +42,7 @@ import { FakeService } from './fake/fake.service';
 			[config]="projectConfig"
 			[records]="projects"
 			[pageData]="pageData"
+			[groupBy]="['team.officeName']"
 			[globalFilter]="filterColumn"
 			[columnFilters]="columnFilters"
 			(onPageChange)="logPage($event)"
@@ -244,6 +245,7 @@ export class AppComponent implements OnInit {
 	}
 
 	getAppraisals(searchParam?, pageNumber?, filterParam?, sortParam?) {
+		console.log('FETCHING...', searchParam, pageNumber, filterParam, sortParam);
 		this._fakeService.getAppraisals(searchParam, pageNumber, filterParam, sortParam).subscribe(
 			res => {
 				console.log(res);
@@ -260,9 +262,8 @@ export class AppComponent implements OnInit {
 						header: 'Address',
 					},
 					{
-						primeKey: 'team.officeName',
-						altKeys: ['team.office'],
-						header: 'Office',
+						primeKey: 'team.name',
+						header: 'Team',
 					},
 				];
 				this.filterColumn = 'name';

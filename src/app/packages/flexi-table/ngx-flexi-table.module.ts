@@ -30,6 +30,7 @@ import { ArrayComparatorService } from './services/array-comparator.service';
 import { ErrorHandlerService } from './services/error-handler.service';
 import { FilterService } from './services/filter.service';
 import { ImgService } from './services/img.service';
+import { ObjectComparatorService } from './services/object-comparator.service';
 import { PagerService } from './services/pager.service';
 import { RecordsFormatterService } from './services/records-formatter.service';
 import { SortService } from './services/sort.service';
@@ -76,6 +77,7 @@ import { ExporterComponent } from './components/exporter/exporter.component';
 		},
 		FilterService,
 		ImgService,
+		ObjectComparatorService,
 		PagerService,
 		RecordsFormatterService,
 		SortService

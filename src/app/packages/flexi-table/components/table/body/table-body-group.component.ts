@@ -78,19 +78,9 @@ export class TableBodyGroupComponent implements OnInit {
 	setSort(column: any): void {
 		column = new ColumnMap({ primeKey: column });
 
-		if (this.sortedColumn && this.sortedColumn.name === column.access(this.records[0]))
-		{
-			(this.sortedColumn.order === 'asc')
-				? this.sortedColumn.order = 'desc'
-				: this.sortedColumn.order = 'asc';
-		}
-		else
-		{
-			this.sortedColumn = {
-				name: column.access(this.records[0]),
-				order: 'asc'
-			}
-		}
+		(this.sortedColumn && this.sortedColumn.name === column.access(this.records[0], true))
+			? this.sortedColumn.order = (this.sortedColumn.order === 'asc') ? 'desc' : 'asc'
+			: this.sortedColumn = { name: column.access(this.records[0], true), order: 'asc' };
 
 		if (!this.serverSideState)
 		{
