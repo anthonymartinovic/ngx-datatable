@@ -5,6 +5,7 @@ import { ColumnMap } from '../../../models/column.model';
 
 import { ArrayComparatorService } from '../../../services/array-comparator.service';
 import { ImgService } from '../../../services/img.service';
+import { ObjectComparatorService } from '../../../services/object-comparator.service';
 import { TableDataService } from '../../../data/table.data.service';
 
 @Component({
@@ -71,6 +72,7 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 		private _cdr: ChangeDetectorRef,
 		private _errorHandler: ErrorHandler,
 		private _arrayComparator: ArrayComparatorService,
+		private objNGX: ObjectComparatorService,
 		public imgService: ImgService,
 		public tableData: TableDataService
 	) {}
@@ -127,9 +129,9 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 	}
 
 	emitNewTabValue(record: {}) {
-		for (let key of this.newTabKeys) {
-			if (record.hasOwnProperty(key)) return this.tableData.publishNewTabSelection(record[key]);
-		}
+		for (let key of this.newTabKeys)
+			if (this.objNGX.hasOwnNestedProperty(record, key))
+				return this.tableData.publishNewTabSelection(this.objNGX.getNestedProperty(record, key));
 
 		return this._errorHandler.handleError(
 			`No 'newTabKeys' provided match any keys within selected row.\n

@@ -84,11 +84,11 @@ export class AppComponent implements OnInit {
 		exportOptions: true,
 		selectable: true,
 		checkboxes: true,
-		rowDetail: false,
+		rowDetail: true,
 		newTab: {
-			show: false,
+			show: true,
 			caption: 'New Route Title',
-			keys: ['first_flight']
+			keys: ['_id']
 		},
 	};
 
