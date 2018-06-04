@@ -105,11 +105,12 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@Output() onColumnFiltersChange: EventEmitter<{}>    = new EventEmitter();
 	@Output() onSort: EventEmitter<{}>                   = new EventEmitter();
 
+	clientSideState: boolean = false;
+	serverSideState: boolean = false;
+
 	stopEmission: boolean = false;
-	clientSideInitCompleted: boolean = false;
 	serverSideInitCompleted: boolean = false;
 
-	serverSideState: boolean = false;
 	recordsCopy: {}[];
 	checkedRecords: {}[];
 	pagedRecords: {}[];
@@ -159,7 +160,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.hideTableFooter = (this.init.footer) ? false : true;
 		this.onlyTableContent = (this.hideTableHeader && this.hideTableFooter) ? true : false;
 
-		(!this.init.serverSide) ? this.serverSideInitCompleted = true : this.serverSideState = true;
+		(!this.init.serverSide) ? this.clientSideState = true : this.serverSideState = true;
 		this.tableData.publishServerSideState(this.init.serverSide);
 		this.tableData.publishPageData(this.pageData);
 
@@ -172,7 +173,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.tableData.publishRecords(this.recordsCopy);
 
 		this.stopEmission = true;
-		if (!this.serverSideInitCompleted) this.tableData.publishCheckedRecords([]);
+		if (this.clientSideState || !this.serverSideInitCompleted) this.tableData.publishCheckedRecords([]);
 		this.stopEmission = false;
 
 		this.tableData.publishSelectableState(this.init.selectable);
@@ -185,10 +186,6 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 
 		this.serverSideInitCompleted = true;
 		this._cdr.detectChanges();
-
-		console.log(this.config);
-		console.log(this.records);
-		console.log(this.checkedRecords);
 	}
 
 	ngAfterViewInit(): void { this.afterViewInit() };
