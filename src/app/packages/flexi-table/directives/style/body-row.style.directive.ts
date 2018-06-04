@@ -1,7 +1,7 @@
 import { Directive, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { TableDataService } from '../../data/table.data.service';
+import { TableDataService } from '../../data/data.service';
 
 @Directive({
 	selector: '[bodyRowStyle]'
@@ -20,9 +20,7 @@ export class BodyRowStyleDirective implements OnInit, OnDestroy {
 			// this.height = (styles && styles.body) ? styles.body.rowHeight : '60px';
 		})
 
-		this.selectableSub = this.tableData.selectableState$.subscribe(selectableState => {
-			this.cursor = (selectableState) ? 'pointer' : 'default';
-		})
+		this.selectableSub = this.tableData.init$.subscribe(init => this.cursor = (init.selectable) ? 'pointer' : 'default')
 	}
 
 	ngOnDestroy(): void {

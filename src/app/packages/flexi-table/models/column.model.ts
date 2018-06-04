@@ -1,9 +1,8 @@
-export class ColumnConfig {
+export interface ColumnConfig {
 	primeKey: string;
 	altKeys?: string[];
 	header?: string;
 	format?: string;
-
 }
 
 export class ColumnMap {

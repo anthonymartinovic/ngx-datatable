@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class ObjectComparatorService {
+export class ObjectService {
 
 	hasOwnNestedProperty(object: {}, propertyPath: string): boolean {
 		const	properties = propertyPath.split('.');

@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { ObjectComparatorService } from '../services/object-comparator.service';
+import { ObjectService } from '../services/object.service';
 
 @Pipe({
 	name: 'formatObject',
@@ -8,7 +8,7 @@ import { ObjectComparatorService } from '../services/object-comparator.service';
 })
 export class ObjectFormatPipe implements PipeTransform {
 
-	constructor (private objNGX: ObjectComparatorService) {}
+	constructor (private objNGX: ObjectService) {}
 
 	transform = (object: any): any[] =>
 		this.objNGX.getNestedKeys(object).map(key => new Array(key, this.objNGX.getNestedProperty(object, key)));

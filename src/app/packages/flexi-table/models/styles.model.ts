@@ -1,4 +1,4 @@
-export class StylesModel {
+export interface Styles {
 	table: {
 		width: string
 	};

@@ -1,15 +1,19 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 
-import { TableDataService } from '../../../data/table.data.service';
+import { TableDataService } from '../../../data/data.service';
 
 @Component({
 	selector: 'ngx-table-head-row',
 	host: { 'class': 'table-head-row-container' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<div class="head-row" headRowStyle>
+		<div
+			*ngIf="(tableData.init$ | async) as init"
+			class="head-row" 
+			headRowStyle
+		>
 			<ngx-table-head-cell
-				*ngIf="tableData.rowDetailState$ | async"
+				*ngIf="init.rowDetail"
 				class="row-detail-table-head-cell"
 				[headerType]="'rowDetail'"
 			></ngx-table-head-cell>
@@ -21,12 +25,12 @@ import { TableDataService } from '../../../data/table.data.service';
 				></ngx-table-head-cell>
 			</ng-container>
 			<ngx-table-head-cell
-				*ngIf="tableData.newTabState$ | async"
+				*ngIf="init.newTab.show"
 				[headerType]="'newTab'"
-				[value]="tableData.newTabCaption$ | async"
+				[value]="init.newTab.caption"
 			></ngx-table-head-cell>
 			<ngx-table-head-cell
-				*ngIf="tableData.checkboxState$ | async"
+				*ngIf="init.checkboxes"
 				[headerType]="'checkbox'"
 			></ngx-table-head-cell>
 		</div>

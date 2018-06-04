@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { ObjectComparatorService } from '../services/object-comparator.service';
+import { ObjectService } from '../services/object.service';
 
 @Pipe({
 	name: 'groupBy',
@@ -8,7 +8,7 @@ import { ObjectComparatorService } from '../services/object-comparator.service';
 })
 export class GroupPipe implements PipeTransform {
 
-	constructor(private objNGX: ObjectComparatorService) {}
+	constructor(private objNGX: ObjectService) {}
 
 	transform(pagedRecords: any, selectedGroup: string, groupValue: any): any {
 		for (let record of pagedRecords)

@@ -2,11 +2,11 @@ import { Component, ChangeDetectionStrategy, OnChanges, OnInit, OnDestroy, Input
 import { Subscription } from 'rxjs';
 
 import { ColumnMap } from '../../../models/column.model';
-import { TableInit } from '../../../models/table-init.model';
+import { Init } from '../../../models/init.model';
 
-import { ArrayComparatorService } from '../../../services/array-comparator.service';
+import { ArrayService } from '../../../services/array.service';
 import { FilterService } from '../../../services/filter.service';
-import { TableDataService } from '../../../data/table.data.service';
+import { TableDataService } from '../../../data/data.service';
 import { SortService } from '../../../services/sort.service';
 
 @Component({
@@ -44,7 +44,7 @@ import { SortService } from '../../../services/sort.service';
 	`,
 })
 export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
-	serverSideStateSub: Subscription;
+	initSub: Subscription;
 	recordsSub: Subscription;
 	checkedRecordsSub: Subscription;
 	columnsSub: Subscription;
@@ -57,7 +57,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	@Input() value: any;
 	@Input() column: ColumnMap;
 
-	serverSideState: boolean;
+	serverSide: boolean;
 	columns: ColumnMap[];
 	columnFilters: string[];
 	serverFilters: {}[];
@@ -73,7 +73,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 
 	constructor(
 		public tableData: TableDataService,
-		private _arrayComparator: ArrayComparatorService,
+		private _arrayComparator: ArrayService,
 		private _cdr: ChangeDetectorRef,
 		private _filterService: FilterService,
 		private _sortService: SortService
@@ -84,7 +84,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		this.serverSideStateSub = this.tableData.serverSideState$.subscribe(sss => this.serverSideState = sss);
+		this.initSub            = this.tableData.init$.subscribe(init => this.serverSide = init.server);
 		this.recordsSub         = this.tableData.records$.subscribe(records => this.records = records);
 		this.checkedRecordsSub  = this.tableData.checkedRecords$.subscribe(checkedRecords => this.checkedRecords = checkedRecords);
 		this.columnsSub         = this.tableData.columns$.subscribe(columns => this.columns = columns);
@@ -97,7 +97,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		this.serverSideStateSub.unsubscribe();
+		this.initSub.unsubscribe();
 		this.recordsSub.unsubscribe();
 		this.checkedRecordsSub.unsubscribe();
 		this.columnsSub.unsubscribe();
@@ -110,7 +110,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	isAllChecked(): boolean {
 		if  (
 				(
-					(this.serverSideState) &&
+					(this.serverSide) &&
 					(this.records && this.checkedRecords) && 
 					(this.records.length > 0) &&
 					(this._arrayComparator.arrayIncludesAll([...this.records], [...this.checkedRecords], true))
@@ -134,7 +134,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 		}
 	}
 
-	updateAll = (): void => (this.serverSideState) ? this.serverUpdateAll() : this.clientUpdateAll();
+	updateAll = (): void => (this.serverSide) ? this.serverUpdateAll() : this.clientUpdateAll();
 
 	clientUpdateAll(): void {
 		if	(
@@ -217,7 +217,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	}
 
 	setFilter(target: HTMLInputElement, serverBypassTimer: boolean = false): void {
-		if (this.serverSideState)
+		if (this.serverSide)
 		{
 			if (!serverBypassTimer) return this.setFilterTimer(target);
 
@@ -266,7 +266,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 			? this.sortedColumn.order = (this.sortedColumn.order === 'asc') ? 'desc' : 'asc'
 			: this.sortedColumn = { name: column.access(this.records[0], true), order: 'asc' };
 
-		if (!this.serverSideState)
+		if (!this.serverSide)
 		{
 			this.records = this._sortService.sortRecords(this.records, this.sortedColumn);
 

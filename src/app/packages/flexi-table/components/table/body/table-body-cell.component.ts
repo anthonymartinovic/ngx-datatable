@@ -3,10 +3,10 @@ import { Subscription } from 'rxjs';
 
 import { ColumnMap } from '../../../models/column.model';
 
-import { ArrayComparatorService } from '../../../services/array-comparator.service';
+import { ArrayService } from '../../../services/array.service';
 import { ImgService } from '../../../services/img.service';
-import { ObjectComparatorService } from '../../../services/object-comparator.service';
-import { TableDataService } from '../../../data/table.data.service';
+import { ObjectService } from '../../../services/object.service';
+import { TableDataService } from '../../../data/data.service';
 
 @Component({
 	selector: 'ngx-table-body-cell',
@@ -52,12 +52,11 @@ import { TableDataService } from '../../../data/table.data.service';
 	`
 })
 export class TableBodyCellComponent implements OnInit, OnDestroy {
-	serverSideStateSub: Subscription;
+	initSub: Subscription;
 	recordsSub: Subscription;
 	checkedRecordsSub: Subscription;
-	newTabKeysSub: Subscription;
 
-	serverSideState: boolean;
+	serverSide: boolean;
 	records: {}[];
 	checkedRecords: {}[];
 	newTabKeys: string[];
@@ -71,15 +70,17 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 	constructor(
 		private _cdr: ChangeDetectorRef,
 		private _errorHandler: ErrorHandler,
-		private _arrayComparator: ArrayComparatorService,
-		private objNGX: ObjectComparatorService,
+		private _arrayComparator: ArrayService,
+		private objNGX: ObjectService,
 		public imgService: ImgService,
 		public tableData: TableDataService
 	) {}
 
 	ngOnInit(): void {
-		this.serverSideStateSub = this.tableData.serverSideState$.subscribe(sss => this.serverSideState = sss);
-		this.newTabKeysSub = this.tableData.newTabKeys$.subscribe(newTabKeys => this.newTabKeys = newTabKeys);
+		this.initSub = this.tableData.init$.subscribe(init => {
+			this.serverSide = init.server;
+			this.newTabKeys = init.newTab.keys
+		});
 		this.recordsSub = this.tableData.records$.subscribe(records => {
 			this.records = records;
 			this._cdr.markForCheck();
@@ -91,14 +92,13 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		this.serverSideStateSub.unsubscribe();
+		this.initSub.unsubscribe();
 		this.recordsSub.unsubscribe();
 		this.checkedRecordsSub.unsubscribe();
-		this.newTabKeysSub.unsubscribe();
 	}
 
 	isChecked(record): boolean {
-		return (this.serverSideState)
+		return (this.serverSide)
 			? this._arrayComparator.arrayIncludes(record, this.checkedRecords)
 			: (this.checkedRecords.indexOf(record) > -1);
 	}
@@ -106,7 +106,7 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 	update(record): void {
 		let checkedRecords = [...this.checkedRecords];
 
-		if (this.serverSideState)
+		if (this.serverSide)
 		{
 			if (this._arrayComparator.arrayIncludes(record, checkedRecords))
 			{

@@ -19,11 +19,11 @@ import { Subscription } from 'rxjs';
 import { PagerComponent } from './components/pager/pager.component';
 
 import { ColumnConfig, ColumnMap } from './models/column.model';
-import { PageData } from './models/server-init.model';
-import { StylesModel } from './models/styles.model';
-import { TableInit } from './models/table-init.model';
+import { ServerPager } from './models/pager.model';
+import { Styles } from './models/styles.model';
+import { Init } from './models/init.model';
 
-import { TableDataService } from './data/table.data.service';
+import { TableDataService } from './data/data.service';
 
 @Component({
 	selector: 'ngx-flexi-table',
@@ -43,13 +43,13 @@ import { TableDataService } from './data/table.data.service';
 				(serverExportAll)="onExportAll.emit($event)"
 			></ngx-exporter>
 			<ngx-filter
-				*ngIf="globalFilter && (!columnFilters || !columnFilters.length)"
+				*ngIf="init.filter.show && init.filter.type.toLowerCase() === 'global'"
 				[init]="init"
 				[columns]="columns"
 				[records]="records"
-				[globalFilter]="globalFilter"
+				[globalFilter]="init.filter.keys"
 				(recordsChange)="filterRecords($event)"
-				(serverGlobalFilterChange)="onGlobalFilterChange.emit($event)"
+				(serverGlobalFilterChange)="onFilterChange.emit($event)"
 			></ngx-filter>
 		</div>
 		<div class="flexi-table-content">
@@ -59,7 +59,7 @@ import { TableDataService } from './data/table.data.service';
 			<ngx-pager
 				[init]="init"
 				[records]="recordsCopy"
-				[pageLimit]="pageLimit"
+				[pageLimit]="init.pageLimit"
 				[pageData]="pageData"
 				(pagedRecordsChange)="updatePagedRecords($event)"
 				(serverPageChange)="onPageChange.emit($event)"
@@ -83,15 +83,11 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 
 	@ViewChild(PagerComponent) private _pagerComponent: PagerComponent;
 
-	@Input() init: TableInit;
+	@Input() init: Init;
 	@Input() config: ColumnConfig[];
-	@Input() globalFilter: string;
-	@Input() columnFilters: string[];
-	@Input() groupBy: string[];
 	@Input() records: {}[];
-	@Input() pageData: PageData;
-	@Input() pageLimit: number;
-	@Input() styles: StylesModel;
+	@Input() pageData: ServerPager;
+	@Input() styles: Styles;
 
 	//GENERAL OUTPUTS
 	@Output() onRowSelection: EventEmitter<{}>     = new EventEmitter();
@@ -99,16 +95,15 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@Output() onNewTabSelection: EventEmitter<any> = new EventEmitter();
 
 	//SERVER-SPECIFIC OUTPUTS
-	@Output() onPageChange: EventEmitter<number>         = new EventEmitter();
-	@Output() onExportAll: EventEmitter<string>          = new EventEmitter();
-	@Output() onGlobalFilterChange: EventEmitter<string> = new EventEmitter();
-	@Output() onColumnFiltersChange: EventEmitter<{}>    = new EventEmitter();
-	@Output() onSort: EventEmitter<{}>                   = new EventEmitter();
+	@Output() onPageChange: EventEmitter<number> = new EventEmitter();
+	@Output() onExportAll: EventEmitter<string>  = new EventEmitter();
+	@Output() onFilterChange: EventEmitter<{}>   = new EventEmitter();
+	@Output() onSort: EventEmitter<{}>           = new EventEmitter();
 
-	clientSideState: boolean = false;
-	serverSideState: boolean = false;
+	clientSide: boolean = false;
+	serverSide: boolean = false;
 
-	stopEmission: boolean = false;
+	preventEmissions: boolean        = false;
 	serverSideInitCompleted: boolean = false;
 
 	recordsCopy: {}[];
@@ -127,15 +122,14 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.initSetPageSub      = this.tableData.initSetPageSubject$.subscribe(() => this.initSetPage());
 		this.rowSelectionSub     = this.tableData.rowSelection$.subscribe(row => this.onRowSelection.emit(row));
 		this.newTabSelectionSub  = this.tableData.newTabSelection$.subscribe(newTab => this.onNewTabSelection.emit(newTab));
-		this.serverFiltersSub    = this.tableData.serverFilters$.subscribe(serverFilters => this.onColumnFiltersChange.emit(serverFilters));
+		this.serverFiltersSub    = this.tableData.serverFilters$.subscribe(serverFilters => this.onFilterChange.emit(serverFilters));
+		this.sortedColumnSub     = this.tableData.sortedColumn$.subscribe(sortedColumn =>
+			(this.serverSide) ? (this.sortedColumn = sortedColumn, this.onSort.emit(this.sortedColumn)) : null
+		)
 		this.checkedRecordsSub   = this.tableData.checkedRecords$.subscribe(checkedRecords => {
 			this.checkedRecords  = checkedRecords;
-			if (!this.stopEmission) this.onCheckboxChange.emit(this.checkedRecords);
+			if (!this.preventEmissions) this.onCheckboxChange.emit(this.checkedRecords);
 		});
-		this.sortedColumnSub     = this.tableData.sortedColumn$.subscribe(sortedColumn =>
-			(this.serverSideState) ? (this.sortedColumn = sortedColumn, this.onSort.emit(this.sortedColumn)) : null
-		)
-
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -154,35 +148,24 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 
 	ngOnInit(): void { this.onInit() };
 	onInit(): void {
-		if (!this.init) this.init = new TableInit;
+		if (!this.init) this.init = new Init;
+		this.tableData.publishInit(this.init);
+		this.tableData.publishStyles(this.styles);
 
 		this.hideTableHeader = (this.init.header) ? false : true;
 		this.hideTableFooter = (this.init.footer) ? false : true;
 		this.onlyTableContent = (this.hideTableHeader && this.hideTableFooter) ? true : false;
 
-		(!this.init.serverSide) ? this.clientSideState = true : this.serverSideState = true;
-		this.tableData.publishServerSideState(this.init.serverSide);
-		this.tableData.publishPageData(this.pageData);
+		(!this.init.server) ? this.clientSide = true : this.serverSide = true;
 
 		if (!this.records) return this._errorHandler.handleError(`No records passed into table`);
-
-		this.tableData.publishStyles(this.styles);
-		this.tableData.publishGroupBy(this.groupBy);
 		
 		this.recordsCopy = this.records;
 		this.tableData.publishRecords(this.recordsCopy);
 
-		this.stopEmission = true;
-		if (this.clientSideState || !this.serverSideInitCompleted) this.tableData.publishCheckedRecords([]);
-		this.stopEmission = false;
-
-		this.tableData.publishSelectableState(this.init.selectable);
-		this.tableData.publishCheckboxState(this.init.checkboxes);
-		this.tableData.publishRowDetailState(this.init.rowDetail);
-		this.tableData.publishNewTabState(this.init.newTab.show);
-		this.tableData.publishNewTabCaption(this.init.newTab.caption);
-		this.tableData.publishNewTabKeys(this.init.newTab.keys);
-		this.tableData.publishColumnFilters(this.columnFilters);
+		this.preventEmissions = true;
+		if (this.clientSide || !this.serverSideInitCompleted) this.tableData.publishCheckedRecords([]);
+		this.preventEmissions = false;
 
 		this.serverSideInitCompleted = true;
 		this._cdr.detectChanges();
@@ -209,7 +192,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	}
 
 	initSetPage(): void {
-		(this.serverSideState)
+		(this.serverSide)
 			? this._pagerComponent.setPage(this.pageData.currentPage, true)
 			: this._pagerComponent.setPage(1, true);
 

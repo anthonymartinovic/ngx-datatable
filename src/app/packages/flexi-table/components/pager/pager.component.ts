@@ -1,12 +1,11 @@
 import { Component, ChangeDetectionStrategy, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { PageData } from '../../models/server-init.model';
-import { PagerModel } from '../../models/pager.model';
-import { TableInit } from '../../models/table-init.model';
+import { ClientPager, ServerPager } from '../../models/pager.model';
+import { Init } from '../../models/init.model';
 
 import { PagerService } from '../../services/pager.service';
-import { RecordsFormatterService } from '../../services/records-formatter.service';
+import { FormatService } from '../../services/format.service';
 
 @Component({
 	selector: 'ngx-pager',
@@ -49,33 +48,33 @@ import { RecordsFormatterService } from '../../services/records-formatter.servic
 	`
 })
 export class PagerComponent implements OnInit {
-	@Input() init: TableInit;
+	@Input() init: Init;
 	@Input() records: {}[];
 	@Input() pageLimit: number;
-	@Input() pageData: PageData;
+	@Input() pageData: ServerPager;
 
 	@Output() pagedRecordsChange: EventEmitter<{}[]> = new EventEmitter();
 	@Output() serverPageChange: EventEmitter<number> = new EventEmitter();
 
-	pager: PagerModel;
+	pager: ClientPager;
 	pagedRecords: {}[];
 
 	constructor(private _pagerService: PagerService) {}
 
 	ngOnInit(): void {}
 
-	setPagePrep = (page: number): void => (this.init.serverSide) ? this.setPage(page, false, true) : this.setPage(page);
+	setPagePrep = (page: number): void => (this.init.server) ? this.setPage(page, false, true) : this.setPage(page);
 
 	setPage(page: number, bypassGuard: boolean = false, serverPageChange: boolean = false): void {
 		if (serverPageChange) return this.serverPageChange.emit(page);
 
 		if (!bypassGuard && (page < 1 || page > this.pager.totalPages || page === this.pager.currentPage)) return;
 
-		this.pager = (this.init.serverSide)
+		this.pager = (this.init.server)
 			? this._pagerService.getPager(this.pageData.total, this.pageData.currentPage, this.pageData.limit)
 			: this._pagerService.getPager(this.records.length, page, this.pageLimit || 10);
 	 
-		this.pagedRecords = (this.init.serverSide)
+		this.pagedRecords = (this.init.server)
 			? this.records
 			: this.records.slice(this.pager.startIndex, this.pager.endIndex + 1);
 

@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef, ErrorHandler } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ObjectComparatorService } from '../../../services/object-comparator.service';
-import { TableDataService } from '../../../data/table.data.service';
+import { ObjectService } from '../../../services/object.service';
+import { TableDataService } from '../../../data/data.service';
 
 @Component({
 	selector: 'ngx-table-body',
@@ -46,9 +46,8 @@ import { TableDataService } from '../../../data/table.data.service';
 	`
 })
 export class TableBodyComponent implements OnInit, OnDestroy {
-	groupOptionsSub: Subscription;
+	initSub: Subscription;
 	pagedRecordsSub: Subscription;
-	selectableSub: Subscription;
 
 	hiddenGroupValues: any[];
 	selectedGroup: string;
@@ -60,27 +59,26 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 		public tableData: TableDataService, 
 		private _errorHandler: ErrorHandler,
 		private _cdr: ChangeDetectorRef,
-		private _objectComparator: ObjectComparatorService
+		private _objectComparator: ObjectService
 	) {}
 
 	ngOnInit(): void {
 		this.hiddenGroupValues = [];
 
-		this.groupOptionsSub = this.tableData.groupBy$.subscribe(groupOptions => {
-			this.groupOptions = groupOptions;
+		this.initSub = this.tableData.init$.subscribe(init => {
+			this.groupOptions = init.groupBy;
+			this.selectableState = init.selectable;
 			this._cdr.markForCheck();
 		});
 		this.pagedRecordsSub = this.tableData.pagedRecords$.subscribe(pagedRecords => {
 			this.pagedRecords = pagedRecords;
 			this._cdr.markForCheck();
 		});
-		this.selectableSub = this.tableData.selectableState$.subscribe(selectableState => this.selectableState = selectableState);
 	}
 
 	ngOnDestroy(): void {
-		this.groupOptionsSub.unsubscribe();
+		this.initSub.unsubscribe();
 		this.pagedRecordsSub.unsubscribe();
-		this.selectableSub.unsubscribe();
 	}
 
 	selectRow = (row: {}): void => (this.selectableState) ? this.tableData.publishRowSelection(row) : null;

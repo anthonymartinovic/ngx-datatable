@@ -26,13 +26,13 @@ import { CellFormatPipe } from './pipes/cell.format.pipe';
 import { GroupPipe } from './pipes/group.pipe';
 import { ObjectFormatPipe } from './pipes/object.format.pipe';
 
-import { ArrayComparatorService } from './services/array-comparator.service';
+import { ArrayService } from './services/array.service';
 import { ErrorHandlerService } from './services/error-handler.service';
 import { FilterService } from './services/filter.service';
 import { ImgService } from './services/img.service';
-import { ObjectComparatorService } from './services/object-comparator.service';
+import { ObjectService } from './services/object.service';
 import { PagerService } from './services/pager.service';
-import { RecordsFormatterService } from './services/records-formatter.service';
+import { FormatService } from './services/format.service';
 import { SortService } from './services/sort.service';
 import { ExporterComponent } from './components/exporter/exporter.component';
 
@@ -70,16 +70,16 @@ import { ExporterComponent } from './components/exporter/exporter.component';
 	providers: [
 		CurrencyPipe,
 		
-		ArrayComparatorService,
+		ArrayService,
 		{
 			provide: ErrorHandler, 
 			useClass: ErrorHandlerService
 		},
 		FilterService,
 		ImgService,
-		ObjectComparatorService,
+		ObjectService,
 		PagerService,
-		RecordsFormatterService,
+		FormatService,
 		SortService
 	],
 	exports: [FlexiTableComponent],

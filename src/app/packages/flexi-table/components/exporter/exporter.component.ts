@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { TableInit } from '../../models/table-init.model';
+import { Init } from '../../models/init.model';
 
-import { RecordsFormatterService } from '../../services/records-formatter.service';
+import { FormatService } from '../../services/format.service';
 
 @Component({
 	selector: 'ngx-exporter',
@@ -44,17 +44,17 @@ import { RecordsFormatterService } from '../../services/records-formatter.servic
 	`,
 })
 export class ExporterComponent {
-	@Input() init: TableInit;
+	@Input() init: Init;
 	@Input() records: {}[];
 	@Input() checkedRecords: {}[];
 
 	@Output() serverExportAll: EventEmitter<string> = new EventEmitter();
 
-	constructor(private _recordsFormatter: RecordsFormatterService) {}
+	constructor(private _recordsFormatter: FormatService) {}
 
 	exportRecords(format: string, checked: boolean): void {
-		if (this.init.serverSide && format === 'csv' && !checked) return this.serverExportAll.emit('csv');
-		if (this.init.serverSide && format === 'json' && !checked) return this.serverExportAll.emit('json');
+		if (this.init.server && format === 'csv' && !checked) return this.serverExportAll.emit('csv');
+		if (this.init.server && format === 'json' && !checked) return this.serverExportAll.emit('json');
 
 		if (format === 'csv' && !checked) this._recordsFormatter.formatToCSV(this.records, true);
 		if (format === 'json' && !checked) this._recordsFormatter.formatToJSON(this.records, true);

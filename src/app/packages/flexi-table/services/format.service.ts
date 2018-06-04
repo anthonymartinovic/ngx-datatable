@@ -1,7 +1,7 @@
 import { Injectable, Renderer2, RendererFactory2, Inject } from '@angular/core';
 
 @Injectable()
-export class RecordsFormatterService {
+export class FormatService {
 	private _renderer: Renderer2;
 
 	private _headers: string[];
@@ -31,7 +31,7 @@ export class RecordsFormatterService {
 			else break;
 		}
 
-		const mappedRecords = records.map(row => this._headers.map(fieldName => {
+		const	mappedRecords = records.map(row => this._headers.map(fieldName => {
 			const value = fieldName.split('.').reduce((part,index) => part[index], row);
 			return (value && value.includes(',')) ? value.replace(',', '') : value;
 		}).join(','));
@@ -44,7 +44,7 @@ export class RecordsFormatterService {
 	}
 
 	formatToJSON(records: {}[], download: boolean): void {
-		const json = JSON.stringify([...records], null, 2);
+		const	json = JSON.stringify([...records], null, 2);
 		if (download) this._downloadFile(json, 'json');
 	}
 

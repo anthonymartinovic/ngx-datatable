@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class ArrayComparatorService {
+export class ArrayService {
 	arrayEquals(a: any[], b: any[], shallow: boolean): boolean {
 		if (a.length !== b.length) return false;
 

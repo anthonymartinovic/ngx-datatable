@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 import { ColumnMap } from '../../models/column.model';
-import { TableInit } from '../../models/table-init.model';
+import { Init } from '../../models/init.model';
 
 import { ImgService } from '../../services/img.service';
 import { FilterService } from '../../services/filter.service';
@@ -25,13 +25,13 @@ import { FilterService } from '../../services/filter.service';
 	`,
 })
 export class FilterComponent {
-	@Input() init: TableInit;
+	@Input() init: Init;
 	@Input() columns: ColumnMap[];
 	@Input() records: {}[];
 	@Input() globalFilter: string;
 
-	@Output() recordsChange: EventEmitter<{}[]>              = new EventEmitter();
-	@Output() serverGlobalFilterChange: EventEmitter<string> = new EventEmitter();
+	@Output() recordsChange: EventEmitter<{}[]>        = new EventEmitter();
+	@Output() serverFilterChange: EventEmitter<string> = new EventEmitter();
 
 	cachedTarget: HTMLInputElement;
 	selectedFilterColumn: string;
@@ -44,10 +44,10 @@ export class FilterComponent {
 
 
 	setFilter(target?: HTMLInputElement): void {
-		if (this.init.serverSide)
+		if (this.init.server)
 		{
 			if (this.timer) clearTimeout(this.timer);
-			this.timer = setTimeout(() => this.serverGlobalFilterChange.emit(target.value), 1000);
+			this.timer = setTimeout(() => this.serverFilterChange.emit(target.value), 1000);
 		}
 		else
 		{
@@ -65,7 +65,5 @@ export class FilterComponent {
 		}
 	}
 
-	get placeholderText(): string {
-		return `Filter ${(this.globalFilter) ? this.globalFilter : 'selected'} column...`;
-	}
+	get placeholderText(): string { return `Filter ${(this.globalFilter) ? this.globalFilter : 'selected'} column...` }
 }

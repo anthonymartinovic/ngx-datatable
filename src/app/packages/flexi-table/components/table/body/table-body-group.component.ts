@@ -5,7 +5,7 @@ import { ColumnMap } from '../../../models/column.model';
 
 import { ImgService } from '../../../services/img.service';
 import { SortService } from '../../../services/sort.service';
-import { TableDataService } from '../../../data/table.data.service';
+import { TableDataService } from '../../../data/data.service';
 
 @Component({
 	selector: 'ngx-table-body-group',
@@ -37,7 +37,7 @@ import { TableDataService } from '../../../data/table.data.service';
 	`
 })
 export class TableBodyGroupComponent implements OnInit {
-	serverSideStateSub: Subscription;
+	initSub: Subscription;
 	recordsSub: Subscription;
 	sortedColumnSub: Subscription;
 
@@ -46,7 +46,7 @@ export class TableBodyGroupComponent implements OnInit {
 	@Input() value: any;
 	@Output() toggleChange: EventEmitter<boolean> = new EventEmitter();
 
-	serverSideState: boolean;
+	serverSide: boolean;
 	records: {}[];
 	sortedColumn: {
 		name: any,
@@ -64,13 +64,13 @@ export class TableBodyGroupComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.serverSideStateSub = this.tableData.serverSideState$.subscribe(sss => this.serverSideState = sss);
-		this.recordsSub         = this.tableData.records$.subscribe(records => this.records = records);
-		this.sortedColumnSub    = this.tableData.sortedColumn$.subscribe(sortedColumn => this.sortedColumn = sortedColumn);
+		this.initSub         = this.tableData.init$.subscribe(init => this.serverSide = init.server);
+		this.recordsSub      = this.tableData.records$.subscribe(records => this.records = records);
+		this.sortedColumnSub = this.tableData.sortedColumn$.subscribe(sortedColumn => this.sortedColumn = sortedColumn);
 	}
 
 	ngOnDestroy(): void {
-		this.serverSideStateSub.unsubscribe();
+		this.initSub.unsubscribe();
 		this.recordsSub.unsubscribe();
 		this.sortedColumnSub.unsubscribe();
 	}
@@ -82,7 +82,7 @@ export class TableBodyGroupComponent implements OnInit {
 			? this.sortedColumn.order = (this.sortedColumn.order === 'asc') ? 'desc' : 'asc'
 			: this.sortedColumn = { name: column.access(this.records[0], true), order: 'asc' };
 
-		if (!this.serverSideState)
+		if (!this.serverSide)
 		{
 			this.records = this._sortService.sortRecords(this.records, this.sortedColumn);
 
