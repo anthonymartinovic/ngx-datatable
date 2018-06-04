@@ -59,7 +59,7 @@ export class PagerComponent implements OnInit {
 	pager: ClientPager;
 	pagedRecords: {}[];
 
-	constructor(private _pagerService: PagerService) {}
+	constructor(private pagerService: PagerService) {}
 
 	ngOnInit(): void {}
 
@@ -71,8 +71,8 @@ export class PagerComponent implements OnInit {
 		if (!bypassGuard && (page < 1 || page > this.pager.totalPages || page === this.pager.currentPage)) return;
 
 		this.pager = (this.init.server)
-			? this._pagerService.getPager(this.pageData.total, this.pageData.currentPage, this.pageData.limit)
-			: this._pagerService.getPager(this.records.length, page, this.pageLimit || 10);
+			? this.pagerService.getPager(this.pageData.total, this.pageData.currentPage, this.pageData.limit)
+			: this.pagerService.getPager(this.records.length, page, this.pageLimit || 10);
 	 
 		this.pagedRecords = (this.init.server)
 			? this.records

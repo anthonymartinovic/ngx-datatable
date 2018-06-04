@@ -50,16 +50,16 @@ export class ExporterComponent {
 
 	@Output() serverExportAll: EventEmitter<string> = new EventEmitter();
 
-	constructor(private _recordsFormatter: FormatService) {}
+	constructor(private formatService: FormatService) {}
 
 	exportRecords(format: string, checked: boolean): void {
 		if (this.init.server && format === 'csv' && !checked) return this.serverExportAll.emit('csv');
 		if (this.init.server && format === 'json' && !checked) return this.serverExportAll.emit('json');
 
-		if (format === 'csv' && !checked) this._recordsFormatter.formatToCSV(this.records, true);
-		if (format === 'json' && !checked) this._recordsFormatter.formatToJSON(this.records, true);
+		if (format === 'csv' && !checked) this.formatService.formatToCSV(this.records, true);
+		if (format === 'json' && !checked) this.formatService.formatToJSON(this.records, true);
 
-		if (format === 'csv' && checked) this._recordsFormatter.formatToCSV(this.checkedRecords, true);
-		if (format === 'json' && checked) this._recordsFormatter.formatToJSON(this.checkedRecords, true);
+		if (format === 'csv' && checked) this.formatService.formatToCSV(this.checkedRecords, true);
+		if (format === 'json' && checked) this.formatService.formatToJSON(this.checkedRecords, true);
 	}
 }

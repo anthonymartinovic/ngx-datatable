@@ -57,9 +57,9 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 
 	constructor(
 		public tableData: TableDataService, 
-		private _errorHandler: ErrorHandler,
-		private _cdr: ChangeDetectorRef,
-		private _objectComparator: ObjectService
+		private errorHandler: ErrorHandler,
+		private cdr: ChangeDetectorRef,
+		private objectService: ObjectService
 	) {}
 
 	ngOnInit(): void {
@@ -68,11 +68,11 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 		this.initSub = this.tableData.init$.subscribe(init => {
 			this.groupOptions = init.groupBy;
 			this.selectableState = init.selectable;
-			this._cdr.markForCheck();
+			this.cdr.markForCheck();
 		});
 		this.pagedRecordsSub = this.tableData.pagedRecords$.subscribe(pagedRecords => {
 			this.pagedRecords = pagedRecords;
-			this._cdr.markForCheck();
+			this.cdr.markForCheck();
 		});
 	}
 
@@ -88,7 +88,7 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 			? this.hiddenGroupValues = this.hiddenGroupValues.filter(hgv => hgv != groupValue)
 			: this.hiddenGroupValues.push(groupValue);
 
-		this._cdr.markForCheck();
+		this.cdr.markForCheck();
 	}
 
 	get groupValues(): any[] {
@@ -97,7 +97,7 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 			this.selectedGroup = this.groupOptions.find(group =>
 			{
 				for (let record of this.pagedRecords)
-					if (record.hasOwnProperty(group) || this._objectComparator.hasOwnNestedProperty(record, group)) return true;
+					if (record.hasOwnProperty(group) || this.objectService.hasOwnNestedProperty(record, group)) return true;
 
 				return false;
 			});
@@ -107,11 +107,11 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 		let groupValues = [];
 
 		for (let record of this.pagedRecords)
-			if (record.hasOwnProperty(this.selectedGroup) || this._objectComparator.hasOwnNestedProperty(record, this.selectedGroup))
-				if (groupValues.indexOf(this._objectComparator.getNestedProperty(record, this.selectedGroup)) === -1)
-					groupValues.push(this._objectComparator.getNestedProperty(record, this.selectedGroup));
+			if (record.hasOwnProperty(this.selectedGroup) || this.objectService.hasOwnNestedProperty(record, this.selectedGroup))
+				if (groupValues.indexOf(this.objectService.getNestedProperty(record, this.selectedGroup)) === -1)
+					groupValues.push(this.objectService.getNestedProperty(record, this.selectedGroup));
 
-		if (!groupValues.length) this._errorHandler.handleError(`No groupBy values match any keys in provided records`);
+		if (!groupValues.length) this.errorHandler.handleError(`No groupBy values match any keys in provided records`);
 
 		return groupValues;
 	}

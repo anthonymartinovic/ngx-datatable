@@ -56,7 +56,7 @@ export class TableBodyGroupComponent implements OnInit {
 	constructor(
 		public imgService: ImgService,
 		public tableData: TableDataService,
-		private _sortService: SortService
+		private sortService: SortService
 	) {}
 
 	ngOnChanges(): void {
@@ -84,7 +84,7 @@ export class TableBodyGroupComponent implements OnInit {
 
 		if (!this.serverSide)
 		{
-			this.records = this._sortService.sortRecords(this.records, this.sortedColumn);
+			this.records = this.sortService.sortRecords(this.records, this.sortedColumn);
 
 			this.tableData.publishRecords(this.records);
 			this.tableData.publishSortedColumn(this.sortedColumn);

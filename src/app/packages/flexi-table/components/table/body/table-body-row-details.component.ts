@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
 	selector: 'ngx-table-body-row-details',
@@ -13,12 +13,6 @@ import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core
 		</ng-container>
 	`,
 })
-export class TableBodyRowDetailsComponent implements OnInit {
+export class TableBodyRowDetailsComponent {
 	@Input() record: {};
-
-	constructor() { }
-
-	ngOnInit() {
-	}
-
 }

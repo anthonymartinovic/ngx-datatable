@@ -81,7 +81,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@HostBinding('class.hide-table-footer') hideTableFooter;
 	@HostBinding('class.only-table-content') onlyTableContent;
 
-	@ViewChild(PagerComponent) private _pagerComponent: PagerComponent;
+	@ViewChild(PagerComponent) private pagerComponent: PagerComponent;
 
 	@Input() init: Init;
 	@Input() config: ColumnConfig[];
@@ -114,8 +114,8 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 
 	constructor(
 		public tableData: TableDataService,
-		private _errorHandler: ErrorHandler,
-		private _cdr: ChangeDetectorRef
+		private errorHandler: ErrorHandler,
+		private cdr: ChangeDetectorRef
 	) {
 		this.recordsSub          = this.tableData.records$.subscribe(records => this.recordsCopy = records);
 		this.filterRecordsSub    = this.tableData.filterRecordsSubject$.subscribe(filteredRecords => this.filterRecords(filteredRecords));
@@ -158,7 +158,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 
 		(!this.init.server) ? this.clientSide = true : this.serverSide = true;
 
-		if (!this.records) return this._errorHandler.handleError(`No records passed into table`);
+		if (!this.records) return this.errorHandler.handleError(`No records passed into table`);
 		
 		this.recordsCopy = this.records;
 		this.tableData.publishRecords(this.recordsCopy);
@@ -168,7 +168,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.preventEmissions = false;
 
 		this.serverSideInitCompleted = true;
-		this._cdr.detectChanges();
+		this.cdr.detectChanges();
 	}
 
 	ngAfterViewInit(): void { this.afterViewInit() };
@@ -193,17 +193,17 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 
 	initSetPage(): void {
 		(this.serverSide)
-			? this._pagerComponent.setPage(this.pageData.currentPage, true)
-			: this._pagerComponent.setPage(1, true);
+			? this.pagerComponent.setPage(this.pageData.currentPage, true)
+			: this.pagerComponent.setPage(1, true);
 
-		this._cdr.detectChanges();
+		this.cdr.detectChanges();
 	}
 
 	filterRecords(filteredRecords: {}[]): void {
 		this.recordsCopy = filteredRecords;
 		this.tableData.publishRecords(filteredRecords);
 		this.tableData.runIsAllChecked();
-		this._cdr.detectChanges();
+		this.cdr.detectChanges();
 		this.initSetPage();
 	}
 

@@ -73,10 +73,10 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 
 	constructor(
 		public tableData: TableDataService,
-		private _arrayComparator: ArrayService,
-		private _cdr: ChangeDetectorRef,
-		private _filterService: FilterService,
-		private _sortService: SortService
+		private arrayService: ArrayService,
+		private cdr: ChangeDetectorRef,
+		private filterService: FilterService,
+		private sortService: SortService
 	) {}
 
 	ngOnChanges(): void {
@@ -84,11 +84,14 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		this.initSub            = this.tableData.init$.subscribe(init => this.serverSide = init.server);
+		this.initSub            = this.tableData.init$.subscribe(init => {
+			this.serverSide = init.server;
+			if (init.filter.type.toLowerCase() === 'columns' && Array.isArray(init.filter.keys))
+				this.columnFilters = init.filter.keys;
+		});
 		this.recordsSub         = this.tableData.records$.subscribe(records => this.records = records);
 		this.checkedRecordsSub  = this.tableData.checkedRecords$.subscribe(checkedRecords => this.checkedRecords = checkedRecords);
 		this.columnsSub         = this.tableData.columns$.subscribe(columns => this.columns = columns);
-		this.columnFiltersSub   = this.tableData.columnFilters$.subscribe(columnFilters => this.columnFilters = columnFilters);
 		this.serverFiltersSub   = this.tableData.serverFilters$.subscribe(serverFilters => this.serverFilters = serverFilters);
 		this.sortedColumnSub    = this.tableData.sortedColumn$.subscribe(sortedColumn => this.sortedColumn = sortedColumn);
 		this.isAllCheckedSub    = this.tableData.isAllCheckedSubject$.subscribe(() => this.isAllChecked());
@@ -113,23 +116,23 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 					(this.serverSide) &&
 					(this.records && this.checkedRecords) && 
 					(this.records.length > 0) &&
-					(this._arrayComparator.arrayIncludesAll([...this.records], [...this.checkedRecords], true))
+					(this.arrayService.arrayIncludesAll([...this.records], [...this.checkedRecords], true))
 				)
 			||
 				(
 					(this.records && this.checkedRecords) &&
 					(this.records.length > 0) &&
-					(this._arrayComparator.arrayEquals([...this.records], [...this.checkedRecords], (!this.columnFilters) ? true : false)) ||
-					(this.columnFilters && this._arrayComparator.arrayIncludesAll([...this.records], [...this.checkedRecords]))
+					(this.arrayService.arrayEquals([...this.records], [...this.checkedRecords], (!this.columnFilters) ? true : false)) ||
+					(this.columnFilters && this.arrayService.arrayIncludesAll([...this.records], [...this.checkedRecords]))
 				)
 			)
 		{
-			if (!this.wasAllChecked) (this.wasAllChecked = true, this._cdr.markForCheck());
+			if (!this.wasAllChecked) (this.wasAllChecked = true, this.cdr.markForCheck());
 			return true;
 		} 
 		else
 		{
-			if (this.wasAllChecked) (this.wasAllChecked = false, this._cdr.markForCheck());
+			if (this.wasAllChecked) (this.wasAllChecked = false, this.cdr.markForCheck());
 			return false;
 		}
 	}
@@ -138,7 +141,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 
 	clientUpdateAll(): void {
 		if	(
-				this._arrayComparator.arrayIncludesAll([...this.checkedRecords], [...this.records]) &&
+				this.arrayService.arrayIncludesAll([...this.checkedRecords], [...this.records]) &&
 				(this.checkedRecords.length === this.records.length || this.checkedRecords.length > this.records.length)
 			)
 		{
@@ -146,14 +149,14 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 				(checkedRecord, i) => (this.records.indexOf(checkedRecord) === -1) ? true : false
 			);
 		}
-		else if (this._arrayComparator.arrayIncludesAll([...this.records], [...this.checkedRecords]))
+		else if (this.arrayService.arrayIncludesAll([...this.records], [...this.checkedRecords]))
 		{
 			for (let i = 0; i < this.checkedRecords.length; i++)
 				if (this.records.indexOf(this.checkedRecords[i]) > -1) (this.checkedRecords.splice(i, 1), i--);
 		}
 		else if	(
 					this.checkedRecords.length === this.records.length ||
-					this.checkedRecords.length > 0 && this._arrayComparator.arrayIncludesNone([...this.checkedRecords], [...this.records])
+					this.checkedRecords.length > 0 && this.arrayService.arrayIncludesNone([...this.checkedRecords], [...this.records])
 				)
 		{
 			this.checkedRecords = this.checkedRecords.concat(this.records);
@@ -175,22 +178,22 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 
 	serverUpdateAll(): void {
 		if	(
-				this._arrayComparator.arrayIncludesAll([...this.checkedRecords], [...this.records], true) &&
+				this.arrayService.arrayIncludesAll([...this.checkedRecords], [...this.records], true) &&
 				(this.checkedRecords.length === this.records.length || this.checkedRecords.length > this.records.length)
 			)
 		{
 			this.checkedRecords = this.checkedRecords
-				.filter((checkedRecord, i) => (this._arrayComparator.arrayIncludes(checkedRecord, this.records)) ? false : true);
+				.filter((checkedRecord, i) => (this.arrayService.arrayIncludes(checkedRecord, this.records)) ? false : true);
 		}
-		else if (this._arrayComparator.arrayIncludesAll([...this.records], [...this.checkedRecords], true))
+		else if (this.arrayService.arrayIncludesAll([...this.records], [...this.checkedRecords], true))
 		{
 			for (let i = 0; i < this.checkedRecords.length; i++)
-				if (this._arrayComparator.arrayIncludes(this.checkedRecords[i], this.records))
+				if (this.arrayService.arrayIncludes(this.checkedRecords[i], this.records))
 					(this.checkedRecords.splice(i, 1), i--);
 		}
 		else if	(
 					this.checkedRecords.length === this.records.length ||
-					this.checkedRecords.length > 0 && this._arrayComparator.arrayIncludesNone([...this.checkedRecords], [...this.records], true)
+					this.checkedRecords.length > 0 && this.arrayService.arrayIncludesNone([...this.checkedRecords], [...this.records], true)
 				)
 		{
 			this.checkedRecords = this.checkedRecords.concat(this.records);
@@ -198,7 +201,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 		else if (this.checkedRecords.length > this.records.length)
 		{
 			for (let i = 0; i < this.records.length; i++)
-				if (!this._arrayComparator.arrayIncludes(this.records[i], this.checkedRecords))
+				if (!this.arrayService.arrayIncludes(this.records[i], this.checkedRecords))
 					this.checkedRecords.push(this.records[i]);
 		}
 		else
@@ -250,7 +253,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 		}
 		else
 		{
-			const filteredRecords = this._filterService.filterRecords(
+			const filteredRecords = this.filterService.filterRecords(
 				target.value.toLowerCase(), 
 				this.column.primeKey, 
 				this.columns, 
@@ -268,7 +271,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 
 		if (!this.serverSide)
 		{
-			this.records = this._sortService.sortRecords(this.records, this.sortedColumn);
+			this.records = this.sortService.sortRecords(this.records, this.sortedColumn);
 
 			this.tableData.publishRecords(this.records);
 			this.tableData.publishSortedColumn(this.sortedColumn);

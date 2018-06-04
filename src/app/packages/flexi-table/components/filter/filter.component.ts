@@ -39,7 +39,7 @@ export class FilterComponent {
 
 	constructor(
 		public imgService: ImgService,
-		private _filterService: FilterService,
+		private filterService: FilterService
 	) {}
 
 
@@ -54,7 +54,7 @@ export class FilterComponent {
 			if (target) this.cachedTarget = target;
 			if (!this.cachedTarget) return;
 	
-			const filteredRecords = this._filterService.filterRecords(
+			const filteredRecords = this.filterService.filterRecords(
 				this.cachedTarget.value.toLowerCase(), 
 				(this.globalFilter) ? this.globalFilter : this.selectedFilterColumn, 
 				this.columns, 

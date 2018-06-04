@@ -53,10 +53,7 @@ export class TableBodyRowComponent implements OnInit {
 
 	showRowDetails: boolean;
 
-	constructor(
-		public tableData: TableDataService,
-		private _cdr: ChangeDetectorRef
-	) {}
+	constructor(public tableData: TableDataService) {}
 
 	ngOnInit(): void {
 		this.showRowDetails = false;

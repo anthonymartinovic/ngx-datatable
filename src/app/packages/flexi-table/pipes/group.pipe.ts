@@ -8,11 +8,11 @@ import { ObjectService } from '../services/object.service';
 })
 export class GroupPipe implements PipeTransform {
 
-	constructor(private objNGX: ObjectService) {}
+	constructor(private objectService: ObjectService) {}
 
 	transform(pagedRecords: any, selectedGroup: string, groupValue: any): any {
 		for (let record of pagedRecords)
-			pagedRecords = pagedRecords.filter(record => this.objNGX.getNestedProperty(record, selectedGroup) === groupValue);
+			pagedRecords = pagedRecords.filter(record => this.objectService.getNestedProperty(record, selectedGroup) === groupValue);
 
 		return pagedRecords;
 	}

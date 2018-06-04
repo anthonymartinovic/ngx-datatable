@@ -7,32 +7,6 @@ import { Init } from './packages/flexi-table/models/init.model';
 
 import { FakeService } from './fake/fake.service';
 
-//ALL OPTIONS:
-// <ngx-flexi-table
-// 	[config]="projectConfig"
-// 	[styles]="styles"
-// 	[records]="projects"
-// 	[pageLimit]="pageLimit"
-// 	[groupBy]="['name']"
-// 	[globalFilter]="filterColumn"
-// 	[columnFilters]="columnFilters"
-//  [init]="tableInit"
-//	[pageData]="pageData"
-//	(onPageChange)="logPage($event)"
-// 	(onRowSelection)="logRow($event)"
-// 	(onCheckboxChange)="logRows($event)"
-// 	(onNewTabSelection)="logRoute($event)"
-// ></ngx-flexi-table>
-
-//NOTES:
-//	- config is required to use filters
-//	- columnFilters overrides globalFilter
-//	- if newTab is true, newTabKeys are required
-//	- pageData ignored if serverSide is false
-//	- pageLimit ignored if serverSide is true
-//	- pageData required if serverSide is true
-//	- when globalFilter is applied while serverSide is true, property is only used to determine placeholder text
-
 @Component({
 	selector: 'ngx-root',
 	template: `
@@ -82,10 +56,11 @@ export class AppComponent implements OnInit {
 		selectable: true,
 		checkboxes: true,
 		rowDetail: true,
+		pageLimit: 10,
 		groupBy: ['team.officeName'],
 		filter: {
 			show: true,
-			type: 'column',
+			type: 'columns',
 			keys: ['Address', 'Office']
 		},
 		newTab: {

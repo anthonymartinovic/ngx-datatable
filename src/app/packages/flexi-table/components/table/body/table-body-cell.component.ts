@@ -68,10 +68,10 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 	@Output() showRowDetailsChange: EventEmitter<boolean> = new EventEmitter();
 
 	constructor(
-		private _cdr: ChangeDetectorRef,
-		private _errorHandler: ErrorHandler,
-		private _arrayComparator: ArrayService,
-		private objNGX: ObjectService,
+		private cdr: ChangeDetectorRef,
+		private errorHandler: ErrorHandler,
+		private arrayService: ArrayService,
+		private objectService: ObjectService,
 		public imgService: ImgService,
 		public tableData: TableDataService
 	) {}
@@ -83,11 +83,11 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 		});
 		this.recordsSub = this.tableData.records$.subscribe(records => {
 			this.records = records;
-			this._cdr.markForCheck();
+			this.cdr.markForCheck();
 		});
 		this.checkedRecordsSub = this.tableData.checkedRecords$.subscribe(checkedRecords => { 
 			this.checkedRecords = checkedRecords;
-			this._cdr.markForCheck();
+			this.cdr.markForCheck();
 		});
 	}
 
@@ -99,7 +99,7 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 
 	isChecked(record): boolean {
 		return (this.serverSide)
-			? this._arrayComparator.arrayIncludes(record, this.checkedRecords)
+			? this.arrayService.arrayIncludes(record, this.checkedRecords)
 			: (this.checkedRecords.indexOf(record) > -1);
 	}
 
@@ -108,7 +108,7 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 
 		if (this.serverSide)
 		{
-			if (this._arrayComparator.arrayIncludes(record, checkedRecords))
+			if (this.arrayService.arrayIncludes(record, checkedRecords))
 			{
 				const recordToRemove = checkedRecords.find(checkedRecord => JSON.stringify(checkedRecord) === JSON.stringify(record));
 				checkedRecords.splice(checkedRecords.indexOf(recordToRemove), 1);
@@ -130,10 +130,10 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 
 	emitNewTabValue(record: {}) {
 		for (let key of this.newTabKeys)
-			if (this.objNGX.hasOwnNestedProperty(record, key))
-				return this.tableData.publishNewTabSelection(this.objNGX.getNestedProperty(record, key));
+			if (this.objectService.hasOwnNestedProperty(record, key))
+				return this.tableData.publishNewTabSelection(this.objectService.getNestedProperty(record, key));
 
-		return this._errorHandler.handleError(
+		return this.errorHandler.handleError(
 			`No 'newTabKeys' provided match any keys within selected row.\n
 			Keys within selected row are: [${Object.keys(record)}]`
 		);

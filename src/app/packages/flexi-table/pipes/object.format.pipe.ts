@@ -8,8 +8,8 @@ import { ObjectService } from '../services/object.service';
 })
 export class ObjectFormatPipe implements PipeTransform {
 
-	constructor (private objNGX: ObjectService) {}
+	constructor (private objectService: ObjectService) {}
 
 	transform = (object: any): any[] =>
-		this.objNGX.getNestedKeys(object).map(key => new Array(key, this.objNGX.getNestedProperty(object, key)));
+		this.objectService.getNestedKeys(object).map(key => new Array(key, this.objectService.getNestedProperty(object, key)));
 }
