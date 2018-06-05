@@ -1,4 +1,4 @@
-export interface ClientPager {
+export interface Pager {
 	totalRecords: number;
 	currentPage: number;
 	pageSize: number;
@@ -10,7 +10,7 @@ export interface ClientPager {
 	totalPages: number;
 }
 
-export interface ServerPager {
+export interface ServerPageData {
 	currentPage: number;
 	limit: number;
 	total: number;

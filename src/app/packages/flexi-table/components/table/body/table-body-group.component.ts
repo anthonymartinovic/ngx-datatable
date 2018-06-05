@@ -14,8 +14,11 @@ import { TableDataService } from '../../../data/data.service';
 	template: `
 		<div class="body-group">
 			<div class="group-info">
-				<div class="group-name" (click)="setSort(selectedGroup)">{{selectedGroup}}:</div>
-				<div class="group-value">{{value}}</div>
+				<div
+					class="group-value"
+					[innerHTML]="(value) ? value : 'N/A'"
+					(click)="setSort(selectedGroup)"
+				></div>
 			</div>
 			<div class="group-toggle-options">
 				<ng-container *ngIf="hiddenGroupValues.includes(value) else groupOpen">

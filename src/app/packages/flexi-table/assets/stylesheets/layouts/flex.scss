@@ -1,0 +1,342 @@
+:host-context(.flex) ::ng-deep {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	min-width: 700px;
+	border: 1px solid #dedede;
+
+	* {
+		font-family: 'Rubik', sans-serif;
+		font-size: 13px;
+	}
+		
+	.flexi-table-header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+
+		.table-caption-container {
+			display: flex;
+			flex: 0 0 20%;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+			height: 100%;
+		}
+
+		.caption-container-border {
+			border-right: 1px solid #dedede;
+		}
+
+		.table-exporter {
+			flex: 1 0 50%;
+
+			.export-options {
+				display: flex;
+				flex-direction: row;
+				flex-wrap: wrap;
+				justify-content: center;
+				align-items: center;
+				padding: 0 20px;
+
+				.export-button {
+					flex: 0 0 48%;
+					margin: 2px;
+					cursor: pointer;
+				}
+			}
+		}
+
+		.table-filter {
+			display: flex;
+			flex: 0 0 30%;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+			height: 100%;
+			border-left: 1px solid #dedede;
+
+			.filter-container {
+				display: flex;
+				padding: 6px 20px;
+
+				.filter-input-container {
+					display: flex;
+					flex-direction: row;
+
+					.filter-input-icon {
+						display: flex;
+						justify-content: center;
+						align-items: center;
+					}
+
+					.filter-input {
+						padding: 4px;
+					}
+				}
+				.filter-select {
+					margin-top: 6px;
+				}
+			}
+		}
+	}
+
+	.hide-table-header-inner {
+		display: none;
+	}
+
+	.flexi-table-content {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		height: 100%;
+		border-top: 1px solid #dedede;
+		border-bottom: 1px solid #dedede;
+
+		.table {
+
+			.table-head {
+
+				.table-head-row-container {
+
+					.head-row {
+						display: flex;
+						flex-direction: row;
+						justify-content: flex-start;
+						align-items: center;
+						padding: 5px;
+						height: 50px;
+
+						.table-head-cell {
+							display: flex;
+							flex: 1 1 150px;
+							flex-direction: column;
+							justify-content: center;
+							height: 100%;
+							padding: 5px 10px;
+							// border-right: 1px solid #dedede;
+
+							.head-cell {
+								cursor: pointer;
+							}
+
+							.text {}
+
+							.checkbox-container {
+								
+								.checkbox {
+									cursor: pointer;
+								}
+
+								.checkbox:disabled {
+									cursor: not-allowed;
+								}
+							}
+
+							.column-filter-container {
+								.column-filter {}
+							}
+
+							.input-container {
+								display: flex;
+
+								.input {}
+							}
+						}
+
+						.table-head-cell:last-child {
+							border-right: unset;
+						}
+
+						.row-detail-table-head-cell {
+							max-width: 20px;
+						}
+					}
+				}
+			}
+
+			.table-body {
+
+				.table-body-group-container {
+
+					.body-group {
+						display: flex;
+						flex-direction: row;
+						justify-content: space-between;
+						align-items: center;
+						height: 40px;
+						padding: 5px;
+						background-color: #dedede;
+
+						.group-info {
+							display: flex;
+							flex-direction: row;
+							padding: 5px 10px;
+
+							.group-name {
+								text-transform: capitalize;
+								padding-right: 10px;
+								cursor: pointer;
+							}
+
+							.group-value {
+								cursor: pointer;
+							}
+						}
+
+						.group-toggle-options {
+							padding: 5px 10px;
+
+							.group-toggle {
+								display: flex;
+								cursor: pointer;
+								width: 20px;
+								height: auto;
+							}
+
+							.group-toggle-open {}
+
+							.group-toggle-closed {}
+						}
+					}
+				}
+
+				.table-body-row-container {
+
+					.body-row {
+						display: flex;
+						flex-direction: row;
+						justify-content: flex-start;
+						align-items: center;
+						height: 40px;
+						padding: 5px;
+						border-bottom: 1px solid #dedede;
+						cursor: pointer;
+
+						.table-body-cell {
+							display: flex;
+							flex: 1 1 150px;
+							flex-direction: column;
+							justify-content: center;
+							height: 100%;
+							padding: 5px 10px;
+							// border-right: 1px solid #dedede;
+							
+							.body-cell {}
+
+							.text {}
+
+							.svg {
+								display: flex;
+								justify-content: center;
+								cursor: pointer;
+
+								svg {
+									width: 20px;
+									height: auto;
+									cursor: pointer;
+								}
+							}
+
+							.checkbox-container {
+
+								.checkbox {
+									cursor: pointer;
+								}
+							}
+						}
+
+						.table-body-cell:last-child {
+							border-right: unset;
+						}
+
+						.row-detail-table-body-cell {
+							max-width: 20px;
+						}
+					}
+
+					.body-row-border-top-add {
+						border-top: 1px solid #dedede;
+					}
+	
+					.body-row-border-bottom-remove {
+						border-bottom: 0px solid #dedede;
+					}
+
+					.body-row-details {
+						display: flex;
+						flex-direction: column;
+						justify-content: flex-start;
+						align-items: left;
+						padding: 0px;
+						background-color: #eee;
+						border-bottom: 0px solid #dedede;
+						
+						.row-detail-pair {
+							display: flex;
+							flex-direction: row;
+							padding: 1px 15px;
+
+							.row-detail-key {
+								padding-right: 10px;
+								font-weight: 500;
+							}
+
+							.row-detail-value {}
+						}
+
+						.row-detail-pair:nth-child(1) {
+							padding-top: 10px;
+						}
+
+						.row-detail-pair:last-child {
+							padding-bottom: 10px;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.flexi-table-footer {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		height: 100%;
+
+		.table-pager {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+			height: 100%;
+
+			.total-records {
+				align-items: center;
+				padding-left: 20px;
+			}
+
+			.pager-ul {
+				display: flex;
+				padding-right: 20px;
+				list-style: none;
+
+				.pager-li {
+					width: 22px;
+
+					.li-item {}
+
+					.li-a {} 
+				}
+			}
+		}
+	}
+
+	.hide-table-footer-inner {
+		display: none;
+	}
+}

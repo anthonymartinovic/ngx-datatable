@@ -18,7 +18,6 @@ export class CellStyleDirective implements OnInit {
 		}
 
 		if (this.cellStyle === 'checkbox' || 
-			this.cellStyle === 'newTab' || 
 			typeof this.cellStyle === 'number')
 		{
 			this.textAlign = 'right';

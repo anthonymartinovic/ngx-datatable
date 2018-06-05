@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClientPager, ServerPager } from '../../models/pager.model';
+import { Pager, ServerPageData } from '../../models/pager.model';
 import { Init } from '../../models/init.model';
 
 import { PagerService } from '../../services/pager.service';
@@ -12,7 +12,7 @@ import { FormatService } from '../../services/format.service';
 	host: { 'class': 'table-pager' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<div class="total-records">Total: {{this.records.length}}</div>
+		<div class="total-records">{{recordsTally}}</div>
 		<ul *ngIf="pager && pager.selectablePages && pager.selectablePages.length > 1" class="pager-ul">
 			<ngx-pager-li
 				[button]="{ name: 'first', symbol: '|<', value: 1 }"
@@ -51,12 +51,12 @@ export class PagerComponent implements OnInit {
 	@Input() init: Init;
 	@Input() records: {}[];
 	@Input() pageLimit: number;
-	@Input() pageData: ServerPager;
+	@Input() pageData: ServerPageData;
 
 	@Output() pagedRecordsChange: EventEmitter<{}[]> = new EventEmitter();
 	@Output() serverPageChange: EventEmitter<number> = new EventEmitter();
 
-	pager: ClientPager;
+	pager: Pager;
 	pagedRecords: {}[];
 
 	constructor(private pagerService: PagerService) {}
@@ -79,5 +79,9 @@ export class PagerComponent implements OnInit {
 			: this.records.slice(this.pager.startIndex, this.pager.endIndex + 1);
 
 		this.pagedRecordsChange.emit(this.pagedRecords);
+	}
+
+	get recordsTally(): string {
+		return (this.pager) ? `${this.pager.startIndex + 1} - ${this.pager.endIndex + 1} / ${this.pager.totalRecords}` : null;
 	}
 }

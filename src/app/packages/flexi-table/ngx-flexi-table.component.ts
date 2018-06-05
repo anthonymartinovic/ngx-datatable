@@ -19,7 +19,7 @@ import { Subscription } from 'rxjs';
 import { PagerComponent } from './components/pager/pager.component';
 
 import { ColumnConfig, ColumnMap } from './models/column.model';
-import { ServerPager } from './models/pager.model';
+import { ServerPageData } from './models/pager.model';
 import { Styles } from './models/styles.model';
 import { Init } from './models/init.model';
 
@@ -49,7 +49,7 @@ import { TableDataService } from './data/data.service';
 				[records]="records"
 				[globalFilter]="init.filter.keys"
 				(recordsChange)="filterRecords($event)"
-				(serverGlobalFilterChange)="onFilterChange.emit($event)"
+				(serverFilterChange)="onFilterChange.emit($event)"
 			></ngx-filter>
 		</div>
 		<div class="flexi-table-content">
@@ -77,6 +77,9 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	serverFiltersSub: Subscription;
 	sortedColumnSub: Subscription;
 
+	@HostBinding('class.flex') flex;
+	@HostBinding('class.grid') grid;
+	@HostBinding('class.theme-basic') themeBasic;
 	@HostBinding('class.hide-table-header') hideTableHeader;
 	@HostBinding('class.hide-table-footer') hideTableFooter;
 	@HostBinding('class.only-table-content') onlyTableContent;
@@ -86,7 +89,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@Input() init: Init;
 	@Input() config: ColumnConfig[];
 	@Input() records: {}[];
-	@Input() pageData: ServerPager;
+	@Input() pageData: ServerPageData;
 	@Input() styles: Styles;
 
 	//GENERAL OUTPUTS
@@ -152,9 +155,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		this.tableData.publishInit(this.init);
 		this.tableData.publishStyles(this.styles);
 
-		this.hideTableHeader = (this.init.header) ? false : true;
-		this.hideTableFooter = (this.init.footer) ? false : true;
-		this.onlyTableContent = (this.hideTableHeader && this.hideTableFooter) ? true : false;
+		this.initStyles();
 
 		(!this.init.server) ? this.clientSide = true : this.serverSide = true;
 
@@ -189,6 +190,16 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	reDeployTable(): void {
 		this.onInit();
 		this.afterViewInit();
+	}
+
+	initStyles(): void {
+		this.hideTableHeader  = (this.init.header) ? false : true;
+		this.hideTableFooter  = (this.init.footer) ? false : true;
+		this.onlyTableContent = (this.hideTableHeader && this.hideTableFooter) ? true : false;
+
+		this.flex       = (this.styles && this.styles.template.layout === 'flex') ? true : false;
+		this.grid       = (this.styles && this.styles.template.layout === 'grid') ? true : false;
+		this.themeBasic = (this.styles && this.styles.template.theme === 'basic') ? true : false;
 	}
 
 	initSetPage(): void {

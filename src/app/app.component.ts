@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 import { Project, Person } from './fake/model';
 import { ColumnConfig } from './packages/flexi-table/models/column.model';
-import { ServerPager } from './packages/flexi-table/models/pager.model';
 import { Init } from './packages/flexi-table/models/init.model';
+import { ServerPageData } from './packages/flexi-table/models/pager.model';
+import { Styles } from './packages/flexi-table/models/styles.model';
 
 import { FakeService } from './fake/fake.service';
 
@@ -16,10 +17,10 @@ import { FakeService } from './fake/fake.service';
 			[config]="projectConfig"
 			[records]="projects"
 			[pageData]="pageData"
+			[styles]="styles"
 			(onPageChange)="logPage($event)"
 			(onExportAll)="logExportAll($event)"
-			(onGlobalFilterChange)="logGlobalFilterChange($event)"
-			(onColumnFiltersChange)="logColumnFilterChange($event)"
+			(onFilterChange)="logServerFilterChange($event)"
 			(onRowSelection)="logRow($event)"
 			(onCheckboxChange)="logRows($event)"
 			(onNewTabSelection)="logRoute($event)"
@@ -72,20 +73,26 @@ export class AppComponent implements OnInit {
 
 	pageLimit: number = 10;
 
-	pageData: ServerPager;
+	pageData: ServerPageData;
 
 	filterColumn: string = 'name';
 	columnFilters: string[] = [];
 
-	styles: any = {
-		table: {
-			width: '300px'
+	styles: Styles = {
+		template: {
+			use: true,
+			layout: 'flex',
+			theme: 'none'
 		},
 		head: {
-			rowHeight: '60px'
+			height: '40px'
 		},
 		body: {
-			rowHeight: '40px'
+			headerHeight: '40px',
+			rowHeight: '30px'
+		},
+		footer: {
+			height: '40px'
 		}
 	}
 
@@ -259,14 +266,14 @@ export class AppComponent implements OnInit {
 		console.log('EXPORT-ALL-DATA', event);
 	}
 
-	logGlobalFilterChange(event) {
+	logServerFilterChange(event) {
 		console.log('GLOBAL FILTER', event);
-		this.getAppraisals(event, null, null, null);
+		this.getAppraisals(event[0].value, null, null, null);
 	}
 
-	logColumnFilterChange(event) {
-		console.log('COLUMN FILTER', event);
-	}
+	// logColumnFilterChange(event) {
+	// 	console.log('COLUMN FILTER', event);
+	// }
 
 	logRow(event) {
 		console.log('SELECTED-ROW', event);

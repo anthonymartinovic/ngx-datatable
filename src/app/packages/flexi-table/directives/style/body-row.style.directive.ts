@@ -17,7 +17,7 @@ export class BodyRowStyleDirective implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.stylesSub = this.tableData.styles$.subscribe(styles => {
-			// this.height = (styles && styles.body) ? styles.body.rowHeight : '60px';
+			this.height = (styles && styles.body) ? styles.body.rowHeight : '30px';
 		})
 
 		this.selectableSub = this.tableData.init$.subscribe(init => this.cursor = (init.selectable) ? 'pointer' : 'default')
