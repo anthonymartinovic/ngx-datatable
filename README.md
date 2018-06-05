@@ -1,3 +1,6 @@
+# NOTES
+- Need to convert **scss** files to **css**.
+
 # NgxFlexiTable
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.1.
