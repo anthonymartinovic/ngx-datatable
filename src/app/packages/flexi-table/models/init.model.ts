@@ -11,11 +11,11 @@ export class Init {
 	pageLimit?: number      = 10;
 	filter?: {
 		show: boolean,
-		type: string,
+		type: 'global' | 'columns',
 		keys: string | string[]
 	} = {
 		show: false,
-		type: '',
+		type: 'global',
 		keys: ''
 	};
 	newTab?: {

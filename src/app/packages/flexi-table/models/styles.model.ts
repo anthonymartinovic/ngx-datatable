@@ -1,15 +1,19 @@
 export interface Styles {
-	table: {
+	template: {
+		type: 'grid' | 'flex' | 'none',
+		theme: 'basic' | 'none'
+	}
+	table?: {
 		width: string
 	};
-	head: {
+	head?: {
 		groupHeight: string,
 		rowHeight: string
 	};
-	body: {
+	body?: {
 		rowHeight: string
 	}
-	pager: {
+	pager?: {
 		rowHeight: string
 	}
 }

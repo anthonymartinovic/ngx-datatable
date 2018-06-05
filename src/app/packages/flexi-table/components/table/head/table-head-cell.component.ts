@@ -48,7 +48,6 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	recordsSub: Subscription;
 	checkedRecordsSub: Subscription;
 	columnsSub: Subscription;
-	columnFiltersSub: Subscription;
 	serverFiltersSub: Subscription;
 	sortedColumnSub: Subscription;
 	isAllCheckedSub: Subscription;
@@ -104,7 +103,6 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 		this.recordsSub.unsubscribe();
 		this.checkedRecordsSub.unsubscribe();
 		this.columnsSub.unsubscribe();
-		this.columnFiltersSub.unsubscribe();
 		this.serverFiltersSub.unsubscribe();
 		this.sortedColumnSub.unsubscribe();
 		this.isAllCheckedSub.unsubscribe();
