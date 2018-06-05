@@ -4,11 +4,11 @@ export interface Styles {
 		layout: 'flex' | 'grid' | 'none',
 		theme: 'basic' | 'none'
 	};
-	head?: {
+	header?: {
 		height: string
 	};
-	body?: {
-		headerHeight: string,
+	content?: {
+		headHeight: string,
 		rowHeight: string
 	};
 	footer?: {

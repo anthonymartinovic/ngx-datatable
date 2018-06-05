@@ -16,10 +16,12 @@ import { FilterComponent } from './components/filter/filter.component';
 import { PagerComponent } from './components/pager/pager.component';
 import { PagerLiComponent } from './components/pager/pager-li.component';
 
-import { CellStyleDirective } from './directives/style/cell.style.directive';
-import { HeadRowStyleDirective } from './directives/style/head-row.style.directive';
-import { BodyRowStyleDirective } from './directives/style/body-row.style.directive';
-import { PagerStyleDirective } from './directives/style/pager.style.directive';
+import { CellStyleDirective } from './directives/style/table/cell.style.directive';
+import { FooterDirective } from './directives/style/footer.directive';
+import { HeaderDirective } from './directives/style/header.directive';
+import { HeadRowStyleDirective } from './directives/style/table/head-row.style.directive';
+import { BodyRowStyleDirective } from './directives/style/table/body-row.style.directive';
+import { PagerStyleDirective } from './directives/style/pager/pager.style.directive';
 import { StopPropagationClickDirective } from './directives/event/stop-propagation.click.directive';
 
 import { CellFormatPipe } from './pipes/cell.format.pipe';
@@ -56,7 +58,9 @@ import { ExporterComponent } from './components/exporter/exporter.component';
 		PagerComponent, 
 		PagerLiComponent, 
 
-		CellStyleDirective, 
+		CellStyleDirective,
+		FooterDirective,
+		HeaderDirective,
 		HeadRowStyleDirective,
 		BodyRowStyleDirective,
 		PagerStyleDirective, 

@@ -61,7 +61,7 @@ export class AppComponent implements OnInit {
 		groupBy: ['team.officeName'],
 		filter: {
 			show: true,
-			type: 'columns',
+			type: 'global',
 			keys: ['Address', 'Office']
 		},
 		newTab: {
@@ -81,14 +81,14 @@ export class AppComponent implements OnInit {
 	styles: Styles = {
 		template: {
 			use: true,
-			layout: 'flex',
+			layout: 'grid',
 			theme: 'none'
 		},
-		head: {
-			height: '40px'
+		header: {
+			height: '60px'
 		},
-		body: {
-			headerHeight: '40px',
+		content: {
+			headHeight: '40px',
 			rowHeight: '30px'
 		},
 		footer: {

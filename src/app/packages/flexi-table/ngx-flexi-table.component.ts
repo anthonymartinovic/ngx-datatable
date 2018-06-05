@@ -31,7 +31,11 @@ import { TableDataService } from './data/data.service';
 	providers: [TableDataService],
 	styleUrls: ['./ngx-flexi-table.component.scss'],
 	template: `
-		<div class="flexi-table-header" [class.hide-table-header-inner]="init && !init.header">
+		<div
+			ngxHeader
+			class="flexi-table-header"
+			[class.hide-table-header-inner]="init && !init.header"
+		>
 			<div class="table-caption-container" [class.caption-container-border]="init.caption">
 				<caption *ngIf="init.caption" class="table-caption">{{ init.caption }}</caption>
 			</div>
@@ -55,7 +59,11 @@ import { TableDataService } from './data/data.service';
 		<div class="flexi-table-content">
 			<ngx-table></ngx-table>
 		</div>
-		<div class="flexi-table-footer" [class.hide-table-footer-inner]="init && !init.footer">
+		<div
+			ngxFooter
+			class="flexi-table-footer"
+			[class.hide-table-footer-inner]="init && !init.footer"
+		>
 			<ngx-pager
 				[init]="init"
 				[records]="recordsCopy"
