@@ -61,7 +61,7 @@ export class AppComponent implements OnInit {
 		groupBy: ['team.officeName'],
 		filter: {
 			show: true,
-			type: 'global',
+			type: 'columns',
 			keys: ['Address', 'Office']
 		},
 		newTab: {
