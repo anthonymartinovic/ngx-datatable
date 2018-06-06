@@ -36,8 +36,8 @@ import { TableDataService } from './data/data.service';
 			class="flexi-table-header"
 			[class.hide-table-header-inner]="init && !init.header"
 		>
-			<div class="table-caption-container" [class.caption-container-border]="init.caption">
-				<caption *ngIf="init.caption" class="table-caption">{{ init.caption }}</caption>
+			<div class="table-caption-container" [class.caption-container-border]="init && init.caption">
+				<caption *ngIf="init && init.caption" class="table-caption">{{ init.caption }}</caption>
 			</div>
 			<ngx-exporter
 				*ngIf="init.exportOptions"
@@ -76,6 +76,7 @@ import { TableDataService } from './data/data.service';
 	`
 })
 export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
+	loadingSub: Subscription;
 	recordsSub: Subscription;
 	checkedRecordsSub: Subscription;
 	filterRecordsSub: Subscription;
@@ -85,6 +86,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	serverFiltersSub: Subscription;
 	sortedColumnSub: Subscription;
 
+	@HostBinding('class.loading') loading = true;
 	@HostBinding('class.flex') flex;
 	@HostBinding('class.grid') grid;
 	@HostBinding('class.theme-basic') themeBasic;
@@ -110,9 +112,10 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 
 	clientSide: boolean = false;
 	serverSide: boolean = false;
-
-	preventEmissions: boolean        = false;
 	serverSideInitCompleted: boolean = false;
+
+	preventDetection: boolean = true;
+	preventEmissions: boolean = false;
 
 	recordsCopy: {}[];
 	checkedRecords: {}[];
@@ -125,12 +128,18 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 		private errorHandler: ErrorHandler,
 		private cdr: ChangeDetectorRef
 	) {
+		this.loadingSub          = this.tableData.loading$.subscribe(loading => {
+			this.loading = (this.init && this.init.loader && loading) ? true : false;
+		});
 		this.recordsSub          = this.tableData.records$.subscribe(records => this.recordsCopy = records);
 		this.filterRecordsSub    = this.tableData.filterRecordsSubject$.subscribe(filteredRecords => this.filterRecords(filteredRecords));
 		this.initSetPageSub      = this.tableData.initSetPageSubject$.subscribe(() => this.initSetPage());
 		this.rowSelectionSub     = this.tableData.rowSelection$.subscribe(row => this.onRowSelection.emit(row));
 		this.newTabSelectionSub  = this.tableData.newTabSelection$.subscribe(newTab => this.onNewTabSelection.emit(newTab));
-		this.serverFiltersSub    = this.tableData.serverFilters$.subscribe(serverFilters => this.onFilterChange.emit(serverFilters));
+		this.serverFiltersSub    = this.tableData.serverFilters$.subscribe(serverFilters => {
+			this.tableData.publishLoading(true);
+			this.onFilterChange.emit(serverFilters);
+		});
 		this.sortedColumnSub     = this.tableData.sortedColumn$.subscribe(sortedColumn =>
 			(this.serverSide) ? (this.sortedColumn = sortedColumn, this.onSort.emit(this.sortedColumn)) : null
 		)
@@ -156,33 +165,37 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 
 	ngOnInit(): void { this.onInit() };
 	onInit(): void {
-		if (!this.init) this.init = new Init;
-		this.tableData.publishInit(this.init);
-		this.tableData.publishStyles(this.styles);
-
-		this.initStyles();
-
-		(!this.init.server) ? this.clientSide = true : this.serverSide = true;
-
-		if (!this.records) return this.errorHandler.handleError(`No records passed into table`);
-		
-		this.recordsCopy = this.records;
-		this.tableData.publishRecords(this.recordsCopy);
-
-		this.preventEmissions = true;
-		if (this.clientSide || !this.serverSideInitCompleted) this.tableData.publishCheckedRecords([]);
-		this.preventEmissions = false;
-
-		this.serverSideInitCompleted = true;
-		this.cdr.detectChanges();
+		if (this.records)
+		{
+			if (!this.init) this.init = new Init;
+			this.tableData.publishInit(this.init);
+			this.tableData.publishStyles(this.styles);
+			this.initStyles();
+	
+			(!this.init.server) ? this.clientSide = true : this.serverSide = true;
+	
+			if (!this.records) return this.errorHandler.handleError(`No records passed into table`);
+			
+			this.recordsCopy = this.records;
+			this.tableData.publishRecords(this.recordsCopy);
+	
+			this.preventEmissions = true;
+			if (this.clientSide || !this.serverSideInitCompleted) this.tableData.publishCheckedRecords([]);
+			this.preventEmissions = false;
+	
+			this.serverSideInitCompleted = true;
+			this.preventDetection = false;
+			this.cdr.detectChanges();
+		}
 	}
 
 	ngAfterViewInit(): void { this.afterViewInit() };
 	afterViewInit(): void {
-		this.initSetPage();
+		if (this.records) this.initSetPage();
 	}
 
 	ngOnDestroy(): void {
+		this.loadingSub.unsubscribe();
 		this.recordsSub.unsubscribe();
 		this.checkedRecordsSub.unsubscribe();
 		this.filterRecordsSub.unsubscribe();
@@ -208,11 +221,13 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 			? this.pagerComponent.setPage(this.pageData.currentPage, true)
 			: this.pagerComponent.setPage(1, true);
 
+		this.tableData.publishLoading(false);
 		this.cdr.detectChanges();
 	}
 
 	filterRecords(filteredRecords: {}[]): void {
 		this.recordsCopy = filteredRecords;
+		this.tableData.publishLoading(true);
 		this.tableData.publishRecords(filteredRecords);
 		this.tableData.runIsAllChecked();
 		this.cdr.detectChanges();
@@ -222,5 +237,6 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	updatePagedRecords(newPagedRecords: {}[]): void {
 		this.pagedRecords = newPagedRecords;
 		this.tableData.publishPagedRecords(this.pagedRecords);
+		this.tableData.publishLoading(false);
 	}
 }

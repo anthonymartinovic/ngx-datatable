@@ -1,0 +1,23 @@
+:host-context(.loading) ::ng-deep {
+	
+	* {
+		opacity: 0.8;
+		transition: 0.2s ease-in-out;
+	}
+}
+
+:host-context(ngx-flexi-table) ::ng-deep {
+
+	* {
+		opacity: 1;
+		transition: 0.2s ease-in-out;
+	}
+
+	.hide-table-header-inner {
+		display: none;
+	}
+
+	.hide-table-footer-inner {
+		display: none;
+	}
+}

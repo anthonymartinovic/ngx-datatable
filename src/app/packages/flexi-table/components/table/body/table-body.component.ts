@@ -9,7 +9,7 @@ import { TableDataService } from '../../../data/data.service';
 	host: { 'class': 'table-body' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<ng-container *ngIf="groupOptions else noGroupOptions">
+		<ng-container *ngIf="pagedRecords && groupOptions else noGroupOptions">
 
 			<ng-container *ngFor="let groupValue of groupValues">
 				<ngx-table-body-group 
@@ -32,16 +32,16 @@ import { TableDataService } from '../../../data/data.service';
 		</ng-container>
 
 		<ng-template #noGroupOptions>
-
-			<ngx-table-body-row
-				*ngFor="let record of pagedRecords; let i = index"
-				bodyRowStyle
-				[record]="record"
-				[addBorder]="i === 0"
-				[removeBorder]="i === (pagedRecords.length - 1)"
-				(click)="selectRow(record)"
-			></ngx-table-body-row>
-
+			<ng-container *ngIf="pagedRecords">
+				<ngx-table-body-row
+					*ngFor="let record of pagedRecords; let i = index"
+					bodyRowStyle
+					[record]="record"
+					[addBorder]="i === 0"
+					[removeBorder]="i === (pagedRecords.length - 1)"
+					(click)="selectRow(record)"
+				></ngx-table-body-row>
+			</ng-container>
 		</ng-template>
 	`
 })
@@ -66,9 +66,12 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 		this.hiddenGroupValues = [];
 
 		this.initSub = this.tableData.init$.subscribe(init => {
-			this.groupOptions = init.groupBy;
-			this.selectableState = init.selectable;
-			this.cdr.markForCheck();
+			if (init)
+			{
+				this.groupOptions = init.groupBy;
+				this.selectableState = init.selectable;
+				this.cdr.markForCheck();
+			}
 		});
 		this.pagedRecordsSub = this.tableData.pagedRecords$.subscribe(pagedRecords => {
 			this.pagedRecords = pagedRecords;
@@ -110,8 +113,6 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 			if (record.hasOwnProperty(this.selectedGroup) || this.objectService.hasOwnNestedProperty(record, this.selectedGroup))
 				if (groupValues.indexOf(this.objectService.getNestedProperty(record, this.selectedGroup)) === -1)
 					groupValues.push(this.objectService.getNestedProperty(record, this.selectedGroup));
-
-		if (!groupValues.length) this.errorHandler.handleError(`No groupBy values match any keys in provided records`);
 
 		return groupValues;
 	}

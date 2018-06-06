@@ -62,8 +62,8 @@ export class AppComponent implements OnInit {
 		groupBy: ['team.officeName'],
 		filter: {
 			show: true,
-			type: 'global',
-			keys: 'address'
+			type: 'columns',
+			keys: ['Address']
 		},
 		newTab: {
 			show: true,
@@ -252,7 +252,6 @@ export class AppComponent implements OnInit {
 					},
 				];
 				this.filterColumn = 'name';
-				this.columnFilters = ['Address', 'Office'];
 			},
 			err => console.log(err),
 			() => this.loading = false

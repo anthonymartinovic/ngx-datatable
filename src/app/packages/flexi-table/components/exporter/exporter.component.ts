@@ -27,7 +27,7 @@ import { FormatService } from '../../services/format.service';
 			<button 
 				type="button" 
 				class="export-button" 
-				[disabled]="!checkedRecords.length"
+				[disabled]="checkedRecords && !checkedRecords.length"
 				(click)="exportRecords('csv', true)"
 			>
 				Export selected data (CSV)
@@ -35,7 +35,7 @@ import { FormatService } from '../../services/format.service';
 			<button 
 				type="button" 
 				class="export-button"
-				[disabled]="!checkedRecords.length"
+				[disabled]="checkedRecords && !checkedRecords.length"
 				(click)="exportRecords('json', true)"
 			>
 				Export selected data (JSON)

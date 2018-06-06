@@ -4,8 +4,9 @@ import { Subscription } from 'rxjs';
 import { Pager, ServerPageData } from '../../models/pager.model';
 import { Init } from '../../models/init.model';
 
-import { PagerService } from '../../services/pager.service';
 import { FormatService } from '../../services/format.service';
+import { PagerService } from '../../services/pager.service';
+import { TableDataService } from '../../data/data.service';
 
 @Component({
 	selector: 'ngx-pager',
@@ -59,13 +60,18 @@ export class PagerComponent implements OnInit {
 	pager: Pager;
 	pagedRecords: {}[];
 
-	constructor(private pagerService: PagerService) {}
+	constructor(
+		private pagerService: PagerService,
+		private tableData: TableDataService
+	) {}
 
 	ngOnInit(): void {}
 
 	setPagePrep = (page: number): void => (this.init.server) ? this.setPage(page, false, true) : this.setPage(page);
 
 	setPage(page: number, bypassGuard: boolean = false, serverPageChange: boolean = false): void {
+		this.tableData.publishLoading(true);
+		
 		if (serverPageChange) return this.serverPageChange.emit(page);
 
 		if (!bypassGuard && (page < 1 || page > this.pager.totalPages || page === this.pager.currentPage)) return;
