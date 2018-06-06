@@ -1,3 +1,138 @@
-:host-context(.basic) ::ng-deep {
+:host-context(.theme-basic) ::ng-deep {
+	border: 1px solid #DEDEDE;
 
+	* {
+		font-family: 'Rubik', sans-serif;
+		font-size: 12px;
+	}
+		
+	.flexi-table-header {
+		background-color: #F9F9F9;
+		border-bottom: 1px solid #DEDEDE;
+
+		.caption-container-border {
+			border-right: 1px solid #DEDEDE;
+		}
+
+		.table-filter {
+			border-left: 1px solid #DEDEDE;
+
+			.filter-container {
+
+				.filter-input-container {
+
+					.filter-input {
+						background-color: #f9f9f9;
+						border: 1px solid #dedede;
+					}
+				}
+			}
+		}
+	}
+
+	.flexi-table-header * {
+		color: #333;
+	}
+
+	.flexi-table-content {
+
+		.table {
+
+			.table-head {
+
+				.table-head-row-container {
+
+					.head-row {
+						border-bottom: 1px solid #DEDEDE;
+
+						.table-head-cell {
+							background-color: #EEEEEE;
+							border-left: 1px solid #DDD;
+
+							.column-filter {
+								background-color: #f9f9f9;
+								border: 1px solid #dedede;
+							}
+						}
+
+						.table-head-cell:first-child {
+							border-left: unset;
+						}
+
+						.table-head-cell:last-child {
+							border-right: unset;
+						}
+					}
+				}
+			}
+
+			.table-body {
+
+				.table-body-group-container {
+
+					.body-group {
+						background-color: #EEEEEE;
+						border-bottom: 1px solid #DEDEDE;
+
+						.group-info {
+
+							.group-name {
+								text-transform: capitalize;
+							}
+						}
+					}
+				}
+
+				.table-body-row-container {
+
+					.body-row {
+						border-bottom: 1px solid #DEDEDE;
+
+						.table-body-cell {
+							border-left: 1px solid #DEDEDE;
+						}
+
+						.table-body-cell:first-child {
+							border-left: unset;
+						}
+
+						.table-body-cell:last-child {
+							border-right: unset;
+						}
+					}
+
+					.body-row:not(:first-child) {
+						border-left: unset;
+					}
+
+					.body-row-border-top-add {
+						border-top: 1px solid #DEDEDE;
+					}
+	
+					.body-row-border-bottom-remove {
+						border-bottom: 0px solid #DEDEDE;
+					}
+
+					.row-details-open {
+						border-bottom: 1px solid #DEDEDE;
+					}
+				}
+
+				.table-body-row-container:nth-of-type(2n+1) {
+
+					.body-row {
+						background-color: #F9F9F9;
+					}
+				}
+			}
+		}
+	}
+
+	.flexi-table-content * {
+		color: #333;
+	}
+
+	.flexi-table-footer {
+		background-color: #F9F9F9;
+	}
 }

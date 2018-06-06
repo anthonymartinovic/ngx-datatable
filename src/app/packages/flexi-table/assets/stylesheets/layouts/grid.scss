@@ -1,13 +1,6 @@
 :host-context(.grid) ::ng-deep {
 	display: grid;
-	grid-template-rows: 70px auto 70px;
 	min-width: 700px;
-	border: 1px solid #dedede;
-
-	* {
-		font-family: 'Rubik', sans-serif;
-		font-size: 13px;
-	}
 		
 	.flexi-table-header {
 		display: grid;
@@ -19,12 +12,6 @@
 			align-items: center;
 			width: 100%;
 			height: 100%;
-			
-			.table-caption {}
-		}
-
-		.caption-container-border {
-			border-right: 1px solid #dedede;
 		}
 
 		.table-exporter {
@@ -36,10 +23,14 @@
 				justify-content: center;
 				align-items: center;
 				padding: 0 20px;
+			}
 
-				.export-button {
-					cursor: pointer;
-				}
+			.export-button {
+				cursor: pointer;
+			}
+
+			.export-button:disabled {
+				cursor: not-allowed;
 			}
 		}
 
@@ -48,7 +39,6 @@
 			align-items: center;
 			width: 100%;
 			height: 100%;
-			border-left: 1px solid #dedede;
 
 			.filter-container {
 				display: grid;
@@ -70,20 +60,12 @@
 				}
 				.filter-select {
 					margin-top: 6px;
-
-					.filter-option {} 
 				}
 			}
 		}
 	}
 
-	.hide-table-header-inner {
-		display: none;
-	}
-
 	.flexi-table-content {
-		border-top: 1px solid #dedede;
-		border-bottom: 1px solid #dedede;
 
 		.table {
 			display: grid;
@@ -107,14 +89,10 @@
 							justify-content: center;
 							height: 100%;
 							padding: 5px 10px;
-							background-color: #EDEDED;
-							border-left: 1px solid #DDD;
 
 							.head-cell {
 								cursor: pointer;
 							}
-
-							.text {}
 
 							.checkbox-container {
 								
@@ -127,29 +105,20 @@
 								}
 							}
 
-							.column-filter-container {
-								.column-filter {}
+							.column-filter {
+								margin-top: 2px;
+								padding: 2px 6px;
 							}
 
 							.input-container {
 								grid-area: ngx-checkbox;
 								display: grid;
-
-								.input {}
 							}
-						}
-
-						.table-head-cell:last-child {
-							border-right: unset;
 						}
 
 						.row-detail-table-head-cell {
 							max-width: 20px;
 						}
-					}
-
-					.head-row:not(:first-child) {
-						border-left: unset;
 					}
 				}
 			}
@@ -163,9 +132,8 @@
 						flex-direction: row;
 						justify-content: space-between;
 						align-items: center;
-						height: 40px;
+						height: 30px;
 						padding: 5px 0;
-						background-color: #dedede;
 
 						.group-info {
 							display: flex;
@@ -173,7 +141,6 @@
 							padding: 5px 10px;
 
 							.group-name {
-								text-transform: capitalize;
 								padding-right: 10px;
 								cursor: pointer;
 							}
@@ -184,18 +151,14 @@
 						}
 
 						.group-toggle-options {
-							padding: 5px 10px;
+							padding: 5px 11px;
 
 							.group-toggle {
 								display: flex;
 								cursor: pointer;
-								width: 20px;
+								width: 16px;
 								height: auto;
 							}
-
-							.group-toggle-open {}
-
-							.group-toggle-closed {}
 						}
 					}
 				}
@@ -209,7 +172,6 @@
 						align-items: center;
 						height: 40px;
 						padding: 5px 0;
-						border-bottom: 1px solid #dedede;
 						cursor: pointer;
 
 						.table-body-cell {
@@ -219,11 +181,6 @@
 							justify-content: center;
 							height: 100%;
 							padding: 5px 10px;
-							border-left: 1px solid #dedede;
-							
-							.body-cell {}
-
-							.text {}
 
 							.svg {
 								display: flex;
@@ -231,7 +188,7 @@
 								cursor: pointer;
 
 								svg {
-									width: 20px;
+									width: 16px;
 									height: auto;
 									cursor: pointer;
 								}
@@ -245,10 +202,6 @@
 							}
 						}
 
-						.table-body-cell:last-child {
-							border-right: unset;
-						}
-
 						.row-detail-table-body-cell {
 							max-width: 20px;
 						}
@@ -258,22 +211,12 @@
 						border-left: unset;
 					}
 
-					.body-row-border-top-add {
-						border-top: 1px solid #dedede;
-					}
-	
-					.body-row-border-bottom-remove {
-						border-bottom: 0px solid #dedede;
-					}
-
 					.body-row-details {
 						display: flex;
 						flex-direction: column;
 						justify-content: flex-start;
 						align-items: left;
 						padding: 0px;
-						background-color: #eee;
-						border-bottom: 0px solid #dedede;
 						
 						.row-detail-pair {
 							display: flex;
@@ -281,11 +224,10 @@
 							padding: 1px 15px;
 
 							.row-detail-key {
+								min-width: 300px;
 								padding-right: 10px;
 								font-weight: 500;
 							}
-
-							.row-detail-value {}
 						}
 
 						.row-detail-pair:nth-child(1) {
@@ -295,13 +237,6 @@
 						.row-detail-pair:last-child {
 							padding-bottom: 10px;
 						}
-					}
-				}
-
-				.table-body-row-container:nth-child(2) {
-
-					.body-row {
-						background-color: #FDFDFD;
 					}
 				}
 			}
@@ -332,16 +267,8 @@
 
 				.pager-li {
 					width: 22px;
-
-					.li-item {}
-
-					.li-a {} 
 				}
 			}
 		}
-	}
-
-	.hide-table-footer-inner {
-		display: none;
 	}
 }

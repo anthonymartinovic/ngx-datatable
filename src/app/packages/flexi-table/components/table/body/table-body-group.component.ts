@@ -12,7 +12,7 @@ import { TableDataService } from '../../../data/data.service';
 	host: { 'class': 'table-body-group-container' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<div class="body-group">
+		<div bodyGroupRowStyle class="body-group">
 			<div class="group-info">
 				<div
 					class="group-value"

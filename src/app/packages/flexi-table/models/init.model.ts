@@ -1,4 +1,5 @@
 export class Init {
+	loader: boolean         = false;
 	server: boolean         = false;
 	header: boolean         = true;
 	footer: boolean         = true;

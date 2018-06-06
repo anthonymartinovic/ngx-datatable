@@ -88,9 +88,6 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	@HostBinding('class.flex') flex;
 	@HostBinding('class.grid') grid;
 	@HostBinding('class.theme-basic') themeBasic;
-	@HostBinding('class.hide-table-header') hideTableHeader;
-	@HostBinding('class.hide-table-footer') hideTableFooter;
-	@HostBinding('class.only-table-content') onlyTableContent;
 
 	@ViewChild(PagerComponent) private pagerComponent: PagerComponent;
 
@@ -201,10 +198,6 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	}
 
 	initStyles(): void {
-		this.hideTableHeader  = (this.init.header) ? false : true;
-		this.hideTableFooter  = (this.init.footer) ? false : true;
-		this.onlyTableContent = (this.hideTableHeader && this.hideTableFooter) ? true : false;
-
 		this.flex       = (this.styles && this.styles.template.layout === 'flex') ? true : false;
 		this.grid       = (this.styles && this.styles.template.layout === 'grid') ? true : false;
 		this.themeBasic = (this.styles && this.styles.template.theme === 'basic') ? true : false;

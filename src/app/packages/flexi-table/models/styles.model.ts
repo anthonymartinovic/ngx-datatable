@@ -9,6 +9,7 @@ export interface Styles {
 	};
 	content?: {
 		headHeight: string,
+		groupRowHeight?: string,
 		rowHeight: string
 	};
 	footer?: {

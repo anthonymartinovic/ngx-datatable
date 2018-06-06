@@ -4,12 +4,6 @@
 	justify-content: space-between;
 	align-items: center;
 	min-width: 700px;
-	border: 1px solid #dedede;
-
-	* {
-		font-family: 'Rubik', sans-serif;
-		font-size: 13px;
-	}
 		
 	.flexi-table-header {
 		display: flex;
@@ -27,10 +21,6 @@
 			height: 100%;
 		}
 
-		.caption-container-border {
-			border-right: 1px solid #dedede;
-		}
-
 		.table-exporter {
 			flex: 1 0 50%;
 
@@ -40,12 +30,17 @@
 				flex-wrap: wrap;
 				justify-content: center;
 				align-items: center;
+				max-width: 500px;
 				padding: 0 20px;
 
 				.export-button {
 					flex: 0 0 48%;
 					margin: 2px;
 					cursor: pointer;
+				}
+
+				.export-button:disabled {
+					cursor: not-allowed;
 				}
 			}
 		}
@@ -57,7 +52,6 @@
 			align-items: center;
 			width: 100%;
 			height: 100%;
-			border-left: 1px solid #dedede;
 
 			.filter-container {
 				display: flex;
@@ -76,6 +70,7 @@
 
 					.filter-input {
 						padding: 4px;
+						min-width: 150px;
 					}
 				}
 				.filter-select {
@@ -85,17 +80,11 @@
 		}
 	}
 
-	.hide-table-header-inner {
-		display: none;
-	}
-
 	.flexi-table-content {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
 		height: 100%;
-		border-top: 1px solid #dedede;
-		border-bottom: 1px solid #dedede;
 
 		.table {
 
@@ -108,7 +97,7 @@
 						flex-direction: row;
 						justify-content: flex-start;
 						align-items: center;
-						padding: 5px;
+						padding: 5px 0;
 						height: 50px;
 
 						.table-head-cell {
@@ -118,13 +107,10 @@
 							justify-content: center;
 							height: 100%;
 							padding: 5px 10px;
-							// border-right: 1px solid #dedede;
 
 							.head-cell {
 								cursor: pointer;
 							}
-
-							.text {}
 
 							.checkbox-container {
 								
@@ -137,19 +123,14 @@
 								}
 							}
 
-							.column-filter-container {
-								.column-filter {}
+							.column-filter {
+								margin-top: 2px;
+								padding: 2px 6px;
 							}
 
 							.input-container {
 								display: flex;
-
-								.input {}
 							}
-						}
-
-						.table-head-cell:last-child {
-							border-right: unset;
 						}
 
 						.row-detail-table-head-cell {
@@ -168,9 +149,8 @@
 						flex-direction: row;
 						justify-content: space-between;
 						align-items: center;
-						height: 40px;
-						padding: 5px;
-						background-color: #dedede;
+						height: 30px;
+						padding: 5px 0;
 
 						.group-info {
 							display: flex;
@@ -178,7 +158,6 @@
 							padding: 5px 10px;
 
 							.group-name {
-								text-transform: capitalize;
 								padding-right: 10px;
 								cursor: pointer;
 							}
@@ -189,18 +168,14 @@
 						}
 
 						.group-toggle-options {
-							padding: 5px 10px;
+							padding: 5px 11px;
 
 							.group-toggle {
 								display: flex;
 								cursor: pointer;
-								width: 20px;
+								width: 16px;
 								height: auto;
 							}
-
-							.group-toggle-open {}
-
-							.group-toggle-closed {}
 						}
 					}
 				}
@@ -213,8 +188,7 @@
 						justify-content: flex-start;
 						align-items: center;
 						height: 40px;
-						padding: 5px;
-						border-bottom: 1px solid #dedede;
+						padding: 5px 0;
 						cursor: pointer;
 
 						.table-body-cell {
@@ -224,11 +198,6 @@
 							justify-content: center;
 							height: 100%;
 							padding: 5px 10px;
-							// border-right: 1px solid #dedede;
-							
-							.body-cell {}
-
-							.text {}
 
 							.svg {
 								display: flex;
@@ -236,7 +205,7 @@
 								cursor: pointer;
 
 								svg {
-									width: 20px;
+									width: 16px;
 									height: auto;
 									cursor: pointer;
 								}
@@ -250,21 +219,13 @@
 							}
 						}
 
-						.table-body-cell:last-child {
-							border-right: unset;
-						}
-
 						.row-detail-table-body-cell {
 							max-width: 20px;
 						}
 					}
 
-					.body-row-border-top-add {
-						border-top: 1px solid #dedede;
-					}
-	
-					.body-row-border-bottom-remove {
-						border-bottom: 0px solid #dedede;
+					.body-row:not(:first-child) {
+						border-left: unset;
 					}
 
 					.body-row-details {
@@ -273,8 +234,6 @@
 						justify-content: flex-start;
 						align-items: left;
 						padding: 0px;
-						background-color: #eee;
-						border-bottom: 0px solid #dedede;
 						
 						.row-detail-pair {
 							display: flex;
@@ -282,11 +241,10 @@
 							padding: 1px 15px;
 
 							.row-detail-key {
+								min-width: 300px;
 								padding-right: 10px;
 								font-weight: 500;
 							}
-
-							.row-detail-value {}
 						}
 
 						.row-detail-pair:nth-child(1) {
@@ -328,16 +286,8 @@
 
 				.pager-li {
 					width: 22px;
-
-					.li-item {}
-
-					.li-a {} 
 				}
 			}
 		}
-	}
-
-	.hide-table-footer-inner {
-		display: none;
 	}
 }

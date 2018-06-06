@@ -41,7 +41,7 @@ import { TableDataService } from '../../../data/data.service';
 				[value]="record"
 			></ngx-table-body-cell>
 		</div>
-		<div stopPropagationClick class="body-row-details">
+		<div stopPropagationClick class="body-row-details" [class.row-details-open]="showRowDetails">
 			<ngx-table-body-row-details *ngIf="showRowDetails" [record]="record"></ngx-table-body-row-details>
 		</div>
 	`

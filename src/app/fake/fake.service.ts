@@ -33,7 +33,7 @@ export class FakeService {
 				`http://localhost:3333/appraisals?search=${search}&page=${page}&filter=${filter}&sort=${sort}`,
 				{ 
 					headers: {
-						'Authorization': 'Bearer 508ff655951032e4f6c4ed4883b51f9e82738a01ffdcca681c0c17e23425febd3243ad5fa6ec5679347aab3c2d45f85bXjr+bV2biBIWDTNNXxCeY4nMmL/SR8kGWBjBjb3zXTY='
+						'Authorization': 'Bearer c18652482b324a19942a90e835c34b1fd10844465781a75c19723e9cdb193890da286a62998fefca6442137cbddaeec6JDbo7XSIhEw4hScNFFmFrdB0oF6zUAYzwxtwuk/Trjw='
 					}
 				}
 			);

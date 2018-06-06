@@ -5,4 +5,13 @@
 
 @import './assets/stylesheets/themes/basic.scss';
 
-@import './assets/stylesheets/general.scss';
+:host-context(ngx-flexi-table) ::ng-deep {
+
+	.hide-table-header-inner {
+		display: none;
+	}
+
+	.hide-table-footer-inner {
+		display: none;
+	}
+}

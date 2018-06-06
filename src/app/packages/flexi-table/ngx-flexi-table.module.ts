@@ -20,6 +20,7 @@ import { CellStyleDirective } from './directives/style/table/cell.style.directiv
 import { FooterDirective } from './directives/style/footer.directive';
 import { HeaderDirective } from './directives/style/header.directive';
 import { HeadRowStyleDirective } from './directives/style/table/head-row.style.directive';
+import { BodyGroupRowStyleDirective } from './directives/style/table/body-group-row.directive';
 import { BodyRowStyleDirective } from './directives/style/table/body-row.style.directive';
 import { PagerStyleDirective } from './directives/style/pager/pager.style.directive';
 import { StopPropagationClickDirective } from './directives/event/stop-propagation.click.directive';
@@ -62,6 +63,7 @@ import { ExporterComponent } from './components/exporter/exporter.component';
 		FooterDirective,
 		HeaderDirective,
 		HeadRowStyleDirective,
+		BodyGroupRowStyleDirective,
 		BodyRowStyleDirective,
 		PagerStyleDirective, 
 		StopPropagationClickDirective,

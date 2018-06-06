@@ -49,6 +49,7 @@ export class AppComponent implements OnInit {
 	];
 
 	tableInit: Init = {
+		loader: true,
 		server: true,
 		header: true,
 		footer: true,
@@ -61,8 +62,8 @@ export class AppComponent implements OnInit {
 		groupBy: ['team.officeName'],
 		filter: {
 			show: true,
-			type: 'columns',
-			keys: ['Address', 'Office']
+			type: 'global',
+			keys: 'address'
 		},
 		newTab: {
 			show: true,
@@ -81,18 +82,19 @@ export class AppComponent implements OnInit {
 	styles: Styles = {
 		template: {
 			use: true,
-			layout: 'grid',
-			theme: 'none'
+			layout: 'flex',
+			theme: 'basic'
 		},
 		header: {
-			height: '60px'
+			height: '50px'
 		},
 		content: {
 			headHeight: '40px',
+			groupRowHeight: '30px',
 			rowHeight: '30px'
 		},
 		footer: {
-			height: '40px'
+			height: '50px'
 		}
 	}
 

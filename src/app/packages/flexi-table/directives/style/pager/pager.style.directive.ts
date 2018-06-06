@@ -41,7 +41,7 @@ export class PagerStyleDirective implements OnChanges {
 	}
 
 	enable() {
-		this.color = '#000';
+		this.color = '#333';
 		this.cursor = 'pointer';
 		this.pointerEvents = 'auto';
 	}
