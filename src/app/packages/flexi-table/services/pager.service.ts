@@ -34,6 +34,18 @@ export class PagerService {
 
 		selectablePages = Array.from(Array(endPage - startPage + 1), (page , i) => startPage + i);
 
+		console.log({
+			totalRecords: totalRecords,
+			currentPage: currentPage,
+			pageSize: pageSize,
+			startPage: startPage,
+			startIndex: startIndex,
+			endPage: endPage,
+			endIndex: endIndex,
+			selectablePages: selectablePages,
+			totalPages: totalPages
+		});
+
 		return {
 			totalRecords: totalRecords,
 			currentPage: currentPage,

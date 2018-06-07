@@ -86,7 +86,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		this.loadingSub         = this.tableData.loading$.subscribe(loading => 
+		this.loadingSub         = this.tableData.loading$.subscribe(loading =>
 			(this.runningServerFilter != loading) 
 				? (this.runningServerFilter = (loading) ? true : false, this.cdr.markForCheck()) 
 				: null
