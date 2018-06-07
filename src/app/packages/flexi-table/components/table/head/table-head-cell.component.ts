@@ -275,6 +275,8 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	}
 
 	setSort(column: ColumnMap): void {
+		this.tableData.publishLoading(true);
+		
 		(this.sortedColumn && this.sortedColumn.name === column.access(this.records[0], true))
 			? this.sortedColumn.order = (this.sortedColumn.order === 'asc') ? 'desc' : 'asc'
 			: this.sortedColumn = { name: column.access(this.records[0], true), order: 'asc' };

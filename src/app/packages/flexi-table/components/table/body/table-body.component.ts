@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef, ErrorHandler } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { ArrayService } from '../../../services/array.service';
 import { ObjectService } from '../../../services/object.service';
 import { TableDataService } from '../../../data/data.service';
 
@@ -11,7 +12,7 @@ import { TableDataService } from '../../../data/data.service';
 	template: `
 		<ng-container *ngIf="pagedRecords && groupOptions else noGroupOptions">
 
-			<ng-container *ngFor="let groupValue of groupValues">
+			<ng-container *ngFor="let groupValue of groupValues; trackBy: arrayService.trackByFn">
 				<ngx-table-body-group 
 					[selectedGroup]="selectedGroup"
 					[value]="groupValue"
@@ -19,7 +20,7 @@ import { TableDataService } from '../../../data/data.service';
 					(toggleChange)="toggleGroupVisibility(groupValue)"
 				></ngx-table-body-group>
 				<ng-container *ngIf="!hiddenGroupValues.includes(groupValue)">
-					<ng-container *ngFor="let record of pagedRecords | groupBy: selectedGroup : groupValue">
+					<ng-container *ngFor="let record of pagedRecords | groupBy: selectedGroup : groupValue; trackBy: arrayService.trackByFn">
 						<ngx-table-body-row
 							bodyRowStyle
 							[record]="record"
@@ -34,7 +35,7 @@ import { TableDataService } from '../../../data/data.service';
 		<ng-template #noGroupOptions>
 			<ng-container *ngIf="pagedRecords">
 				<ngx-table-body-row
-					*ngFor="let record of pagedRecords; let i = index"
+					*ngFor="let record of pagedRecords; let i = index; trackBy: arrayService.trackByFn"
 					bodyRowStyle
 					[record]="record"
 					[addBorder]="i === 0"
@@ -56,6 +57,7 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 	selectableState: boolean;
 
 	constructor(
+		public arrayService: ArrayService,
 		public tableData: TableDataService, 
 		private errorHandler: ErrorHandler,
 		private cdr: ChangeDetectorRef,

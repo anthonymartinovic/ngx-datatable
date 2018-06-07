@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 
+import { ArrayService } from '../../../services/array.service';
 import { TableDataService } from '../../../data/data.service';
 
 @Component({
@@ -23,7 +24,7 @@ import { TableDataService } from '../../../data/data.service';
 				[showRowDetails]="showRowDetails"
 				(showRowDetailsChange)="showRowDetails = $event"
 			></ngx-table-body-cell>
-			<ng-container *ngFor="let column of tableData.columns$ | async">
+			<ng-container *ngFor="let column of tableData.columns$ | async; trackBy: arrayService.trackByFn">
 				<ngx-table-body-cell
 					[dataType]="'standard'"
 					[column]="column"
@@ -53,7 +54,10 @@ export class TableBodyRowComponent implements OnInit {
 
 	showRowDetails: boolean;
 
-	constructor(public tableData: TableDataService) {}
+	constructor(
+		public arrayService: ArrayService,
+		public tableData: TableDataService
+	) {}
 
 	ngOnInit(): void {
 		this.showRowDetails = false;

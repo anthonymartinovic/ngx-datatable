@@ -117,7 +117,7 @@
 								.checkbox {
 									cursor: pointer;
 								}
-
+								
 								.checkbox:disabled {
 									cursor: not-allowed;
 								}
@@ -286,6 +286,16 @@
 
 				.pager-li {
 					width: 22px;
+
+					.li-item {
+						display: flex;
+						align-items: center;
+						justify-content: center;
+
+						.li-a {
+							white-space: nowrap;
+						}
+					}
 				}
 			}
 		}

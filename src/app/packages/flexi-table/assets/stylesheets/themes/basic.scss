@@ -24,6 +24,12 @@
 					.filter-input {
 						background-color: #f9f9f9;
 						border: 1px solid #dedede;
+						border-radius: 4px;
+					}
+
+					.filter-input:focus {
+						outline: none;
+						box-shadow: 0px 0px 4px #1f89ce;
 					}
 				}
 			}
@@ -52,6 +58,12 @@
 							.column-filter {
 								background-color: #f9f9f9;
 								border: 1px solid #dedede;
+								border-radius: 4px;
+							}
+
+							.column-filter:focus {
+								outline: none;
+								box-shadow: 0px 0px 4px #1f89ce;
 							}
 						}
 
@@ -134,5 +146,31 @@
 
 	.flexi-table-footer {
 		background-color: #F9F9F9;
+
+		.table-pager {
+
+			.pager-ul {
+
+				.pager-li {
+					margin-left: 6px;
+
+					.li-item {
+						border: 1px solid #dedede;
+						border-radius: 4px;
+						background-color: white;
+						padding: 4px 12px;
+					}
+
+					.li-item:hover {
+						background-color: #F9F9F9;
+					}
+
+					.li-item:active {
+						background-color: #DFDFDF;
+						transition: 0.5s;
+					}
+				}
+			}
+		}
 	}
 }

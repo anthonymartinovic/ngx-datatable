@@ -1,14 +1,18 @@
 import { Component, ChangeDetectionStrategy, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 
+import { TableDataService } from '../../data/data.service';
+
 @Component({
 	selector: 'ngx-pager-li',
 	host: { 'class': 'pager-li' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<li class="li-item" [pagerStyle]="styleParams">
-			<a class="li-a" (click)="initSetPage(button.value)">
-				{{ button.symbol }}
-			</a>
+		<li
+			class="li-item"
+			[pagerStyle]="styleParams"
+			(click)="initSetPage(button.value)"
+		>
+			<a class="li-a">{{ button.symbol }}</a>
 		</li>
 	`
 })
@@ -26,7 +30,7 @@ export class PagerLiComponent implements OnChanges {
 
 	styleParams: {};
 
-	constructor() {
+	constructor(private tableData: TableDataService) {
 		this.styleParams = {};
 	}
 
@@ -40,6 +44,7 @@ export class PagerLiComponent implements OnChanges {
 	}
 
 	initSetPage(page: number): void {
+		this.tableData.publishLoading(true);
 		this.onSetPage.emit(page);
 	}
 }

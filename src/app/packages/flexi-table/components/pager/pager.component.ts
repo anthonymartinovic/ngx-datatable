@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { Pager, ServerPageData } from '../../models/pager.model';
 import { Init } from '../../models/init.model';
 
-import { FormatService } from '../../services/format.service';
+import { ArrayService } from '../../services/array.service';
 import { PagerService } from '../../services/pager.service';
 import { TableDataService } from '../../data/data.service';
 
@@ -25,7 +25,7 @@ import { TableDataService } from '../../data/data.service';
 				[currentPage]="pager.currentPage"
 				(onSetPage)="setPagePrep($event)"
 			></ngx-pager-li>
-			<ng-container *ngFor="let page of pager.selectablePages">
+			<ng-container *ngFor="let page of pager.selectablePages; trackBy: arrayService.trackByFn">
 				<ngx-pager-li
 					[button]="{ name: 'number', symbol: page, value: page }"
 					[page]="page"
@@ -61,6 +61,7 @@ export class PagerComponent implements OnInit {
 	pagedRecords: {}[];
 
 	constructor(
+		public arrayService: ArrayService,
 		private pagerService: PagerService,
 		private tableData: TableDataService
 	) {}
@@ -70,8 +71,6 @@ export class PagerComponent implements OnInit {
 	setPagePrep = (page: number): void => (this.init.server) ? this.setPage(page, false, true) : this.setPage(page);
 
 	setPage(page: number, bypassGuard: boolean = false, serverPageChange: boolean = false): void {
-		this.tableData.publishLoading(true);
-		
 		if (serverPageChange) return this.serverPageChange.emit(page);
 
 		if (!bypassGuard && (page < 1 || page > this.pager.totalPages || page === this.pager.currentPage)) return;

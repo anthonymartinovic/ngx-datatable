@@ -1,6 +1,5 @@
 import { 
-	Component, 
-	ChangeDetectionStrategy, 
+	Component,
 	OnChanges, 
 	OnInit, 
 	AfterViewInit, 
@@ -130,6 +129,7 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	) {
 		this.loadingSub          = this.tableData.loading$.subscribe(loading => {
 			this.loading = (this.init && this.init.loader && loading) ? true : false;
+			console.log('yes');
 		});
 		this.recordsSub          = this.tableData.records$.subscribe(records => this.recordsCopy = records);
 		this.filterRecordsSub    = this.tableData.filterRecordsSubject$.subscribe(filteredRecords => this.filterRecords(filteredRecords));
