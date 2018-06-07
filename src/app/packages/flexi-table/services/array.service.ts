@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ArrayService {
+	trackByFn = (index, item): number => index;
+
 	arrayEquals(a: any[], b: any[], shallow: boolean): boolean {
 		if (a.length !== b.length) return false;
 

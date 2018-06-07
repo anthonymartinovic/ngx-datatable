@@ -156,11 +156,8 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 
 		this.tableData.publishColumns(this.columns);
 
-		if (
-			changes['records'] && changes['records'].previousValue ||
-			changes['pageLimit'] && changes['pageLimit'].previousValue
-		) 
-			this.reDeployTable();
+		if (changes['records'] && changes['records'].previousValue)
+			(this.init.server) ? this.afterViewInit(true) : this.reDeployTable();
 	}
 
 	ngOnInit(): void { this.onInit() };
@@ -190,8 +187,15 @@ export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, On
 	}
 
 	ngAfterViewInit(): void { this.afterViewInit() };
-	afterViewInit(): void {
-		if (this.records) this.initSetPage();
+	afterViewInit(updateRecords?: boolean): void {
+		if (updateRecords)
+		{
+			this.recordsCopy = this.records;
+			this.tableData.publishRecords(this.recordsCopy);
+			this.cdr.detectChanges();
+			this.initSetPage();
+		}
+		else if (this.records) this.initSetPage();
 	}
 
 	ngOnDestroy(): void {

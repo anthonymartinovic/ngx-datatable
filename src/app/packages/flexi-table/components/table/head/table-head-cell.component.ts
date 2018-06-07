@@ -21,6 +21,7 @@ import { SortService } from '../../../services/sort.service';
 				type="text"
 				class="column-filter input"
 				placeholder="Search..."
+				[disabled]="runningServerFilter"
 				(keyup)="setFilter($event.target)"
 			/>
 		</ng-container>
@@ -44,6 +45,7 @@ import { SortService } from '../../../services/sort.service';
 	`,
 })
 export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
+	loadingSub: Subscription;
 	initSub: Subscription;
 	recordsSub: Subscription;
 	checkedRecordsSub: Subscription;
@@ -69,6 +71,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	}
 	wasAllChecked: boolean = false;
 	timer: any = null;
+	runningServerFilter: boolean = false;
 
 	constructor(
 		public tableData: TableDataService,
@@ -83,6 +86,11 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
+		this.loadingSub         = this.tableData.loading$.subscribe(loading => 
+			(this.runningServerFilter != loading) 
+				? (this.runningServerFilter = (loading) ? true : false, this.cdr.markForCheck()) 
+				: null
+		)
 		this.initSub            = this.tableData.init$.subscribe(init => {
 			this.serverSide = init.server;
 			if (init.filter.type.toLowerCase() === 'columns' && Array.isArray(init.filter.keys))
@@ -99,6 +107,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
+		this.loadingSub.unsubscribe();
 		this.initSub.unsubscribe();
 		this.recordsSub.unsubscribe();
 		this.checkedRecordsSub.unsubscribe();
@@ -214,13 +223,15 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 
 	setFilterTimer(target: HTMLInputElement): void {
 		if (this.timer) clearTimeout(this.timer);
-			this.timer = setTimeout(() => this.setFilter(target, true), 1000);
+			this.timer = setTimeout(() => this.setFilter(target, true), 500);
 	}
 
 	setFilter(target: HTMLInputElement, serverBypassTimer: boolean = false): void {
 		if (this.serverSide)
 		{
 			if (!serverBypassTimer) return this.setFilterTimer(target);
+
+			this.tableData.publishLoading(true);
 
 			if (!this.serverFilters) this.serverFilters = [];
 			const keyCheck = this.serverFilters.find(filter => filter['key'] === this.column.access(this.value, true));
@@ -238,6 +249,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 					};
 					this.tableData.publishServerFilters(this.serverFilters);
 				}
+				else this.tableData.publishLoading(false);
 			}
 			else
 			{

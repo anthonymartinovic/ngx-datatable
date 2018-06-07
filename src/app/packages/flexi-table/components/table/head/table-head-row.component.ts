@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 import { TableDataService } from '../../../data/data.service';
+import { ArrayService } from '../../../services/array.service';
 
 @Component({
 	selector: 'ngx-table-head-row',
@@ -17,7 +18,7 @@ import { TableDataService } from '../../../data/data.service';
 				class="row-detail-table-head-cell"
 				[headerType]="'rowDetail'"
 			></ngx-table-head-cell>
-			<ng-container *ngFor="let column of tableData.columns$ | async">
+			<ng-container *ngFor="let column of tableData.columns$ | async; trackBy: arrayService.trackByFn">
 				<ngx-table-head-cell
 					[headerType]="'standard'"
 					[column]="column"
@@ -38,5 +39,8 @@ import { TableDataService } from '../../../data/data.service';
 })
 export class TableHeadRowComponent {
 
-	constructor(public tableData: TableDataService) {}
+	constructor(
+		public arrayService: ArrayService,
+		public tableData: TableDataService
+	) {}
 }
