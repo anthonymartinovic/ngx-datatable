@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { FlexiTableModule } from './packages/flexi-table/ngx-flexi-table.module';
-
 import { AppComponent } from './app.component';
+
+import { NgxDatatableModule } from 'ngx-datatable';
 
 import { FakeService } from './fake/fake.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -13,7 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 	imports: [
 		BrowserModule,
 		HttpClientModule,
-		FlexiTableModule
+		NgxDatatableModule
 	],
 	providers: [FakeService],
 	bootstrap: [AppComponent],

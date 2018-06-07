@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Subscription } from 'rxjs';
 
 import { Pager, ServerPageData } from '../../models/pager.model';
 import { Init } from '../../models/init.model';

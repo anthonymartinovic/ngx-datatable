@@ -1,6 +1,6 @@
 {
   "name": "ngx-datatable-app",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -34,7 +34,7 @@
     "tsickle": ">=0.25.5",
     "tslib": "^1.7.1",
     "typescript": "2.7.2",
-    "@angular/cli": "^6.0.7",
+    "@angular/cli": "^6.0.3",
     "@angular/language-service": "6.0.3",
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",

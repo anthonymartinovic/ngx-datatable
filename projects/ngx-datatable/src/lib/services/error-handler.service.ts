@@ -8,6 +8,6 @@ export class ErrorHandlerService extends ErrorHandler {
 	}
 
 	// handleError(errorMessage: string) {
-		// super.handleError(`:: HANDLER :: 'ngx-flexi-table' : ${errorMessage}`);
+		// super.handleError(`:: HANDLER :: 'ngx-datatable' : ${errorMessage}`);
 	// }
 }

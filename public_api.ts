@@ -1,1 +1,1 @@
-export * from './src/app/modules/flexi-table/flexi-table.module';
+export * from './src/app/app.module';

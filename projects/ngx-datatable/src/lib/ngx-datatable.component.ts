@@ -25,10 +25,10 @@ import { Init } from './models/init.model';
 import { TableDataService } from './data/data.service';
 
 @Component({
-	selector: 'ngx-flexi-table',
-	host: { 'class': 'ngx-flexi-table' },
+	selector: 'ngx-datatable',
+	host: { 'class': 'ngx-datatable' },
 	providers: [TableDataService],
-	styleUrls: ['./ngx-flexi-table.component.scss'],
+	styleUrls: ['./ngx-datatable.component.scss'],
 	template: `
 		<div
 			ngxHeader
@@ -74,7 +74,7 @@ import { TableDataService } from './data/data.service';
 		</div>
 	`
 })
-export class FlexiTableComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
+export class NgxDatatableComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
 	loadingSub: Subscription;
 	recordsSub: Subscription;
 	checkedRecordsSub: Subscription;

@@ -1,12 +1,12 @@
 import { Injectable, ViewChild } from '@angular/core';
 
-import { FlexiTableComponent } from '../ngx-flexi-table.component';
+import { NgxDatatableComponent } from '../ngx-datatable.component';
 
 import { ColumnMap } from '../models/column.model';
 
 @Injectable()
 export class FilterService {
-	@ViewChild(FlexiTableComponent) private _ftc: FlexiTableComponent;
+	@ViewChild(NgxDatatableComponent) private _ftc: NgxDatatableComponent;
 
 	filterRecords(filterInput: string, filterColumn: string, columns: ColumnMap[], records: {}[]): {}[] {
 		const	columnToCheck  = columns.find(column =>

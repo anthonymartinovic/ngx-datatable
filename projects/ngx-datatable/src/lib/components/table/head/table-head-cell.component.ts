@@ -2,7 +2,6 @@ import { Component, ChangeDetectionStrategy, OnChanges, OnInit, OnDestroy, Input
 import { Subscription } from 'rxjs';
 
 import { ColumnMap } from '../../../models/column.model';
-import { Init } from '../../../models/init.model';
 
 import { ArrayService } from '../../../services/array.service';
 import { FilterService } from '../../../services/filter.service';

@@ -72,7 +72,7 @@ export class FormatService {
 				url             = URL.createObjectURL(blob);
 
 		this._renderer.setAttribute(downloadLink, 'href', url);
-		this._renderer.setAttribute(downloadLink, 'download', `ngx-flexi-table.${format}`);
+		this._renderer.setAttribute(downloadLink, 'download', `ngx-datatable.${format}`);
 		this._renderer.setStyle(downloadLink, 'visibility', 'hidden');
 
 		this._renderer.appendChild(document.body, downloadLink);

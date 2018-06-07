@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('ngx-flexi-table App', () => {
+describe('ngx-datatable App', () => {
 
 	let page: AppPage;
 

@@ -2,7 +2,7 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { FlexiTableComponent } from './ngx-flexi-table.component';
+import { NgxDatatableComponent } from './ngx-datatable.component';
 import { TableComponent } from './components/table/table.component';
 import { TableHeadComponent } from './components/table/head/table-head.component';
 import { TableHeadRowComponent } from './components/table/head/table-head-row.component';
@@ -45,7 +45,7 @@ import { ExporterComponent } from './components/exporter/exporter.component';
 		FormsModule
 	],
 	declarations: [
-		FlexiTableComponent, 
+		NgxDatatableComponent, 
 		TableComponent, 
 		TableHeadComponent, 
 		TableHeadRowComponent,
@@ -88,7 +88,7 @@ import { ExporterComponent } from './components/exporter/exporter.component';
 		FormatService,
 		SortService
 	],
-	exports: [FlexiTableComponent],
+	exports: [NgxDatatableComponent],
 })
 
-export class FlexiTableModule {}
+export class NgxDatatableModule {}

@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Project, Person } from './fake/model';
-import { ColumnConfig } from './packages/flexi-table/models/column.model';
-import { Init } from './packages/flexi-table/models/init.model';
-import { ServerPageData } from './packages/flexi-table/models/pager.model';
-import { Styles } from './packages/flexi-table/models/styles.model';
+import { ColumnConfig } from './packages/models/column.model';
+import { Init } from './packages/models/init.model';
+import { ServerPageData } from './packages/models/pager.model';
+import { Styles } from './packages/models/styles.model';
 
 import { FakeService } from './fake/fake.service';
 
 @Component({
 	selector: 'ngx-root',
 	template: `
-		<ngx-flexi-table
+		<ngx-datatable
 			*ngIf="!loading"
 			[init]="tableInit"
 			[config]="projectConfig"
@@ -25,7 +25,7 @@ import { FakeService } from './fake/fake.service';
 			(onCheckboxChange)="logRows($event)"
 			(onNewTabSelection)="logRoute($event)"
 			(onSort)="logSort($event)"
-		></ngx-flexi-table>
+		></ngx-datatable>
 	`
 })
 export class AppComponent implements OnInit {

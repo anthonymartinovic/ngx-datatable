@@ -15,6 +15,13 @@
       "es2017",
       "dom"
     ],
-    "paths": {}
+    "paths": {
+      "ngx-datatable": [
+        "dist/ngx-datatable"
+      ],
+      "ngx-datatable/*": [
+        "dist/ngx-datatable/*"
+      ]
+    }
   }
 }
