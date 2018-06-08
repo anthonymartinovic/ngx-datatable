@@ -93,7 +93,7 @@
         }
       }
     },
-    "ngx-datatable-e2e": {
+    "ngx-datatable-app-e2e": {
       "root": "",
       "sourceRoot": "",
       "projectType": "application",

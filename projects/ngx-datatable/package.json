@@ -1,10 +1,16 @@
 {
-  "name": "ngx-datatable",
-  "version": "0.1.0",
+  "name": "am-ngx-datatable",
+  "description": "An Angular datatable designed for versions 6+",
+  "version": "0.1.2",
+  "license": "MIT",
+  "repository" : {
+	"type" : "git",
+	"url" : "https://github.com/anthonymartinovic/ngx-datatable-app"
+  },
+  "author": "Anthony Martinovic <anthony_5950@hotmail.com>",
   "peerDependencies": {
     "@angular/common": "6.0.3",
     "@angular/core": "6.0.3",
-    "@angular/forms": "6.0.3",
     "rxjs": "^6.2.0"
   }
 }
