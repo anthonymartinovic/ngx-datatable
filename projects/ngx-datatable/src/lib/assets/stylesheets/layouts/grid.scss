@@ -113,6 +113,10 @@
 							.input-container {
 								grid-area: ngx-checkbox;
 								display: grid;
+
+								.cell-arrow {
+									margin-left: 5px;
+								}
 							}
 						}
 

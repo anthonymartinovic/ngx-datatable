@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
+import { TableDataService } from '../../data';
 import { DT_ColumnMap, DT_Init } from '../../models';
 import { FilterService, ImgService } from '../../services';
 
@@ -14,6 +15,7 @@ import { FilterService, ImgService } from '../../services';
 				<input
 					type="text"
 					class="filter-input"
+					[disabled]="init && init.server && loading"
 					[placeholder]="placeholderText"
 					(keyup)="setFilter($event.target)"
 				/>
@@ -24,6 +26,7 @@ import { FilterService, ImgService } from '../../services';
 export class FilterComponent {
 	@Input() init: DT_Init;
 	@Input() columns: DT_ColumnMap[];
+	@Input() loading: boolean;
 	@Input() records: {}[];
 	@Input() globalFilter: string;
 
@@ -36,7 +39,8 @@ export class FilterComponent {
 
 	constructor(
 		public imgService: ImgService,
-		private filterService: FilterService
+		private filterService: FilterService,
+		private tableData: TableDataService
 	) {}
 
 
@@ -44,7 +48,7 @@ export class FilterComponent {
 		if (this.init.server)
 		{
 			if (this.timer) clearTimeout(this.timer);
-			this.timer = setTimeout(() => this.serverFilterChange.emit(target.value), 1000);
+			this.timer = setTimeout(() => (this.serverFilterChange.emit(target.value), this.tableData.publishLoading(true)), 1000);
 		}
 		else
 		{

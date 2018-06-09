@@ -43,6 +43,7 @@ import { DT_ColumnConfig, DT_ColumnMap, DT_Init, DT_ServerPageData, DT_Styles } 
 				*ngIf="init && init.filter.show && init.filter.type.toLowerCase() === 'global'"
 				[init]="init"
 				[columns]="columns"
+				[loading]="loading"
 				[records]="records"
 				[globalFilter]="init.filter.keys"
 				(recordsChange)="filterRecords($event)"
@@ -121,8 +122,7 @@ export class NgxDatatableComponent implements OnChanges, OnInit, AfterViewInit, 
 		private cdr: ChangeDetectorRef
 	) {
 		this.loadingSub          = this.tableData.loading$.subscribe(loading => {
-			this.loading = (this.init && this.init.loader && loading) ? true : false;
-			console.log('yes');
+			this.loading = (this.init && this.init.loader && loading) ? true : false
 		});
 		this.recordsSub          = this.tableData.records$.subscribe(records => this.recordsCopy = records);
 		this.filterRecordsSub    = this.tableData.filterRecordsSubject$.subscribe(filteredRecords => this.filterRecords(filteredRecords));

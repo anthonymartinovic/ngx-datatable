@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { TableDataService } from '../../../data';
 import { DT_ColumnMap } from '../../../models';
-import { ArrayService, FilterService, SortService } from '../../../services';
+import { ArrayService, FilterService, ImgService, SortService } from '../../../services';
 
 @Component({
 	selector: 'ngx-table-head-cell',
@@ -11,7 +11,14 @@ import { ArrayService, FilterService, SortService } from '../../../services';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<ng-container *ngIf="headerType === 'standard'">
-			<div class="head-cell column-filter-container input-container" (click)="setSort(column)">{{value}}</div>
+			<div class="head-cell column-filter-container input-container" (click)="setSort(column)">
+				<div class="cell-text">{{value}}</div>
+				<div
+					*ngIf="sortedColumn && sortedColumn.name === column.access(value, true)"
+					class="cell-arrow"
+					[innerHTML]="(sortedColumn.order === 'asc') ? imgService.getSVG('sortAsc') : imgService.getSVG('sortDesc')"
+				></div>
+			</div>
 			<input
 				*ngIf="columnFilters && columnFilters.includes(value)"
 				type="text"
@@ -70,6 +77,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 	runningServerFilter: boolean = false;
 
 	constructor(
+		public imgService: ImgService,
 		public tableData: TableDataService,
 		private arrayService: ArrayService,
 		private cdr: ChangeDetectorRef,
