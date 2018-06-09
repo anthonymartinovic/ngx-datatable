@@ -1,9 +1,8 @@
-import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef, ErrorHandler } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ArrayService } from '../../../services/array.service';
-import { ObjectService } from '../../../services/object.service';
-import { TableDataService } from '../../../data/data.service';
+import { TableDataService } from '../../../data';
+import { ArrayService, ObjectService } from '../../../services';
 
 @Component({
 	selector: 'ngx-table-body',
@@ -58,8 +57,7 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 
 	constructor(
 		public arrayService: ArrayService,
-		public tableData: TableDataService, 
-		private errorHandler: ErrorHandler,
+		public tableData: TableDataService,
 		private cdr: ChangeDetectorRef,
 		private objectService: ObjectService
 	) {}

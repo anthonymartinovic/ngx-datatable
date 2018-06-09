@@ -1,13 +1,9 @@
-import { Injectable, ViewChild } from '@angular/core';
-
-import { NgxDatatableComponent } from '../ngx-datatable.component';
+import { Injectable } from '@angular/core';
 
 import { DT_ColumnMap } from '../models';
 
 @Injectable()
 export class FilterService {
-	@ViewChild(NgxDatatableComponent) private _ftc: NgxDatatableComponent;
-
 	filterRecords(filterInput: string, filterColumn: string, columns: DT_ColumnMap[], records: {}[]): {}[] {
 		const	columnToCheck  = columns.find(column =>
 					column.primeKey === filterColumn || (column.altKeys && column.altKeys.indexOf(filterColumn) !== -1)

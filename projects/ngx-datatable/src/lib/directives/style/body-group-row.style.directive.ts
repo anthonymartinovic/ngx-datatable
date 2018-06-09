@@ -1,7 +1,7 @@
 import { Directive, HostBinding } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { TableDataService } from '../../data/data.service';
+import { TableDataService } from '../../data';
 
 @Directive({
 	selector: '[bodyGroupRowStyle]'

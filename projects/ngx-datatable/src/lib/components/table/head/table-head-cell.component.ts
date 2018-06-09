@@ -1,12 +1,9 @@
 import { Component, ChangeDetectionStrategy, OnChanges, OnInit, OnDestroy, Input, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { TableDataService } from '../../../data';
 import { DT_ColumnMap } from '../../../models';
-
-import { ArrayService } from '../../../services/array.service';
-import { FilterService } from '../../../services/filter.service';
-import { TableDataService } from '../../../data/data.service';
-import { SortService } from '../../../services/sort.service';
+import { ArrayService, FilterService, SortService } from '../../../services';
 
 @Component({
 	selector: 'ngx-table-head-cell',

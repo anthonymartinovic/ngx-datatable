@@ -1,10 +1,8 @@
 import { Component, ChangeDetectionStrategy, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
+import { TableDataService } from '../../data';
 import { DT_Init, DT_Pager, DT_ServerPageData } from '../../models';
-
-import { ArrayService } from '../../services/array.service';
-import { PagerService } from '../../services/pager.service';
-import { TableDataService } from '../../data/data.service';
+import { ArrayService, PagerService } from '../../services';
 
 @Component({
 	selector: 'ngx-pager',

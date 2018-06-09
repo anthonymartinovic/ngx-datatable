@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
-import { ArrayService } from '../../../services/array.service';
+import { ArrayService } from '../../../services';
 
 @Component({
 	selector: 'ngx-table-body-row-details',

@@ -10,16 +10,13 @@ import {
 	ViewChild, 
 	SimpleChanges, 
 	ChangeDetectorRef,
-	ErrorHandler,
 	HostBinding
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { PagerComponent } from './components/pager/pager.component';
-
+import { PagerComponent } from './components';
+import { TableDataService } from './data';
 import { DT_ColumnConfig, DT_ColumnMap, DT_Init, DT_ServerPageData, DT_Styles } from './models';
-
-import { TableDataService } from './data/data.service';
 
 @Component({
 	selector: 'ngx-datatable',
@@ -121,7 +118,6 @@ export class NgxDatatableComponent implements OnChanges, OnInit, AfterViewInit, 
 
 	constructor(
 		public tableData: TableDataService,
-		private errorHandler: ErrorHandler,
 		private cdr: ChangeDetectorRef
 	) {
 		this.loadingSub          = this.tableData.loading$.subscribe(loading => {
@@ -167,8 +163,6 @@ export class NgxDatatableComponent implements OnChanges, OnInit, AfterViewInit, 
 			this.initStyles();
 	
 			(!this.init.server) ? this.clientSide = true : this.serverSide = true;
-	
-			if (!this.records) return this.errorHandler.handleError(`No records passed into table`);
 			
 			this.recordsCopy = this.records;
 			this.tableData.publishRecords(this.recordsCopy);

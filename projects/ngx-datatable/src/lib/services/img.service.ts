@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { SVG } from '../assets/images/images';
+
+import { SVG } from '../assets/images';
 
 @Injectable()
 export class ImgService {

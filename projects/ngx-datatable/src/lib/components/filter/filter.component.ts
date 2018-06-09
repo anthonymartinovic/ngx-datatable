@@ -1,9 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 import { DT_ColumnMap, DT_Init } from '../../models';
-
-import { ImgService } from '../../services/img.service';
-import { FilterService } from '../../services/filter.service';
+import { FilterService, ImgService } from '../../services';
 
 @Component({
 	selector: 'ngx-filter',

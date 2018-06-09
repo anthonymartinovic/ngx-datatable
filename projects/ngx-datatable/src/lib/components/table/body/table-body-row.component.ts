@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 
-import { ArrayService } from '../../../services/array.service';
-import { TableDataService } from '../../../data/data.service';
+import { TableDataService } from '../../../data';
+import { ArrayService } from '../../../services';
 
 @Component({
 	selector: 'ngx-table-body-row',
@@ -18,7 +18,7 @@ import { TableDataService } from '../../../data/data.service';
 			<ngx-table-body-cell
 				*ngIf="init.rowDetail"
 				class="row-detail-table-body-cell"
-				stopPropagationClick
+				stopPropagationEvent
 				[dataType]="'rowDetail'" 
 				[value]="record"
 				[showRowDetails]="showRowDetails"
@@ -42,7 +42,7 @@ import { TableDataService } from '../../../data/data.service';
 				[value]="record"
 			></ngx-table-body-cell>
 		</div>
-		<div stopPropagationClick class="body-row-details" [class.row-details-open]="showRowDetails">
+		<div stopPropagationEvent class="body-row-details" [class.row-details-open]="showRowDetails">
 			<ngx-table-body-row-details *ngIf="showRowDetails" [record]="record"></ngx-table-body-row-details>
 		</div>
 	`

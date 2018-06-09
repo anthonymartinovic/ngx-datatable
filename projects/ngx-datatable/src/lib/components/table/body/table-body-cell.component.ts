@@ -1,12 +1,9 @@
-import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, ErrorHandler } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { TableDataService } from '../../../data';
 import { DT_ColumnMap } from '../../../models';
-
-import { ArrayService } from '../../../services/array.service';
-import { ImgService } from '../../../services/img.service';
-import { ObjectService } from '../../../services/object.service';
-import { TableDataService } from '../../../data/data.service';
+import { ArrayService, ImgService, ObjectService } from '../../../services';
 
 @Component({
 	selector: 'ngx-table-body-cell',
@@ -21,7 +18,7 @@ import { TableDataService } from '../../../data/data.service';
 		<ng-container *ngIf="dataType === 'newTab'">
 			<div
 				class="body-cell svg"
-				stopPropagationClick
+				stopPropagationEvent
 				[cellStyle]="'newTab'"
 				[innerHTML]="imgService.getSVG('newTab')"
 				(click)="emitNewTabValue(value)"
@@ -35,7 +32,7 @@ import { TableDataService } from '../../../data/data.service';
 				<input 
 					type="checkbox"
 					class="checkbox"
-					stopPropagationClick
+					stopPropagationEvent
 					[checked]="isChecked(value)" 
 					(change)="update(value)"
 				/>
@@ -69,7 +66,6 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private cdr: ChangeDetectorRef,
-		private errorHandler: ErrorHandler,
 		private arrayService: ArrayService,
 		private objectService: ObjectService,
 		public imgService: ImgService,
@@ -132,10 +128,5 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 		for (let key of this.newTabKeys)
 			if (this.objectService.hasOwnNestedProperty(record, key))
 				return this.tableData.publishNewTabSelection(this.objectService.getNestedProperty(record, key));
-
-		return this.errorHandler.handleError(
-			`No 'newTabKeys' provided match any keys within selected row.\n
-			Keys within selected row are: [${Object.keys(record)}]`
-		);
 	}
 }

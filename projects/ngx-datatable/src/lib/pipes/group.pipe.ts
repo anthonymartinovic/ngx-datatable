@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { ObjectService } from '../services/object.service';
+import { ObjectService } from '../services';
 
 @Pipe({
 	name: 'groupBy',
