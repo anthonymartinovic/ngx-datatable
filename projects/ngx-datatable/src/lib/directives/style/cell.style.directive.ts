@@ -10,7 +10,7 @@ export class CellStyleDirective implements OnInit {
 	@HostBinding('style.cursor') cursor: string;
 	@HostBinding('style.text-align') textAlign: string;
 
-	ngOnInit() {	
+	ngOnInit() {
 		if (this.cellStyle === undefined || this.cellStyle === null)
 		{
 			this.color = '#dcdcdc';

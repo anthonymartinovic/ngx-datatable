@@ -19,7 +19,7 @@ import { ArrayService, ObjectService } from '../../../services';
 					(toggleChange)="toggleGroupVisibility(groupValue)"
 				></ngx-table-body-group>
 				<ng-container *ngIf="!hiddenGroupValues.includes(groupValue)">
-					<ng-container *ngFor="let record of pagedRecords | groupBy: selectedGroup : groupValue; trackBy: arrayService.trackByFn">
+					<ng-container *ngFor="let record of pagedRecords | groupBy: selectedGroup : groupValue">
 						<ngx-table-body-row
 							bodyRowStyle
 							[record]="record"
