@@ -16,14 +16,16 @@ import { FilterComponent } from './components/filter/filter.component';
 import { PagerComponent } from './components/pager/pager.component';
 import { PagerLiComponent } from './components/pager/pager-li.component';
 
-import { CellStyleDirective } from './directives/style/table/cell.style.directive';
-import { FooterDirective } from './directives/style/footer.directive';
-import { HeaderDirective } from './directives/style/header.directive';
-import { HeadRowStyleDirective } from './directives/style/table/head-row.style.directive';
-import { BodyGroupRowStyleDirective } from './directives/style/table/body-group-row.directive';
-import { BodyRowStyleDirective } from './directives/style/table/body-row.style.directive';
-import { PagerStyleDirective } from './directives/style/pager/pager.style.directive';
-import { StopPropagationClickDirective } from './directives/event/stop-propagation.click.directive';
+import {
+	StopPropagationEventDirective,
+	BodyGroupRowStyleDirective,
+	BodyRowStyleDirective,
+	CellStyleDirective,
+	FooterStyleDirective,
+	HeaderStyleDirective,
+	HeadRowStyleDirective,
+	PagerStyleDirective
+} from './directives';
 
 import { CellFormatPipe } from './pipes/cell.format.pipe';
 import { GroupPipe } from './pipes/group.pipe';
@@ -59,14 +61,14 @@ import { ExporterComponent } from './components/exporter/exporter.component';
 		PagerComponent, 
 		PagerLiComponent, 
 
-		CellStyleDirective,
-		FooterDirective,
-		HeaderDirective,
-		HeadRowStyleDirective,
+		StopPropagationEventDirective,
 		BodyGroupRowStyleDirective,
 		BodyRowStyleDirective,
+		CellStyleDirective,
+		FooterStyleDirective,
+		HeaderStyleDirective,
+		HeadRowStyleDirective,
 		PagerStyleDirective, 
-		StopPropagationClickDirective,
 
 		CellFormatPipe,
 		GroupPipe,

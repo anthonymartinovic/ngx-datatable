@@ -1,4 +1,4 @@
-export interface Styles {
+export interface DT_Styles {
 	template: {
 		use: boolean,
 		layout: 'flex' | 'grid' | 'none',

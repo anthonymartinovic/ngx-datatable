@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, ErrorHandler } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ColumnMap } from '../../../models/column.model';
+import { DT_ColumnMap } from '../../../models';
 
 import { ArrayService } from '../../../services/array.service';
 import { ImgService } from '../../../services/img.service';
@@ -63,7 +63,7 @@ export class TableBodyCellComponent implements OnInit, OnDestroy {
 
 	@Input() dataType: string;
 	@Input() value: {};
-	@Input() column: ColumnMap;
+	@Input() column: DT_ColumnMap;
 	@Input() showRowDetails: boolean;
 	@Output() showRowDetailsChange: EventEmitter<boolean> = new EventEmitter();
 

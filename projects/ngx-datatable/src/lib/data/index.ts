@@ -1,0 +1,1 @@
+export { TableDataService } from './data.service';

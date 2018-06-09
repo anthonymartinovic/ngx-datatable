@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnChanges, OnInit, OnDestroy, Input, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ColumnMap } from '../../../models/column.model';
+import { DT_ColumnMap } from '../../../models';
 
 import { ArrayService } from '../../../services/array.service';
 import { FilterService } from '../../../services/filter.service';
@@ -55,10 +55,10 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 
 	@Input() headerType: string;
 	@Input() value: any;
-	@Input() column: ColumnMap;
+	@Input() column: DT_ColumnMap;
 
 	serverSide: boolean;
-	columns: ColumnMap[];
+	columns: DT_ColumnMap[];
 	columnFilters: string[];
 	serverFilters: {}[];
 	records: {}[];
@@ -273,7 +273,7 @@ export class TableHeadCellComponent implements OnChanges, OnInit, OnDestroy {
 		}
 	}
 
-	setSort(column: ColumnMap): void {
+	setSort(column: DT_ColumnMap): void {
 		this.tableData.publishLoading(true);
 		
 		(this.sortedColumn && this.sortedColumn.name === column.access(this.records[0], true))

@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ColumnMap } from '../../../models/column.model';
+import { DT_ColumnMap } from '../../../models';
 
 import { ImgService } from '../../../services/img.service';
 import { SortService } from '../../../services/sort.service';
@@ -79,7 +79,7 @@ export class TableBodyGroupComponent implements OnInit {
 	}
 
 	setSort(column: any): void {
-		column = new ColumnMap({ primeKey: column });
+		column = new DT_ColumnMap({ primeKey: column });
 
 		(this.sortedColumn && this.sortedColumn.name === column.access(this.records[0], true))
 			? this.sortedColumn.order = (this.sortedColumn.order === 'asc') ? 'desc' : 'asc'

@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { ColumnMap } from '../../models/column.model';
-import { Init } from '../../models/init.model';
+import { DT_ColumnMap, DT_Init } from '../../models';
 
 import { ImgService } from '../../services/img.service';
 import { FilterService } from '../../services/filter.service';
@@ -25,8 +24,8 @@ import { FilterService } from '../../services/filter.service';
 	`,
 })
 export class FilterComponent {
-	@Input() init: Init;
-	@Input() columns: ColumnMap[];
+	@Input() init: DT_Init;
+	@Input() columns: DT_ColumnMap[];
 	@Input() records: {}[];
 	@Input() globalFilter: string;
 

@@ -1,19 +1,17 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject, Observable } from 'rxjs';
 
-import { ColumnMap } from '../models/column.model';
-import { Init } from '../models/init.model';
-import { Styles } from '../models/styles.model';
+import { DT_ColumnMap, DT_Init, DT_Styles } from '../models';
 
 @Injectable()
 export class TableDataService {
 	private loadingSource         = new BehaviorSubject<boolean>(false);
-	private initSource            = new BehaviorSubject<Init>(undefined);
-	private stylesSource          = new BehaviorSubject<Styles>(undefined);
+	private initSource            = new BehaviorSubject<DT_Init>(undefined);
+	private stylesSource          = new BehaviorSubject<DT_Styles>(undefined);
 	private recordsSource         = new BehaviorSubject<{}[]>(undefined);
 	private checkedRecordsSource  = new BehaviorSubject<{}[]>(undefined);
 	private pagedRecordsSource    = new BehaviorSubject<{}[]>(undefined);
-	private columnsSource         = new BehaviorSubject<ColumnMap[]>(undefined);
+	private columnsSource         = new BehaviorSubject<DT_ColumnMap[]>(undefined);
 	private serverFiltersSource   = new BehaviorSubject<{}[]>(undefined);
 	private sortedColumnSource    = new BehaviorSubject<{ name: any, order: string }>(undefined);
 	private newTabSelectionSource = new BehaviorSubject<any>(undefined);
@@ -38,12 +36,12 @@ export class TableDataService {
 	isAllCheckedSubject$: Observable<any>  = this.isAllCheckedSubject.asObservable();
 
 	publishLoading         = (loading: boolean): void => this.loadingSource.next(loading);
-	publishInit            = (init: Init): void => this.initSource.next(init);
-	publishStyles          = (styles: Styles): void => this.stylesSource.next(styles);
+	publishInit            = (init: DT_Init): void => this.initSource.next(init);
+	publishStyles          = (styles: DT_Styles): void => this.stylesSource.next(styles);
 	publishRecords         = (records: {}[]): void => this.recordsSource.next(records);
 	publishCheckedRecords  = (checkedRecords: {}[]): void => this.checkedRecordsSource.next(checkedRecords);
 	publishPagedRecords    = (pagedRecords: {}[]): void => this.pagedRecordsSource.next(pagedRecords);
-	publishColumns         = (columns: ColumnMap[]): void => this.columnsSource.next(columns);
+	publishColumns         = (columns: DT_ColumnMap[]): void => this.columnsSource.next(columns);
 	publishServerFilters   = (serverFilters: {}[]): void => this.serverFiltersSource.next(serverFilters);
 	publishSortedColumn    = (sortedColumn: { name: any, order: string }): void => this.sortedColumnSource.next(sortedColumn);
 	publishNewTabSelection = (newTabSelection: any): void => this.newTabSelectionSource.next(newTabSelection);

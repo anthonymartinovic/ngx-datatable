@@ -1,4 +1,4 @@
-export class Init {
+export class DT_Init {
 	loader: boolean         = false;
 	server: boolean         = false;
 	header: boolean         = true;

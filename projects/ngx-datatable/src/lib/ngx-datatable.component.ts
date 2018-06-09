@@ -17,10 +17,7 @@ import { Subscription } from 'rxjs';
 
 import { PagerComponent } from './components/pager/pager.component';
 
-import { ColumnConfig, ColumnMap } from './models/column.model';
-import { ServerPageData } from './models/pager.model';
-import { Styles } from './models/styles.model';
-import { Init } from './models/init.model';
+import { DT_ColumnConfig, DT_ColumnMap, DT_Init, DT_ServerPageData, DT_Styles } from './models';
 
 import { TableDataService } from './data/data.service';
 
@@ -31,7 +28,7 @@ import { TableDataService } from './data/data.service';
 	styleUrls: ['./ngx-datatable.component.scss'],
 	template: `
 		<div
-			ngxHeader
+			headerStyle
 			class="flexi-table-header"
 			[class.hide-table-header-inner]="init && !init.header"
 		>
@@ -39,14 +36,14 @@ import { TableDataService } from './data/data.service';
 				<caption *ngIf="init && init.caption" class="table-caption">{{ init.caption }}</caption>
 			</div>
 			<ngx-exporter
-				*ngIf="init.exportOptions"
+				*ngIf="init && init.exportOptions"
 				[init]="init"
 				[records]="records"
 				[checkedRecords]="checkedRecords"
 				(serverExportAll)="onExportAll.emit($event)"
 			></ngx-exporter>
 			<ngx-filter
-				*ngIf="init.filter.show && init.filter.type.toLowerCase() === 'global'"
+				*ngIf="init && init.filter.show && init.filter.type.toLowerCase() === 'global'"
 				[init]="init"
 				[columns]="columns"
 				[records]="records"
@@ -59,7 +56,7 @@ import { TableDataService } from './data/data.service';
 			<ngx-table></ngx-table>
 		</div>
 		<div
-			ngxFooter
+			footerStyle
 			class="flexi-table-footer"
 			[class.hide-table-footer-inner]="init && !init.footer"
 		>
@@ -92,11 +89,11 @@ export class NgxDatatableComponent implements OnChanges, OnInit, AfterViewInit, 
 
 	@ViewChild(PagerComponent) private pagerComponent: PagerComponent;
 
-	@Input() init: Init;
-	@Input() config: ColumnConfig[];
+	@Input() init: DT_Init;
+	@Input() config: DT_ColumnConfig[];
 	@Input() records: {}[];
-	@Input() pageData: ServerPageData;
-	@Input() styles: Styles;
+	@Input() pageData: DT_ServerPageData;
+	@Input() styles: DT_Styles;
 
 	//GENERAL OUTPUTS
 	@Output() onRowSelection: EventEmitter<{}>     = new EventEmitter();
@@ -119,7 +116,7 @@ export class NgxDatatableComponent implements OnChanges, OnInit, AfterViewInit, 
 	recordsCopy: {}[];
 	checkedRecords: {}[];
 	pagedRecords: {}[];
-	columns: ColumnMap[];
+	columns: DT_ColumnMap[];
 	sortedColumn: {};
 
 	constructor(
@@ -151,8 +148,8 @@ export class NgxDatatableComponent implements OnChanges, OnInit, AfterViewInit, 
 
 	ngOnChanges(changes: SimpleChanges) {
 		(this.config)
-			? this.columns = this.config.map(col => new ColumnMap(col))
-			: this.columns = Object.keys(changes['records'].currentValue[0]).map(key => new ColumnMap({ primeKey: key }));
+			? this.columns = this.config.map(col => new DT_ColumnMap(col))
+			: this.columns = Object.keys(changes['records'].currentValue[0]).map(key => new DT_ColumnMap({ primeKey: key }));
 
 		this.tableData.publishColumns(this.columns);
 
@@ -164,7 +161,7 @@ export class NgxDatatableComponent implements OnChanges, OnInit, AfterViewInit, 
 	onInit(): void {
 		if (this.records)
 		{
-			if (!this.init) this.init = new Init;
+			if (!this.init) this.init = new DT_Init;
 			this.tableData.publishInit(this.init);
 			this.tableData.publishStyles(this.styles);
 			this.initStyles();

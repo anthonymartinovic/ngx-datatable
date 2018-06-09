@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { Init } from '../../models/init.model';
+import { DT_Init } from '../../models';
 
 import { FormatService } from '../../services/format.service';
 
@@ -44,7 +44,7 @@ import { FormatService } from '../../services/format.service';
 	`,
 })
 export class ExporterComponent {
-	@Input() init: Init;
+	@Input() init: DT_Init;
 	@Input() records: {}[];
 	@Input() checkedRecords: {}[];
 

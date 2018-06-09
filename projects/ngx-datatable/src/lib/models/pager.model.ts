@@ -1,4 +1,4 @@
-export interface Pager {
+export interface DT_Pager {
 	totalRecords: number;
 	currentPage: number;
 	pageSize: number;
@@ -10,7 +10,7 @@ export interface Pager {
 	totalPages: number;
 }
 
-export interface ServerPageData {
+export interface DT_ServerPageData {
 	currentPage: number;
 	limit: number;
 	total: number;

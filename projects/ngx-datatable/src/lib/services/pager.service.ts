@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Pager } from '../models/pager.model';
+
+import { DT_Pager } from '../models';
 
 @Injectable()
 export class PagerService {
-	getPager(totalRecords: number, currentPage: number = 1, pageSize: number = 10): Pager {
+	getPager(totalRecords: number, currentPage: number = 1, pageSize: number = 10): DT_Pager {
 		let startPage,
 			startIndex = (currentPage - 1) * pageSize,
 			endPage,
@@ -33,18 +34,6 @@ export class PagerService {
 		}
 
 		selectablePages = Array.from(Array(endPage - startPage + 1), (page , i) => startPage + i);
-
-		console.log({
-			totalRecords: totalRecords,
-			currentPage: currentPage,
-			pageSize: pageSize,
-			startPage: startPage,
-			startIndex: startIndex,
-			endPage: endPage,
-			endIndex: endIndex,
-			selectablePages: selectablePages,
-			totalPages: totalPages
-		});
 
 		return {
 			totalRecords: totalRecords,

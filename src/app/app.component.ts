@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Project, Person } from './fake/model';
-import { ColumnConfig } from './packages/models/column.model';
-import { Init } from './packages/models/init.model';
-import { ServerPageData } from './packages/models/pager.model';
-import { Styles } from './packages/models/styles.model';
+import { DT_ColumnConfig, DT_Init, DT_ServerPageData, DT_Styles } from '../../projects/ngx-datatable/src/lib/models';
 
 import { FakeService } from './fake/fake.service';
 
@@ -32,7 +29,7 @@ export class AppComponent implements OnInit {
 	loading: boolean = false;
 
 	people: any[];
-	personnelConfig: ColumnConfig[] = [
+	personnelConfig: DT_ColumnConfig[] = [
 		{  primeKey: 'name' },
 		{  primeKey: 'year_joined', header: 'Joined' },
 		{  primeKey: 'missions' },
@@ -41,14 +38,14 @@ export class AppComponent implements OnInit {
 	];
 
 	projects: any[];
-	projectConfig: ColumnConfig[] = [
+	projectConfig: DT_ColumnConfig[] = [
 		{
 			primeKey: 'name',
 			header: 'Name',
 		}
 	];
 
-	tableInit: Init = {
+	tableInit: DT_Init = {
 		loader: true,
 		server: true,
 		header: true,
@@ -74,12 +71,12 @@ export class AppComponent implements OnInit {
 
 	pageLimit: number = 10;
 
-	pageData: ServerPageData;
+	pageData: DT_ServerPageData;
 
 	filterColumn: string = 'name';
 	columnFilters: string[] = [];
 
-	styles: Styles = {
+	styles: DT_Styles = {
 		template: {
 			use: true,
 			layout: 'flex',

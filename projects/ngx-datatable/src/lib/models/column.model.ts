@@ -1,11 +1,11 @@
-export interface ColumnConfig {
+export interface DT_ColumnConfig {
 	primeKey: string;
 	altKeys?: string[];
 	header?: string;
 	format?: string;
 }
 
-export class ColumnMap {
+export class DT_ColumnMap {
 	primeKey: string;
 	altKeys?: string[];
 	private _header: string;

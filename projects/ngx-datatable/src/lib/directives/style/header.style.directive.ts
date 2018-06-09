@@ -4,9 +4,9 @@ import { Subscription } from 'rxjs';
 import { TableDataService } from '../../data/data.service';
 
 @Directive({
-	selector: '[ngxFooter]'
+	selector: '[headerStyle]'
 })
-export class FooterDirective {
+export class HeaderStyleDirective {
 	stylesSub: Subscription;
 
 	@HostBinding('style.height') height: string;
@@ -15,7 +15,7 @@ export class FooterDirective {
 
 	ngOnInit(): void {
 		this.stylesSub = this.tableData.styles$.subscribe(styles => {
-			this.height = (styles && styles.footer) ? styles.footer.height : '60px';
+			this.height = (styles && styles.header) ? styles.header.height : '60px';
 		})
 	}
 

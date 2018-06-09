@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { Pager, ServerPageData } from '../../models/pager.model';
-import { Init } from '../../models/init.model';
+import { DT_Init, DT_Pager, DT_ServerPageData } from '../../models';
 
 import { ArrayService } from '../../services/array.service';
 import { PagerService } from '../../services/pager.service';
@@ -48,15 +47,15 @@ import { TableDataService } from '../../data/data.service';
 	`
 })
 export class PagerComponent implements OnInit {
-	@Input() init: Init;
+	@Input() init: DT_Init;
 	@Input() records: {}[];
 	@Input() pageLimit: number;
-	@Input() pageData: ServerPageData;
+	@Input() pageData: DT_ServerPageData;
 
 	@Output() pagedRecordsChange: EventEmitter<{}[]> = new EventEmitter();
 	@Output() serverPageChange: EventEmitter<number> = new EventEmitter();
 
-	pager: Pager;
+	pager: DT_Pager;
 	pagedRecords: {}[];
 
 	constructor(
