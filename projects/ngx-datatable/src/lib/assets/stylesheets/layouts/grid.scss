@@ -111,8 +111,10 @@
 							}
 
 							.input-container {
-								grid-area: ngx-checkbox;
-								display: grid;
+								display: flex;
+								flex-direction: row;
+								justify-content: flex-start;
+								align-items: center;
 
 								.cell-arrow {
 									margin-left: 5px;

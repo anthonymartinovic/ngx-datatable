@@ -34,6 +34,7 @@ export class FilterComponent {
 	@Output() serverFilterChange: EventEmitter<string> = new EventEmitter();
 
 	cachedTarget: HTMLInputElement;
+	cachedValue: string;
 	selectedFilterColumn: string;
 	timer: any = null;
 
@@ -43,12 +44,21 @@ export class FilterComponent {
 		private tableData: TableDataService
 	) {}
 
+	setFilterTimer(target: HTMLInputElement): void {
+		if (this.timer) clearTimeout(this.timer);
+			this.timer = setTimeout(() => this.setFilter(target, true), 500);
+	}
 
-	setFilter(target?: HTMLInputElement): void {
+	setFilter(target?: HTMLInputElement, serverBypassTimer: boolean = false): void {
 		if (this.init.server)
 		{
-			if (this.timer) clearTimeout(this.timer);
-			this.timer = setTimeout(() => (this.serverFilterChange.emit(target.value), this.tableData.publishLoading(true)), 1000);
+			if (!serverBypassTimer) return this.setFilterTimer(target);
+
+			if (this.cachedValue === target.value) return;
+			else this.cachedValue = target.value;
+
+			this.serverFilterChange.emit(target.value);
+			this.tableData.publishLoading(true);
 		}
 		else
 		{

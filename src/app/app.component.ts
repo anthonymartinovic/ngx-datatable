@@ -60,7 +60,7 @@ export class AppComponent implements OnInit {
 		filter: {
 			show: true,
 			type: 'global',
-			keys: ['Address']
+			keys: 'Address'
 		},
 		newTab: {
 			show: true,
@@ -266,7 +266,7 @@ export class AppComponent implements OnInit {
 
 	logServerFilterChange(event) {
 		console.log('GLOBAL FILTER', event);
-		this.getAppraisals(event[0].value, null, null, null);
+		this.getAppraisals(event, null, null, null);
 	}
 
 	// logColumnFilterChange(event) {

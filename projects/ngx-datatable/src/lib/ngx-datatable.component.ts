@@ -51,6 +51,9 @@ import { DT_ColumnConfig, DT_ColumnMap, DT_Init, DT_ServerPageData, DT_Styles } 
 			></ngx-filter>
 		</div>
 		<div class="flexi-table-content">
+			<div class="loader">
+				<div class="loader-bar"></div>
+			</div>
 			<ngx-table></ngx-table>
 		</div>
 		<div
