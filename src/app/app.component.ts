@@ -8,21 +8,23 @@ import { FakeService } from './fake/fake.service';
 @Component({
 	selector: 'ngx-root',
 	template: `
-		<ngx-datatable
-			[init]="tableInit"
-			[config]="projectConfig"
-			[forceLoader]="loading"
-			[records]="projects"
-			[pageData]="pageData"
-			[styles]="styles"
-			(onPageChange)="logPage($event)"
-			(onExportAll)="logExportAll($event)"
-			(onFilterChange)="logServerFilterChange($event)"
-			(onRowSelection)="logRow($event)"
-			(onCheckboxChange)="logRows($event)"
-			(onNewTabSelection)="logRoute($event)"
-			(onSort)="logSort($event)"
-		></ngx-datatable>
+		<div class="app-container" style="margin: 0 auto; width: 500px;">
+			<ngx-datatable
+				[init]="tableInit"
+				[config]="projectConfig"
+				[forceLoader]="loading"
+				[records]="projects"
+				[pageData]="pageData"
+				[styles]="styles"
+				(onPageChange)="logPage($event)"
+				(onExportAll)="logExportAll($event)"
+				(onFilterChange)="logServerFilterChange($event)"
+				(onRowSelection)="logRow($event)"
+				(onCheckboxChange)="logRows($event)"
+				(onNewTabSelection)="logRoute($event)"
+				(onSort)="logSort($event)"
+			></ngx-datatable>
+		</div>
 	`
 })
 export class AppComponent implements OnInit {

@@ -157,6 +157,8 @@ export class NgxDatatableComponent implements OnChanges, OnInit, AfterViewInit, 
 			(this.init.server) ? this.afterViewInit(true) : this.reDeployTable();
 
 		if (changes['records'] && !changes['records'].previousValue) this.reDeployTable();
+
+		if (changes['forceLoader']) this.tableData.publishLoading(changes['forceLoader'].currentValue);
 	}
 
 	ngOnInit(): void { this.onInit() };
