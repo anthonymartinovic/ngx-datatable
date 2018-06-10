@@ -13,7 +13,7 @@
 			position: absolute;
 			z-index: 1;
 			width: 100%;
-			height: 4px;
+			height: 3px;
 			opacity: 1;
 			overflow: hidden;
 			background: #EEE;
@@ -39,6 +39,7 @@
 
 	.hide-table-header-inner {
 		display: none;
+		border-bottom: unset !important;
 	}
 
 	.hide-table-footer-inner {

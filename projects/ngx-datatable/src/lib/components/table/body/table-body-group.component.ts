@@ -91,6 +91,10 @@ export class TableBodyGroupComponent implements OnInit {
 			this.tableData.publishSortedColumn(this.sortedColumn);
 			this.tableData.runInitSetPage();
 		}
-		else this.tableData.publishSortedColumn(this.sortedColumn);
+		else
+		{
+			this.tableData.publishLoading(true);
+			this.tableData.publishSortedColumn(this.sortedColumn);
+		}
 	}
 }

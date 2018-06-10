@@ -27,11 +27,13 @@ import { ArrayService } from '../../../services';
 			</ng-container>
 			<ngx-table-head-cell
 				*ngIf="init.newTab.show"
+				class="new-tab-table-head-cell"
 				[headerType]="'newTab'"
 				[value]="init.newTab.caption"
 			></ngx-table-head-cell>
 			<ngx-table-head-cell
 				*ngIf="init.checkboxes"
+				class="checkboxes-table-head-cell"
 				[headerType]="'checkbox'"
 			></ngx-table-head-cell>
 		</div>

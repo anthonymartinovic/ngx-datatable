@@ -33,11 +33,13 @@ import { ArrayService } from '../../../services';
 			</ng-container>
 			<ngx-table-body-cell
 				*ngIf="init.newTab.show"
+				class="new-tab-table-body-cell"
 				[dataType]="'newTab'"
 				[value]="record"
 			></ngx-table-body-cell>
 			<ngx-table-body-cell
 				*ngIf="init.checkboxes"
+				class="checkboxes-table-body-cell"
 				[dataType]="'checkbox'"
 				[value]="record"
 			></ngx-table-body-cell>

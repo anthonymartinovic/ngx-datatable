@@ -9,7 +9,6 @@ import { FakeService } from './fake/fake.service';
 	selector: 'ngx-root',
 	template: `
 		<ngx-datatable
-			*ngIf="!loading"
 			[init]="tableInit"
 			[config]="projectConfig"
 			[records]="projects"
@@ -45,29 +44,16 @@ export class AppComponent implements OnInit {
 		}
 	];
 
-	tableInit: DT_Init = {
+	tableInit: DT_Init = new DT_Init({
 		loader: true,
 		server: true,
-		header: true,
-		footer: true,
-		caption: 'New Table Title',
-		exportOptions: true,
-		selectable: true,
-		checkboxes: true,
+		header: false,
 		rowDetail: true,
-		pageLimit: 10,
+		checkboxes: true,
 		groupBy: ['team.officeName'],
-		filter: {
-			show: true,
-			type: 'global',
-			keys: 'Address'
-		},
-		newTab: {
-			show: true,
-			caption: 'New Route Title',
-			keys: ['_id']
-		}
-	};
+		filter: { show: true, type: 'columns', keys: ['Address'] },
+		newTab: { show: true, caption: '', keys: ['_id'] }
+	});
 
 	pageLimit: number = 10;
 
@@ -76,14 +62,14 @@ export class AppComponent implements OnInit {
 	filterColumn: string = 'name';
 	columnFilters: string[] = [];
 
-	styles: DT_Styles = {
+	styles: DT_Styles = new DT_Styles({
 		template: {
 			use: true,
 			layout: 'flex',
 			theme: 'basic'
 		},
 		header: {
-			height: '50px'
+			height: '0px'
 		},
 		content: {
 			headHeight: '40px',
@@ -93,7 +79,7 @@ export class AppComponent implements OnInit {
 		footer: {
 			height: '50px'
 		}
-	}
+	})
 
 	constructor(private _fakeService: FakeService) {}
 
@@ -222,6 +208,7 @@ export class AppComponent implements OnInit {
 	// }
 
 	ngOnInit() {
+		console.log(this.tableInit);
 		this.loading = true;
 		this.getAppraisals();
 	}

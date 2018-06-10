@@ -29,18 +29,18 @@ import { DT_ColumnConfig, DT_ColumnMap, DT_Init, DT_ServerPageData, DT_Styles } 
 			class="flexi-table-header"
 			[class.hide-table-header-inner]="init && !init.header"
 		>
-			<div class="table-caption-container" [class.caption-container-border]="init && init.caption">
-				<caption *ngIf="init && init.caption" class="table-caption">{{ init.caption }}</caption>
+			<div class="table-caption-container" [class.caption-container-border]="init && init.header && init.caption">
+				<caption *ngIf="init && init.header && init.caption" class="table-caption">{{ init.caption }}</caption>
 			</div>
 			<ngx-exporter
-				*ngIf="init && init.exportOptions"
+				*ngIf="init && init.header && init.exportOptions"
 				[init]="init"
 				[records]="records"
 				[checkedRecords]="checkedRecords"
 				(serverExportAll)="onExportAll.emit($event)"
 			></ngx-exporter>
 			<ngx-filter
-				*ngIf="init && init.filter.show && init.filter.type.toLowerCase() === 'global'"
+				*ngIf="init && init.header && init.filter.show && init.filter.type.toLowerCase() === 'global'"
 				[init]="init"
 				[columns]="columns"
 				[loading]="loading"
@@ -124,9 +124,9 @@ export class NgxDatatableComponent implements OnChanges, OnInit, AfterViewInit, 
 		public tableData: TableDataService,
 		private cdr: ChangeDetectorRef
 	) {
-		this.loadingSub          = this.tableData.loading$.subscribe(loading => {
-			this.loading = (this.init && this.init.loader && loading) ? true : false
-		});
+		this.loadingSub          = this.tableData.loading$.subscribe(loading =>
+			this.loading = ((this.init && this.init.loader && loading) || !this.recordsCopy) ? true : false
+		);
 		this.recordsSub          = this.tableData.records$.subscribe(records => this.recordsCopy = records);
 		this.filterRecordsSub    = this.tableData.filterRecordsSubject$.subscribe(filteredRecords => this.filterRecords(filteredRecords));
 		this.initSetPageSub      = this.tableData.initSetPageSubject$.subscribe(() => this.initSetPage());
@@ -154,13 +154,15 @@ export class NgxDatatableComponent implements OnChanges, OnInit, AfterViewInit, 
 
 		if (changes['records'] && changes['records'].previousValue)
 			(this.init.server) ? this.afterViewInit(true) : this.reDeployTable();
+
+		if (changes['records'] && !changes['records'].previousValue) this.reDeployTable();
 	}
 
 	ngOnInit(): void { this.onInit() };
 	onInit(): void {
 		if (this.records)
 		{
-			if (!this.init) this.init = new DT_Init;
+			if (!this.init) this.init = new DT_Init({});
 			this.tableData.publishInit(this.init);
 			this.tableData.publishStyles(this.styles);
 			this.initStyles();

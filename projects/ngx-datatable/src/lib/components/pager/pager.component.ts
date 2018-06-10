@@ -9,7 +9,7 @@ import { ArrayService, PagerService } from '../../services';
 	host: { 'class': 'table-pager' },
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<div class="total-records">{{recordsTally}}</div>
+		<div *ngIf="pager" class="total-records">{{recordsTally}}</div>
 		<ul *ngIf="pager && pager.selectablePages && pager.selectablePages.length > 1" class="pager-ul">
 			<ngx-pager-li
 				[button]="{ name: 'first', symbol: '|<', value: 1 }"
@@ -83,6 +83,8 @@ export class PagerComponent implements OnInit {
 	}
 
 	get recordsTally(): string {
-		return (this.pager) ? `${this.pager.startIndex + 1} - ${this.pager.endIndex + 1} / ${this.pager.totalRecords}` : null;
+		return (this.pager && this.pager.totalRecords > 0)
+			? `${this.pager.startIndex + 1} - ${this.pager.endIndex + 1} / ${this.pager.totalRecords}`
+			: 'No records';
 	}
 }
