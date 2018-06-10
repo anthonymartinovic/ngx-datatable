@@ -92,6 +92,7 @@ export class NgxDatatableComponent implements OnChanges, OnInit, AfterViewInit, 
 
 	@Input() init: DT_Init;
 	@Input() config: DT_ColumnConfig[];
+	@Input() forceLoader: boolean = false;
 	@Input() records: {}[];
 	@Input() pageData: DT_ServerPageData;
 	@Input() styles: DT_Styles;
@@ -125,7 +126,7 @@ export class NgxDatatableComponent implements OnChanges, OnInit, AfterViewInit, 
 		private cdr: ChangeDetectorRef
 	) {
 		this.loadingSub          = this.tableData.loading$.subscribe(loading =>
-			this.loading = ((this.init && this.init.loader && loading) || !this.recordsCopy) ? true : false
+			this.loading = ((this.init && this.init.loader && loading) || !this.recordsCopy || this.forceLoader) ? true : false
 		);
 		this.recordsSub          = this.tableData.records$.subscribe(records => this.recordsCopy = records);
 		this.filterRecordsSub    = this.tableData.filterRecordsSubject$.subscribe(filteredRecords => this.filterRecords(filteredRecords));

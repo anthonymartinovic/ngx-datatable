@@ -11,6 +11,7 @@ import { FakeService } from './fake/fake.service';
 		<ngx-datatable
 			[init]="tableInit"
 			[config]="projectConfig"
+			[forceLoader]="loading"
 			[records]="projects"
 			[pageData]="pageData"
 			[styles]="styles"
