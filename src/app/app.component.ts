@@ -8,7 +8,7 @@ import { FakeService } from './fake/fake.service';
 @Component({
 	selector: 'ngx-root',
 	template: `
-		<div class="app-container" style="margin: 0 auto; width: 500px;">
+		<div class="app-container" style="margin: 0 auto; width: 800px;">
 			<ngx-datatable
 				[init]="tableInit"
 				[config]="projectConfig"
@@ -50,11 +50,12 @@ export class AppComponent implements OnInit {
 	tableInit: DT_Init = new DT_Init({
 		loader: true,
 		server: true,
-		header: false,
+		header: true,
+		caption: 'Campaigns',
 		rowDetail: true,
 		checkboxes: true,
 		groupBy: ['team.officeName'],
-		filter: { show: true, type: 'columns', keys: ['Address'] },
+		filter: { show: true, type: 'global', keys: ['Address'] },
 		newTab: { show: true, caption: '', keys: ['_id'] }
 	});
 
@@ -69,10 +70,10 @@ export class AppComponent implements OnInit {
 		template: {
 			use: true,
 			layout: 'flex',
-			theme: 'basic'
+			theme: 'qww-s'
 		},
 		header: {
-			height: '0px'
+			height: '100px'
 		},
 		content: {
 			headHeight: '40px',

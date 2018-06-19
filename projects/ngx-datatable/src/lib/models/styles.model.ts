@@ -1,12 +1,12 @@
 export class DT_Styles {
-	template: { use: boolean, layout: 'flex' | 'grid' | 'none', theme: 'basic' | 'none' };
+	template: { use: boolean, layout: 'flex' | 'grid' | 'none', theme: 'basic' | 'qww-s' | 'none' };
 	header: { height: string };
 	content: { headHeight: string, groupRowHeight: string, rowHeight: string };
 	footer: { height: string };
 
 	constructor
 	(styles: {
-		template?: { use: boolean, layout: 'flex' | 'grid' | 'none', theme: 'basic' | 'none' },
+		template?: { use: boolean, layout: 'flex' | 'grid' | 'none', theme: 'basic' | 'qww-s' | 'none' },
 		header?: { height: string },
 		content?: { headHeight: string, groupRowHeight: string, rowHeight: string },
 		footer?: { height: string }

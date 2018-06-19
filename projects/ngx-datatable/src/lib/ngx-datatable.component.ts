@@ -87,6 +87,7 @@ export class NgxDatatableComponent implements OnChanges, OnInit, AfterViewInit, 
 	@HostBinding('class.flex') flex;
 	@HostBinding('class.grid') grid;
 	@HostBinding('class.theme-basic') themeBasic;
+	@HostBinding('class.theme-qww-s') themeQwwS;
 
 	@ViewChild(PagerComponent) private pagerComponent: PagerComponent;
 
@@ -217,6 +218,7 @@ export class NgxDatatableComponent implements OnChanges, OnInit, AfterViewInit, 
 		this.flex       = (this.styles && this.styles.template.layout === 'flex') ? true : false;
 		this.grid       = (this.styles && this.styles.template.layout === 'grid') ? true : false;
 		this.themeBasic = (this.styles && this.styles.template.theme === 'basic') ? true : false;
+		this.themeQwwS = (this.styles && this.styles.template.theme === 'qww-s') ? true : false;
 	}
 
 	initSetPage(): void {

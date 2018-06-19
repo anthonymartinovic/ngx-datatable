@@ -1,4 +1,4 @@
-:host-context(.theme-basic) ::ng-deep {
+:host-context(.theme-qww-s) ::ng-deep {
 	border: 1px solid #DEDEDE;
 
 	* {
@@ -11,11 +11,16 @@
 		border-bottom: 1px solid #DEDEDE;
 
 		.caption-container-border {
-			border-right: 1px solid #DEDEDE;
+			padding-left: 20px;
+
+			.table-caption {
+				font-size: 32px;
+				font-weight: 700;
+			}
 		}
 
 		.table-filter {
-			border-left: 1px solid #DEDEDE;
+			// border-left: 1px solid #DEDEDE;
 
 			.filter-container {
 
