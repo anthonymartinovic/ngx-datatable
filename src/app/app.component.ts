@@ -52,8 +52,8 @@ export class AppComponent implements OnInit {
 		server: true,
 		header: true,
 		caption: 'Campaigns',
-		rowDetail: true,
-		checkboxes: true,
+		rowDetail: false,
+		checkboxes: false,
 		groupBy: ['team.officeName'],
 		filter: { show: true, type: 'global', keys: ['Address'] },
 		newTab: { show: true, caption: '', keys: ['_id'] }
