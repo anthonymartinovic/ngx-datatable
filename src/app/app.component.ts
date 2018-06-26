@@ -78,7 +78,7 @@ export class AppComponent implements OnInit {
 		content: {
 			headHeight: '40px',
 			groupRowHeight: '30px',
-			rowHeight: '30px'
+			rowHeight: '40px'
 		},
 		footer: {
 			height: '50px'

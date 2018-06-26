@@ -3,7 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 
-import { NgxDatatableModule } from '../../projects/ngx-datatable/src/lib/ngx-datatable.module';
+// import { NgxDatatableModule } from '../../projects/ngx-datatable/src/lib/ngx-datatable.module';
+import {NgxDatatableModule} from 'am-ngx-datatable';
 
 import { FakeService } from './fake/fake.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -13,7 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 	imports: [
 		BrowserModule,
 		HttpClientModule,
-		NgxDatatableModule
+		NgxDatatableModule,
 	],
 	providers: [FakeService],
 	bootstrap: [AppComponent],

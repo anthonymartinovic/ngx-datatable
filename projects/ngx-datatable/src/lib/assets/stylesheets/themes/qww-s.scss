@@ -3,7 +3,7 @@
 	box-shadow: 0 1px 4px #a2a2a2;
 
 	* {
-		font-family: 'Roboto', sans-serif;
+		font-family: unset;
 		font-size: 12px;
 	}
 		
@@ -12,16 +12,19 @@
 		border-bottom: 1px solid #E5E5E5;
 
 		.caption-container-border {
-			padding-left: 20px;
+			justify-content: flex-start;
+			padding-left: 30px;
 
 			.table-caption {
-				font-size: 24px;
+				font-size: 19px;
 				font-weight: 100;
 				color: #F4F5F6;
 			}
 		}
 
 		.table-filter {
+			justify-content: flex-end;
+			padding-right: 6px;
 
 			.filter-container {
 
@@ -80,14 +83,15 @@
 					.head-row {
 						background-color: #FFF;
 						color: #262626;
-						border-bottom: 1px solid #DEDEDE;
+						border-bottom: 1px solid #E5E5E5;
+						padding: unset;
 
 						.table-head-cell {
 							border-left: 1px solid #DDD;
 
 							.column-filter {
 								background-color: #f9f9f9;
-								border: 1px solid #dedede;
+								border: 1px solid #E5E5E5;
 								border-radius: 4px;
 							}
 
@@ -114,7 +118,7 @@
 
 					.body-group {
 						background-color: #F4F5F6;
-						border-bottom: 1px solid #DEDEDE;
+						border-bottom: 1px solid #E5E5E5;
 
 						.group-info {
 
@@ -128,10 +132,12 @@
 				.table-body-row-container {
 
 					.body-row {
-						border-bottom: 1px solid #DEDEDE;
+						padding: unset;
+						background-color: #FFF;
+						border-bottom: 1px solid #E5E5E5;
 
 						.table-body-cell {
-							border-left: 1px solid #DEDEDE;
+							border-left: 1px solid #E5E5E5;
 						}
 
 						.table-body-cell:first-child {
@@ -148,22 +154,15 @@
 					}
 
 					.body-row-border-top-add {
-						border-top: 1px solid #DEDEDE;
+						border-top: 1px solid #E5E5E5;
 					}
 	
 					.body-row-border-bottom-remove {
-						border-bottom: 0px solid #DEDEDE;
+						border-bottom: 0px solid #E5E5E5;
 					}
 
 					.row-details-open {
-						border-bottom: 1px solid #DEDEDE;
-					}
-				}
-
-				.table-body-row-container:nth-of-type(2n+1) {
-
-					.body-row {
-						background-color: #FFF;
+						border-bottom: 1px solid #E5E5E5;
 					}
 				}
 			}
@@ -171,11 +170,11 @@
 	}
 
 	.flexi-table-content * {
-		color: #333;
+		color: #262626;
 	}
 
 	.flexi-table-footer {
-		background-color: #F9F9F9;
+		background-color: #F4F5F6;
 
 		.table-pager {
 
@@ -185,18 +184,18 @@
 					margin-left: 6px;
 
 					.li-item {
-						border: 1px solid #dedede;
+						border: 1px solid #E5E5E5;
 						border-radius: 4px;
 						background-color: white;
 						padding: 4px 12px;
 					}
 
 					.li-item:hover {
-						background-color: #F9F9F9;
+						background-color: #E5E5E5;
 					}
 
 					.li-item:active {
-						background-color: #DFDFDF;
+						background-color: #E5E5E5;
 						transition: 0.5s;
 					}
 				}
