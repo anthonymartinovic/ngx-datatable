@@ -1,5 +1,6 @@
 :host-context(.theme-qww-s) ::ng-deep {
-	border: 1px solid #DEDEDE;
+	border-radius: 4px;
+	box-shadow: 0 1px 4px #a2a2a2;
 
 	* {
 		font-family: 'Roboto', sans-serif;
@@ -7,15 +8,16 @@
 	}
 		
 	.flexi-table-header {
-		background-color: #F9F9F9;
-		border-bottom: 1px solid #DEDEDE;
+		background-color: #262626;
+		border-bottom: 1px solid #E5E5E5;
 
 		.caption-container-border {
 			padding-left: 20px;
 
 			.table-caption {
-				font-size: 32px;
-				font-weight: 700;
+				font-size: 24px;
+				font-weight: 100;
+				color: #F4F5F6;
 			}
 		}
 
@@ -25,16 +27,39 @@
 			.filter-container {
 
 				.filter-input-container {
+					display: flex;
+					flex-direction: row-reverse;
+					justify-content: flex-start;
+					align-items: center;
+					min-width: 150px;
+					width: 100%;
+					border-radius: 2px;
+					font-size: 15px;
+					color: #FFF;
+
+					.filter-input-icon {
+						padding-left: 10px;
+						padding-bottom: 6px;
+
+						svg {
+							fill: #F4F5F6;
+						}
+					}
 
 					.filter-input {
-						background-color: #f9f9f9;
-						border: 1px solid #dedede;
-						border-radius: 4px;
+						width: 100%;
+						padding: 0 10px;
+						padding-bottom: 5px;
+						font-size: 14px;
+						color: #F4F5F6;
+						background-color: rgba(0, 0, 0, 0);
+						border: none;
+						border-bottom: 2px solid #353535;
 					}
 
 					.filter-input:focus {
 						outline: none;
-						box-shadow: 0px 0px 4px #1f89ce;
+						border-bottom: 2px solid #F4F5F6;
 					}
 				}
 			}
@@ -54,7 +79,8 @@
 				.table-head-row-container {
 
 					.head-row {
-						background-color: #EEEEEE;
+						background-color: #FFF;
+						color: #262626;
 						border-bottom: 1px solid #DEDEDE;
 
 						.table-head-cell {
@@ -88,7 +114,7 @@
 				.table-body-group-container {
 
 					.body-group {
-						background-color: #EEEEEE;
+						background-color: #F4F5F6;
 						border-bottom: 1px solid #DEDEDE;
 
 						.group-info {
@@ -138,7 +164,7 @@
 				.table-body-row-container:nth-of-type(2n+1) {
 
 					.body-row {
-						background-color: #F9F9F9;
+						background-color: #FFF;
 					}
 				}
 			}

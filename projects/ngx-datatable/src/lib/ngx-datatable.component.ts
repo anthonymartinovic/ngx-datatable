@@ -25,6 +25,7 @@ import { DT_ColumnConfig, DT_ColumnMap, DT_Init, DT_ServerPageData, DT_Styles } 
 	styleUrls: ['./ngx-datatable.component.scss'],
 	template: `
 		<div
+			*ngIf="!forceLoader"
 			headerStyle
 			class="flexi-table-header"
 			[class.hide-table-header-inner]="init && !init.header"
@@ -54,9 +55,10 @@ import { DT_ColumnConfig, DT_ColumnMap, DT_Init, DT_ServerPageData, DT_Styles } 
 			<div class="loader">
 				<div class="loader-bar"></div>
 			</div>
-			<ngx-table></ngx-table>
+			<ngx-table *ngIf="!forceLoader"></ngx-table>
 		</div>
 		<div
+			*ngIf="!forceLoader"
 			footerStyle
 			class="flexi-table-footer"
 			[class.hide-table-footer-inner]="init && !init.footer"

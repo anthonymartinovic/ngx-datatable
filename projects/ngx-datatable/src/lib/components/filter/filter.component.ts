@@ -76,5 +76,6 @@ export class FilterComponent {
 		}
 	}
 
-	get placeholderText(): string { return `Filter ${(this.globalFilter) ? this.globalFilter : 'selected'} column...` }
+	// get placeholderText(): string { return `Filter ${(this.globalFilter) ? this.globalFilter : 'selected'} column...` }
+	get placeholderText(): string { return `Search for...` }
 }
