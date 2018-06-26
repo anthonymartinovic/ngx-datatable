@@ -22,7 +22,7 @@
     "@angular/platform-browser": "6.0.3",
     "@angular/platform-browser-dynamic": "6.0.3",
     "@angular/router": "6.0.3",
-    "am-ngx-datatable": "^0.3.9",
+    "am-ngx-datatable": "^0.3.10",
     "core-js": "^2.4.1",
     "rxjs": "^6.2.0",
     "rxjs-compat": "^6.2.0",
