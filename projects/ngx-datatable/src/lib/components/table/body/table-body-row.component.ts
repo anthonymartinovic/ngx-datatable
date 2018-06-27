@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, Input } from '@angular/core';
 
-import { TableDataService } from '../../../data';
-import { ArrayService } from '../../../services';
+import { TableDataService } from '../../../data/data.service';
+import { ArrayService } from '../../../services/array.service';
 
 @Component({
 	selector: 'ngx-table-body-row',

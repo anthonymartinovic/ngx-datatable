@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 
-import { TableDataService } from '../../data';
+import { TableDataService } from '../../data/data.service';
 
 @Component({
 	selector: 'ngx-pager-li',

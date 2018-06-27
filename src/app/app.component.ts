@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Project, Person } from './fake/model';
-import { DT_ColumnConfig, DT_Init, DT_ServerPageData, DT_Styles } from '../../projects/ngx-datatable/src/lib/models';
+import { DT_ColumnConfig, DT_Init, DT_ServerPageData, DT_Styles } from './fake/ngx-datatable-models';
 
 import { FakeService } from './fake/fake.service';
 

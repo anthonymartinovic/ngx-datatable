@@ -1,9 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { TableDataService } from '../../../data';
-import { DT_ColumnMap } from '../../../models';
-import { ImgService, SortService } from '../../../services';
+import { TableDataService } from '../../../data/data.service';
+import { DT_ColumnMap } from '../../../models/column.model';
+import { ImgService } from '../../../services/img.service';
+import { SortService } from '../../../services/sort.service';
 
 @Component({
 	selector: 'ngx-table-body-group',

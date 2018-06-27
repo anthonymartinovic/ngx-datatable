@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { DT_Init } from '../../models';
-import { FormatService } from '../../services';
+import { DT_Init } from '../../models/init.model';
+import { FormatService } from '../../services/format.service';
 
 @Component({
 	selector: 'ngx-exporter',

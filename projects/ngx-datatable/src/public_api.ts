@@ -4,4 +4,4 @@
 
 export * from './lib/ngx-datatable.component';
 export * from './lib/ngx-datatable.module';
-export * from './lib/models';
+// export * from './lib/models';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { DT_Pager } from '../models';
+import { DT_Pager } from '../models/pager.model';
 
 @Injectable()
 export class PagerService {

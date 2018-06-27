@@ -14,9 +14,12 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { PagerComponent } from './components';
-import { TableDataService } from './data';
-import { DT_ColumnConfig, DT_ColumnMap, DT_Init, DT_ServerPageData, DT_Styles } from './models';
+import { PagerComponent } from './components/pager/pager.component';
+import { TableDataService } from './data/data.service';
+import { DT_ColumnConfig, DT_ColumnMap } from './models/column.model';
+import { DT_Init } from './models/init.model';
+import { DT_ServerPageData } from './models/pager.model';
+import { DT_Styles } from './models/styles.model';
 
 @Component({
 	selector: 'ngx-datatable',

@@ -1,8 +1,9 @@
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { TableDataService } from '../../../data';
-import { ArrayService, ObjectService } from '../../../services';
+import { TableDataService } from '../../../data/data.service';
+import { ArrayService } from '../../../services/array.service';
+import { ObjectService } from '../../../services/object.service';
 
 @Component({
 	selector: 'ngx-table-body',

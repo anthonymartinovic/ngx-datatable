@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 
-import { TableDataService } from '../../../data';
-import { ArrayService } from '../../../services';
+import { TableDataService } from '../../../data/data.service';
+import { ArrayService } from '../../../services/array.service';
 
 @Component({
 	selector: 'ngx-table-head-row',

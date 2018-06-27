@@ -1,9 +1,11 @@
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { TableDataService } from '../../../data';
-import { DT_ColumnMap } from '../../../models';
-import { ArrayService, ImgService, ObjectService } from '../../../services';
+import { TableDataService } from '../../../data/data.service';
+import { DT_ColumnMap } from '../../../models/column.model';
+import { ArrayService } from '../../../services/array.service';
+import { ImgService } from '../../../services/img.service';
+import { ObjectService } from '../../../services/object.service';
 
 @Component({
 	selector: 'ngx-table-body-cell',
