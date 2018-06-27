@@ -28,10 +28,10 @@ import { DT_Styles } from './models/styles.model';
 	styleUrls: ['./ngx-datatable.component.scss'],
 	template: `
 		<div
-			*ngIf="!forceLoader"
 			headerStyle
 			class="flexi-table-header"
 			[class.hide-table-header-inner]="init && !init.header"
+			*ngIf="clientSide || serverSideInitCompleted"
 		>
 			<div class="table-caption-container" [class.caption-container-border]="init && init.header && init.caption">
 				<caption *ngIf="init && init.header && init.caption" class="table-caption">{{ init.caption }}</caption>
@@ -58,10 +58,9 @@ import { DT_Styles } from './models/styles.model';
 			<div class="loader">
 				<div class="loader-bar"></div>
 			</div>
-			<ngx-table *ngIf="!forceLoader"></ngx-table>
+			<ngx-table></ngx-table>
 		</div>
 		<div
-			*ngIf="!forceLoader"
 			footerStyle
 			class="flexi-table-footer"
 			[class.hide-table-footer-inner]="init && !init.footer"
