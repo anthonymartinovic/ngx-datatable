@@ -33,7 +33,7 @@ export class FakeService {
 				`http://localhost:3334/appraisals?search=${search}&page=${page}&filter=${filter}&sort=${sort}`,
 				{ 
 					headers: {
-						'Authorization': 'Bearer 035a9c9bc0a85d2c8f5748ade46bb76724fb30edac4a7894fa234bad027e44057510fbe220f003e97ec95e05b728accfQ2EJHgDvC5/Y4HpjMV45Ea5ZflVW49VnJq4kPUXyEXQ='
+						'Authorization': '{{ENTER TOKEN}}'
 					}
 				}
 			);
