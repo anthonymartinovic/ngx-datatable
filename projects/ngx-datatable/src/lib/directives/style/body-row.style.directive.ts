@@ -1,7 +1,7 @@
 import { Directive, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { TableDataService } from '../../data';
+import { TableDataService } from '../../data/data.service';
 
 @Directive({
 	selector: '[bodyRowStyle]'

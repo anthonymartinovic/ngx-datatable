@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { DT_ColumnMap } from '../models';
+import { DT_ColumnMap } from '../models/column.model';
 
 @Injectable()
 export class FilterService {

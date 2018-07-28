@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { ObjectService } from '../services';
+import { ObjectService } from '../services/object.service';
 
 @Pipe({
 	name: 'formatObject',

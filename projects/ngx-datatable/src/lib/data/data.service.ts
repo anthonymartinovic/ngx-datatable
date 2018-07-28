@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject, Observable } from 'rxjs';
 
-import { DT_ColumnMap, DT_Init, DT_Styles } from '../models';
+import { DT_ColumnMap } from '../models/column.model';
+import { DT_Init } from '../models/init.model';
+import { DT_Styles } from '../models/styles.model';
 
 @Injectable()
 export class TableDataService {
