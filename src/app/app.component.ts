@@ -22,8 +22,8 @@ import { FakeService } from './fake/fake.service';
 				(onRowSelection)="logRow($event)"
 				(onCheckboxChange)="logRows($event)"
 				(onNewTabSelection)="logRoute($event)"
-				(onSort)="logSort($event)"
-			></ngx-datatable>
+        (onSort)="logSort($event)">
+      </ngx-datatable>
 		</div>
 	`
 })
