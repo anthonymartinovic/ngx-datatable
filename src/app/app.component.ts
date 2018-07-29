@@ -211,13 +211,13 @@ export class AppComponent implements OnInit {
 	// 	}, 5000);
 	// }
 
-	ngOnInit() {
+	ngOnInit(): void {
 		console.log(this.tableInit);
 		this.loading = true;
 		this.getAppraisals();
 	}
 
-	getAppraisals(searchParam?, pageNumber?, filterParam?, sortParam?) {
+	getAppraisals(searchParam?, pageNumber?, filterParam?, sortParam?): void {
 		console.log('FETCHING...', searchParam, pageNumber, filterParam, sortParam);
 		this._fakeService.getAppraisals(searchParam, pageNumber, filterParam, sortParam).subscribe(
 			res => {
@@ -246,16 +246,16 @@ export class AppComponent implements OnInit {
 		)
 	}
 
-	logPage(event) {
+	logPage(event): void {
 		console.log('SELECTED-PAGE', event);
 		this.getAppraisals(null, event, null, null);
 	}
 
-	logExportAll(event) {
+	logExportAll(event): void {
 		console.log('EXPORT-ALL-DATA', event);
 	}
 
-	logServerFilterChange(event) {
+	logServerFilterChange(event): void {
 		console.log('GLOBAL FILTER', event);
 		this.getAppraisals(event, null, null, null);
 	}
@@ -264,19 +264,19 @@ export class AppComponent implements OnInit {
 	// 	console.log('COLUMN FILTER', event);
 	// }
 
-	logRow(event) {
+	logRow(event): void {
 		console.log('SELECTED-ROW', event);
 	}
 
-	logRows(event) {
+	logRows(event): void {
 		console.log('CHECKED-ROWS', event);
 	}
 
-	logRoute(event) {
+	logRoute(event): void {
 		console.log('ROUTE', event);
 	}
 
-	logSort(event) {
+	logSort(event): void {
 		console.log('SORT', event);
 		this.getAppraisals(null, null, event.name, event.order);
 	}
