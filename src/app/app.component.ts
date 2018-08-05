@@ -86,7 +86,6 @@ export class AppComponent implements OnInit {
 	})
 
   constructor(private _fakeService: FakeService) {}
-  
 
 	// ngOnInit() {
 	// 	this.projects = this._fakeService.getProjects();
